@@ -1,6 +1,7 @@
 import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
+import Class from "./Homepage/Class";
 
 function ClassPage() {
   return (
@@ -12,11 +13,12 @@ function ClassPage() {
       <Breadcrumb title="Class"></Breadcrumb>
 
       {/* class section */}
-      <section className="class spad">
+      <Class />
+      {/* <section className="class spad">
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row align-items-center"> */}
             {/* Registration Form */}
-            <div className="col-lg-6">
+            {/* <div className="col-lg-6">
               <div className="class__form">
                 <div className="section-title">
                   <span>Class cakes</span>
@@ -39,10 +41,10 @@ function ClassPage() {
                   </button>
                 </form>
               </div>
-            </div>
+            </div> */}
 
             {/* Video Section */}
-            <div className="col-lg-6">
+            {/* <div className="col-lg-6">
               <div
                 className="about__video set-bg"
                 style={{ backgroundImage: `url(img/about-video.jpg)` }}
@@ -59,7 +61,7 @@ function ClassPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer section */}
       <Footer />
