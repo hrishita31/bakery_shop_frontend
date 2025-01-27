@@ -1,4 +1,13 @@
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
 export const Class = () => {
+  const ClassSchema = Yup.object().shape({
+    Name: Yup.string().required("Name is required"),
+    PhoneNumber: Yup.string().required("Phone number is required"),
+    ClassTime: Yup.string().required("class time is required"),
+    Branch: Yup.string().required("branch preferred is required"),
+  });
   return (
     <>
       <section className="class spad">
@@ -14,7 +23,108 @@ export const Class = () => {
                     own hands
                   </h2>
                 </div>
-                <form action="#">
+                <Formik
+                  initialValues={{
+                    Name: "",
+                    PhoneNumber: "",
+                    ClassTime: "",
+                    Branch: "",
+                  }}
+                  validationSchema={ClassSchema}
+                  onSubmit={(values, { setSubmitting }) => {
+                    setTimeout(() => {
+                      alert(JSON.stringify(values, null, 2));
+                      setSubmitting(false);
+                    }, 1000);
+                  }}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <div>
+                        <label htmlFor="name">Name</label>
+                        <Field
+                          type="text"
+                          name="name"
+                          placeholder="Enter your name"
+                        />
+                        <ErrorMessage name="name" component="div" />
+                      </div>
+
+                      <div>
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <Field
+                          type="text"
+                          name="phoneNumber"
+                          placeholder="Enter your phone number"
+                        />
+                        <ErrorMessage name="phoneNumber" component="div" />
+                      </div>
+
+                      <div>
+                        <label>Class Time</label>
+                        <div className="radio-group">
+
+                          <label className="radio-option">
+                            <Field
+                              type="radio"
+                              name="ClassTime"
+                              value="4:00 - 5:00"
+                            />
+                            4:00 - 5:00
+                            </label>
+                            <label className="radio-option">
+                            <Field
+                              type="radio"
+                              name="ClassTime"
+                              value="5:00 - 6:00"
+                            />
+                            5:00 - 6:00
+                            </label>
+                            <label className="radio-option">
+                            <Field
+                              type="radio"
+                              name="ClassTime"
+                              value="6:00 - 7:00"
+                            />
+                            6:00 - 7:00
+                          </label>
+                          
+                        </div>
+                        <ErrorMessage name="classTime" component="div" />
+                      </div>
+
+                      <div>
+                        <label>Branch</label>
+                        <div className="radio-group">
+                        <label className="radio-option">
+                            <Field
+                              type="radio"
+                              name="Branch"
+                              value="Bopal"
+                            />
+                            Bopal
+                            </label>
+                            <label className="radio-option">
+                            <Field
+                              type="radio"
+                              name="Branch"
+                              value="Shyamal"
+                            />
+                            Shyamal
+                          </label>
+                          
+                        </div>
+                        <ErrorMessage name="Branch" component="div" />
+                      </div>                      
+
+                      <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+
+                {/* <form action="#">
                   <input type="text" placeholder="Name" />
                   <input type="text" placeholder="Phone" />
                   <select>
@@ -26,7 +136,7 @@ export const Class = () => {
                   <button type="submit" className="site-btn">
                     registration
                   </button>
-                </form>
+                </form> */}
               </div>
             </div>
 
