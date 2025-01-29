@@ -78,6 +78,17 @@ function LoginPage() {
             ) : null}
 
             <input type="submit" />
+            <div className="forgot-pwd">
+            <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/forgotPassword");
+                      }}
+                    >
+                      forgot password
+                    </a>
+                    </div>
           </form>
         </div>
       </div>

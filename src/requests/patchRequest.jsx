@@ -1,12 +1,11 @@
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
-const postData = async (values, endpoint) => {
-  // console.log(values);
+
+const patchData = async (values, endpoint) => {
   try {
-    const response = await axios.post(`${url}${endpoint}`, {
+    const response = await axios.patch(`${url}${endpoint}`, {
       ...values,
-      // value:values
     });
     if (
       response.status === 200 ||
@@ -15,12 +14,14 @@ const postData = async (values, endpoint) => {
       response.status === 203 ||
       response.status === 204
     ) {
-      localStorage.setItem("token", response.data.token);
-      return { success: true };
+    //   alert("updated");
+      return {
+        success: true,
+      };
     } else {
       return {
         success: false,
-        message: response.data.message || "Invalid credentials",
+        message: response.data.message || "Could not update",
       };
     }
   } catch (error) {
@@ -32,4 +33,4 @@ const postData = async (values, endpoint) => {
   }
 };
 
-export default postData;
+export default patchData;
