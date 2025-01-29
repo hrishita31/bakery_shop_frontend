@@ -26,6 +26,16 @@ function SignUpPage() {
       //   "Need one special character"
       // )
       .required("password is required"),
+      confirmPassword: Yup.string()
+      .min(8, "password must be 8 characters long")
+      .matches(/[0-9]/, "Must contain at least one digit")
+      .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+      .matches(/[a-z]/, "Must contain at least one lowercase letter")
+      // .matches(
+      //   /^[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/,
+      //   "Need one special character"
+      // )
+      .required("password is required"),
   });
 
   const formik = useFormik({
@@ -119,6 +129,18 @@ function SignUpPage() {
             />
             {formik.touched.password && formik.errors.password ? (
               <div>{formik.errors.password}</div>
+            ) : null}
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPassword}
+            />
+            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+              <div>{formik.errors.confirmPassword}</div>
             ) : null}
             <input type="submit" />
           </form>

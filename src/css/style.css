@@ -293,6 +293,66 @@ body {
   background-color: #d65a00;
 }
 
+/* forgot password */
+.forgot-pwd{
+color:blue;
+text-align: right;
+padding-top:-5px;
+font-size: 15px;
+}
+
+.forgotPwd-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.forgotPwd-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.forgotPwd-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.forgotPwd-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.forgotPwd-box input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.forgotPwd-box button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f96e00;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.forgotPwd-box button:hover {
+  background-color: #d65a00;
+}
+
 /* Preloder */
 #preloder {
   position: fixed;
