@@ -11,6 +11,7 @@ import ShoppingCartPage from "../../../src/pages/ShoppingCart";
 import CheckoutPage from "../../../src/pages/Checkout";
 import ClassPage from "../../../src/pages/Class";
 import WishlistPage from "../../../src/pages/Wishlist";
+import TeamRegisterPage from "../../../src/pages/TeamRegister";
 import BlogDetailsPage from "../../../src/pages/BlogDetails";
 import BlogPage from "../../../src/pages/Blog";
 import ContactPage from "../../../src/pages/Contact";
@@ -36,6 +37,7 @@ function AppRoutes() {
           <Route path="checkout" element={<CheckoutPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
           <Route path="class" element={<ClassPage />} />
+          <Route path="registerToTeam" element={<TeamRegisterPage />} />
           <Route path="blogDetails" element={<BlogDetailsPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="contact" element={<ContactPage />} />
