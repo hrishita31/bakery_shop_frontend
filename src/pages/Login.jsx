@@ -1,20 +1,45 @@
 import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
+//import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import postData from "../requests/postRequest";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LoginPage() {
+  const navigate = useNavigate();
 
   const LoginSchema = Yup.object().shape({
-    username : Yup.string()
-              .required('username is required'),
-    password : Yup.string()
-              .min(8, 'password must be 8 characters long')
-              .required('password is required'),
-    });
+    username: Yup.string().required("username is required"),
+    password: Yup.string().required("password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: LoginSchema,
+    onSubmit: async (values) => {
+      const data = await postData(values, "/users/userLogin");
+      console.log(data);
+      if (data.success) {
+        toast.success("Login successful");
+
+        navigate("/");
+      } else {
+        toast.error(data.message)
+        // toast.error("Login unsuccessful. Please try again.")
+      }
+    },
+  });
+
   return (
     <>
+    
       {/* Header section */}
       <Header />
 
@@ -25,44 +50,35 @@ function LoginPage() {
       <div className="login-container">
         <div className="login-box">
           <h2>Login</h2>
-          <Formik
-            initialValues={{ username: "", password: "" }}
-            validationSchema={LoginSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 1000);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <div>
-                  <label htmlFor="username">Username</label>
-                  <Field
-                    type="text"
-                    name="username"
-                    placeholder="Enter your username"
-                  />
-                  <ErrorMessage name="username" component="div" />
-                </div>
 
-                <div>
-                  <label htmlFor="password">Password</label>
-                  <Field
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                  />
-                  <ErrorMessage name="password" component="div" />
-                </div>
+          <form onSubmit={formik.handleSubmit}>
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.username}
+            />
+            {formik.touched.username && formik.errors.username ? (
+              <div>{formik.errors.username}</div>
+            ) : null}
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <div>{formik.errors.password}</div>
+            ) : null}
 
-                <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Submitting..." : "Submit"}
-                </button>
-              </Form>
-            )}
-          </Formik>
+            <input type="submit" />
+          </form>
         </div>
       </div>
 

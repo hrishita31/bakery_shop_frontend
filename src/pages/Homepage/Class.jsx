@@ -1,5 +1,5 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
 
 export const Class = () => {
   const ClassSchema = Yup.object().shape({
@@ -7,6 +7,21 @@ export const Class = () => {
     PhoneNumber: Yup.string().required("Phone number is required"),
     ClassTime: Yup.string().required("class time is required"),
     Branch: Yup.string().required("branch preferred is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      PhoneNumber: "",
+      classTime: "",
+      branch: "",
+    },
+    validationSchema: ClassSchema,
+    onSubmit: (values) => {
+      console.log(values);
+
+      alert(JSON.stringify(values, null, 2));
+    },
   });
   return (
     <>
@@ -23,120 +38,89 @@ export const Class = () => {
                     own hands
                   </h2>
                 </div>
-                <Formik
-                  initialValues={{
-                    Name: "",
-                    PhoneNumber: "",
-                    ClassTime: "",
-                    Branch: "",
-                  }}
-                  validationSchema={ClassSchema}
-                  onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                      alert(JSON.stringify(values, null, 2));
-                      setSubmitting(false);
-                    }, 1000);
-                  }}
-                >
-                  {({ isSubmitting }) => (
-                    <Form>
-                      <div>
-                        <label htmlFor="name">Name</label>
-                        <Field
-                          type="text"
-                          name="name"
-                          placeholder="Enter your name"
-                        />
-                        <ErrorMessage name="name" component="div" />
-                      </div>
+                <form onSubmit={formik.handleSubmit}>
+                  <label htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.name}
+                  />
+                  <div>{formik.errors.name}</div>
 
-                      <div>
-                        <label htmlFor="phoneNumber">Phone Number</label>
-                        <Field
-                          type="text"
-                          name="phoneNumber"
-                          placeholder="Enter your phone number"
-                        />
-                        <ErrorMessage name="phoneNumber" component="div" />
-                      </div>
+                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <input
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.phoneNumber}
+                  />
+                  <div>{formik.errors.phoneNumber}</div>
 
-                      <div>
-                        <label>Class Time</label>
-                        <div className="radio-group">
+                  <div className="radio-group">
+                    <label htmlFor="classTime">Class Time</label>
+                    <div className="radio-option">
+                      <input
+                        id="classTime"
+                        name="classTime"
+                        type="radio"
+                        onChange={formik.handleChange}
+                        value="4:00-5:00"
+                      />
+                      4:00-5:00
+                    </div>
+                    <div className="radio-option">
+                      <input
+                        id="classTime"
+                        name="classTime"
+                        type="radio"
+                        onChange={formik.handleChange}
+                        value="5:00-6:00"
+                      />
+                      5:00-6:00
+                    </div>
+                    <div className="radio-option">
+                      <input
+                        id="classTime"
+                        name="classTime"
+                        type="radio"
+                        onChange={formik.handleChange}
+                        value="6:00-7:00"
+                      />
+                      6:00-7:00
+                    </div>
+                  </div>
+                  <div>{formik.errors.classTime}</div>
 
-                          <label className="radio-option">
-                            <Field
-                              type="radio"
-                              name="ClassTime"
-                              value="4:00 - 5:00"
-                            />
-                            4:00 - 5:00
-                            </label>
-                            <label className="radio-option">
-                            <Field
-                              type="radio"
-                              name="ClassTime"
-                              value="5:00 - 6:00"
-                            />
-                            5:00 - 6:00
-                            </label>
-                            <label className="radio-option">
-                            <Field
-                              type="radio"
-                              name="ClassTime"
-                              value="6:00 - 7:00"
-                            />
-                            6:00 - 7:00
-                          </label>
-                          
-                        </div>
-                        <ErrorMessage name="classTime" component="div" />
-                      </div>
+                  <div className="radio-group">
+                    <label htmlFor="branch">Branch</label>
+                    <div className="radio-option">
+                      <input
+                        id="branch"
+                        name="branch"
+                        type="radio"
+                        onChange={formik.handleChange}
+                        value="Bopal"
+                      />
+                      Bopal
+                    </div>
+                    <div className="radio-option">
+                      <input
+                        id="branch"
+                        name="branch"
+                        type="radio"
+                        onChange={formik.handleChange}
+                        value="Shyamal"
+                      />
+                      Shyamal
+                    </div>
+                  </div>
+                  <div>{formik.errors.branch}</div>
 
-                      <div>
-                        <label>Branch</label>
-                        <div className="radio-group">
-                        <label className="radio-option">
-                            <Field
-                              type="radio"
-                              name="Branch"
-                              value="Bopal"
-                            />
-                            Bopal
-                            </label>
-                            <label className="radio-option">
-                            <Field
-                              type="radio"
-                              name="Branch"
-                              value="Shyamal"
-                            />
-                            Shyamal
-                          </label>
-                          
-                        </div>
-                        <ErrorMessage name="Branch" component="div" />
-                      </div>                      
-
-                      <button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Submitting..." : "Submit"}
-                      </button>
-                    </Form>
-                  )}
-                </Formik>
-
-                {/* <form action="#">
-                  <input type="text" placeholder="Name" />
-                  <input type="text" placeholder="Phone" />
-                  <select>
-                    <option value="">Studying Class</option>
-                    <option value="">Writting Class</option>
-                    <option value="">Reading Class</option>
-                  </select>
-                  <input type="text" placeholder="Type your requirements" />
-                  <button type="submit" className="site-btn">
-                    registration
-                  </button>
-                </form> */}
+                  <input type="submit" />
+                </form>
               </div>
             </div>
 

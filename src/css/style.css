@@ -909,7 +909,7 @@ body {
 .radio-option {
   display: flex;
   align-items: left; /* Align text and radio button vertically */
-  margin-bottom: auto; /* Add some spacing between options */
+  margin-bottom: -16px; /* Add some spacing between options */
   white-space: nowrap;
 }
 
