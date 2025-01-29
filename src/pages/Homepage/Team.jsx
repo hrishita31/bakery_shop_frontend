@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export const Team = () => {
+
+  const navigate = useNavigate();
   return (
     <>
       <section className="team spad">
@@ -12,9 +16,15 @@ export const Team = () => {
             </div>
             <div className="col-lg-5 col-md-5 col-sm-5">
               <div className="team__btn">
-                <a href="#" className="primary-btn">
-                  Join Us
-                </a>
+              <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/registerToTeam");
+                      }}
+                    >
+                      Join Us
+                    </a>
               </div>
             </div>
           </div>

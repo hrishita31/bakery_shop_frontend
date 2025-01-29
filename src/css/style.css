@@ -969,7 +969,7 @@ font-size: 15px;
 .radio-option {
   display: flex;
   align-items: left; /* Align text and radio button vertically */
-  margin-bottom: -16px; /* Add some spacing between options */
+  margin-bottom: auto; /* Add some spacing between options */
   white-space: nowrap;
 }
 
@@ -1038,6 +1038,58 @@ font-size: 15px;
   color: #111111;
   font-size: 16px;
   margin-right: 14px;
+}
+
+.team-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.team-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.team-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.team-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.team-box input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.team-box button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f96e00;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.team-box button:hover {
+  background-color: #d65a00;
 }
 
 /*---------------------
