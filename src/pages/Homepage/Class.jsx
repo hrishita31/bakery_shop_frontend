@@ -1,26 +1,33 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import postData from "../../requests/postRequest";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Class = () => {
   const ClassSchema = Yup.object().shape({
-    Name: Yup.string().required("Name is required"),
-    PhoneNumber: Yup.string().required("Phone number is required"),
-    ClassTime: Yup.string().required("class time is required"),
-    Branch: Yup.string().required("branch preferred is required"),
+    name: Yup.string().required("Name is required"),
+    phoneNumber: Yup.string().required("Phone number is required"),
+    classTime: Yup.string().required("class time is required"),
+    branch: Yup.string().required("branch preferred is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
-      PhoneNumber: "",
+      phoneNumber: "",
       classTime: "",
       branch: "",
     },
     validationSchema: ClassSchema,
-    onSubmit: (values) => {
-      console.log(values);
-
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const data = await postData(values, "/classes/classRegistration");
+      console.log(data);
+      if (data.success) {
+        toast.success("Registration successful");
+      } else {
+        toast.error(data.message);
+      }
     },
   });
   return (
@@ -45,9 +52,12 @@ export const Class = () => {
                     name="name"
                     type="text"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.name}
                   />
-                  <div>{formik.errors.name}</div>
+                  {formik.touched.name && formik.errors.name ? (
+                    <div>{formik.errors.name}</div>
+                  ) : null}
 
                   <label htmlFor="phoneNumber">Phone Number</label>
                   <input
@@ -55,9 +65,12 @@ export const Class = () => {
                     name="phoneNumber"
                     type="text"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.phoneNumber}
                   />
-                  <div>{formik.errors.phoneNumber}</div>
+                  {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                    <div>{formik.errors.phoneNumber}</div>
+                  ) : null}
 
                   <div className="radio-group">
                     <label htmlFor="classTime">Class Time</label>
@@ -67,6 +80,7 @@ export const Class = () => {
                         name="classTime"
                         type="radio"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value="4:00-5:00"
                       />
                       4:00-5:00
@@ -77,6 +91,7 @@ export const Class = () => {
                         name="classTime"
                         type="radio"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value="5:00-6:00"
                       />
                       5:00-6:00
@@ -87,12 +102,15 @@ export const Class = () => {
                         name="classTime"
                         type="radio"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value="6:00-7:00"
                       />
                       6:00-7:00
                     </div>
                   </div>
-                  <div>{formik.errors.classTime}</div>
+                  {formik.touched.classTime && formik.errors.classTime ? (
+                    <div>{formik.errors.classTime}</div>
+                  ) : null}
 
                   <div className="radio-group">
                     <label htmlFor="branch">Branch</label>
@@ -102,6 +120,7 @@ export const Class = () => {
                         name="branch"
                         type="radio"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value="Bopal"
                       />
                       Bopal
@@ -112,12 +131,15 @@ export const Class = () => {
                         name="branch"
                         type="radio"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value="Shyamal"
                       />
                       Shyamal
                     </div>
                   </div>
-                  <div>{formik.errors.branch}</div>
+                  {formik.touched.branch && formik.errors.branch ? (
+                    <div>{formik.errors.branch}</div>
+                  ) : null}
 
                   <input type="submit" />
                 </form>
