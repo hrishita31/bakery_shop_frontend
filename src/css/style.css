@@ -1188,6 +1188,60 @@ font-size: 15px;
   position: relative;
 }
 
+.testimonial-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+  overflow-y: auto;
+  height:500px;
+}
+
+.testimonial-box {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.testimonial-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.testimonial-box input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.testimonial-box button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f96e00;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.testimonial-box button:hover {
+  background-color: #d65a00;
+}
+
 /* Author Section */
 .testimonial-author {
   display: flex;

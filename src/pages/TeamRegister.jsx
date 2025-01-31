@@ -43,23 +43,13 @@ function TeamRegisterPage() {
       }
     },
   });
-
-//   function CustomImageInputWrapper({onClick, fileName, src}) {
-//     return (
-//         <div onClick={onClick}>
-//             {!src && <button onClick={onClick}>Choose Image</button>}
-//             <img src={src} />
-//             <p>{fileName}</p>
-//         </div>
-//     )
-// }
   return (
     <>
       {/* Header section */}
       <Header />
 
       {/* Breadcrumb section */}
-      <Breadcrumb title="Team Regitration" />
+      <Breadcrumb title="Team Registration" />
 
       <div className="team-container">
         <div className="team-box">
@@ -148,13 +138,8 @@ function TeamRegisterPage() {
             onChange={(event) => {
                 formik.setFieldValue("photo", event.currentTarget.files[0])
             }}/>
-            {/* <ImageInput
-                    name="photo"
-                    validFormats={imageFormats}
-                    component={CustomImageInputWrapper}
-                /> */}
-            {formik.touched.name && formik.errors.name ? (
-              <div>{formik.errors.name}</div>
+            {formik.touched.photo && formik.errors.photo ? (
+              <div>{formik.errors.photo}</div>
             ) : null}
 
             <input type="submit" />
