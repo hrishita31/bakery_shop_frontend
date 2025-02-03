@@ -85,7 +85,7 @@ export const Testimonial = () => {
           headers: { "Content-Type": "multipart/form-data" }, // Ensure correct content type
         });
   
-        if (data.success) {
+        if (data.data.success) {
           toast.success("Testimonial submitted successfully!");
           setTestimonials((prev) => [...prev, { ...values, image: URL.createObjectURL(values.photo) }]);
           setIsPopupOpen(false);

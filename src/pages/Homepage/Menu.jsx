@@ -29,20 +29,8 @@ export const Menu = () => {
         <div id="mobile-menu-wrap"></div>
         <div className="offcanvas__option">
           <ul>
-            <li>
-              USD <span className="arrow_carrot-down"></span>
-              <ul>
-                <li>EUR</li>
-                <li>USD</li>
-              </ul>
-            </li>
-            <li>
-              ENG <span className="arrow_carrot-down"></span>
-              <ul>
-                <li>Spanish</li>
-                <li>ENG</li>
-              </ul>
-            </li>
+            
+            
             <li>
               <a href="#">Sign in</a>{" "}
               <span className="arrow_carrot-down"></span>

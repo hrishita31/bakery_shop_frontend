@@ -23,7 +23,7 @@ export const Class = () => {
     onSubmit: async (values) => {
       const data = await postData(values, "/classes/classRegistration");
       console.log(data);
-      if (data.success) {
+      if (data.data.success) {
         toast.success("Registration successful");
       } else {
         toast.error(data.message);

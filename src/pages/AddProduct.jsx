@@ -43,18 +43,13 @@ const url = import.meta.env.VITE_API_URL;
         formData.append("image", values.image);
         formData.append("price", values.price);
         formData.append("rating", values.rating);
-        console.log(formData, 123);
+        // console.log(formData, 123);
      const token = Cookies.get('token');
-     console.log(token, 123)
-    // console.log(token);
     const headers = { 'Authorization': `Bearer ${token}`  };
        const data = await axios.post(`${url}/products/newProduct`, formData,{
         headers
        } )
-    //   console.log(data);
-
-    //const token = data.data.token;
-//ocalStorage.setItem('token', token);
+    
     
       if (data.statusText==="OK") {
         toast.success("Successfully added new product");
@@ -65,7 +60,6 @@ console.log(detailsResult);
         navigate("/");
       } else {
         toast.error(data.message);
-        // toast.error("Login unsuccessful. Please try again.")
       }
     },
   });

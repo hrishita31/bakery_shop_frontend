@@ -49,7 +49,7 @@ function SignUpPage() {
     validationSchema: SignUpSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/newUser");
-      if (data.success) {
+      if (data.data.success) {
         toast.success("Sign up successful");
         navigate("/");
       } else {
