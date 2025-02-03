@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import postData from "../requests/postRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -25,10 +26,11 @@ function LoginPage() {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/userLogin");
-      console.log(data);
-      if (data.success) {
+      // console.log(data, 123456);
+      if (data.data.success) {
         toast.success("Login successful");
-
+        const token = data.data.result;
+Cookies.set('token', token, { expires: 7, secure: true });
         navigate("/");
       } else {
         toast.error(data.message)

@@ -16,22 +16,27 @@ export const HeaderSection = () => {
                   <div className="header__top__left">
                     <ul>
                       <li>
-                        USD <span className="arrow_carrot-down"></span>
-                        <ul>
-                          <li>EUR</li>
-                          <li>USD</li>
-                        </ul>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate("signUp");
+                          }}
+                        >
+                          Sign up
+                        </a>
                       </li>
+
                       <li>
-                        ENG <span className="arrow_carrot-down"></span>
-                        <ul>
-                          <li>Spanish</li>
-                          <li>ENG</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="#">Sign in</a>
-                        <span className="arrow_carrot-down"></span>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate("login");
+                          }}
+                        >
+                          Login
+                        </a>
                       </li>
                     </ul>
                   </div>
