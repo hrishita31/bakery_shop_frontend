@@ -4,9 +4,7 @@ const url = import.meta.env.VITE_API_URL;
 
 const getData = async (values, endpoint) => {
   try {
-    const response = await axios.get(`${url}${endpoint}`, {
-      ...values,
-    });
+    const response = await axios.get(`${url}${endpoint}`);
     if (
       response.status === 200 ||
       response.status === 201 ||

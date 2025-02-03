@@ -1,164 +1,91 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export const Products = () => {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const url = import.meta.env.VITE_API_URL;
+  const image_url = import.meta.env.VITE_IMAGE_URL;
+  useEffect(() => {
+    axios
+      .get(`${url}/products/displayProduct`)
+      .then((res) => {
+        console.log(res,'res')
+        setProducts(res.data.result)}
+      )
+      .catch(() => toast.error("Failed to fetch poducts"));
+  }, []);
+
+  useEffect(() => {
+    console.log(products)
+
+  },[products])
+
+  
+
+  // if (!products.length) {
+  //   return <p>No products to display</p>;
+  // }
+
+  // let val = products.map((product) => {
+  //   return <li key={product._id}>{product.dessertName}</li>
+  // }
+
+  // )
+
   return (
     <>
-      <section className="product spad">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-1.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Dozen Cupcakes</a>
-                  </h6>
-                  <div className="product__item__price">$32.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-2.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Cookies and Cream</a>
-                  </h6>
-                  <div className="product__item__price">$30.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-3.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Gluten Free Mini Dozen</a>
-                  </h6>
-                  <div className="product__item__price">$31.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-4.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Cookie Dough</a>
-                  </h6>
-                  <div className="product__item__price">$25.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-5.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Vanilla Salted Caramel</a>
-                  </h6>
-                  <div className="product__item__price">$05.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-6.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">German Chocolate</a>
-                  </h6>
-                  <div className="product__item__price">$14.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-7.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Dulce De Leche</a>
-                  </h6>
-                  <div className="product__item__price">$32.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-8.jpg" alt="" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Mississippi Mud</a>
-                  </h6>
-                  <div className="product__item__price">$08.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="container">
+          <div className="add-product">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/addProduct");
+              }}
+            >
+              Click to add product
+            </a>
           </div>
+          </div>
+    {products?.length ?  
+    <>
+      <section className="product spad">     
+          <div className="row">
+            {products.map((product) => (
+              <div key={product._id} className="col-lg-3 col-md-6 col-sm-6">
+                <div className="product__item">
+                  <div className="product__item__pic set-bg">
+                    <img
+                      src={`${image_url}/images/${product.image.filename}`}
+                      alt={product.dessertName}
+                    />
+                    <div className="product__label">
+                      <span>{product.dessertName}</span>
+                    </div>
+                  </div>
+                  <div className="product__item__text">
+                    <h6>
+                      <a href="#">{product.category}</a>
+                    </h6>
+                    <div className="product__item__price">
+                      Rs.{product.price}
+                    </div>
+                    <div className="cart_add">
+                      <a href="#">Add to cart</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          
         </div>
       </section>
+    </>:  
+    <div>No product</div>}
     </>
   );
 };
