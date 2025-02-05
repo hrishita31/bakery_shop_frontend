@@ -10,11 +10,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FormData from "form-data";
 import axios from "axios";
- import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 function AddProductPage() {
   const navigate = useNavigate();
-const url = import.meta.env.VITE_API_URL;
+  const url = import.meta.env.VITE_API_URL;
 
   const ProductSchema = Yup.object().shape({
     category: Yup.string().required("category is required"),
@@ -34,29 +34,27 @@ const url = import.meta.env.VITE_API_URL;
     },
     validationSchema: ProductSchema,
     onSubmit: async (values) => {
-        console.log(values, 4567)
-        let formData = new FormData();
-        // formData = {...values}
+      console.log(values, 4567);
+      let formData = new FormData();
+      // formData = {...values}
 
-        formData.append("category", values.category);
-        formData.append("product", values.product);
-        formData.append("image", values.image);
-        formData.append("price", values.price);
-        formData.append("rating", values.rating);
-        // console.log(formData, 123);
-     const token = Cookies.get('token');
-    const headers = { 'Authorization': `Bearer ${token}`  };
-       const data = await axios.post(`${url}/products/newProduct`, formData,{
-        headers
-       } )
-    
-    
-      if (data.statusText==="OK") {
+      formData.append("category", values.category);
+      formData.append("product", values.product);
+      formData.append("image", values.image);
+      formData.append("price", values.price);
+      formData.append("rating", values.rating);
+      // console.log(formData, 123);
+      const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+      const data = await axios.post(`${url}/products/newProduct`, formData, {
+        headers,
+      });
+
+      if (data.statusText === "OK") {
         toast.success("Successfully added new product");
-//const token = localStorage.getItem('token');
-const headers = {Authorization : `Bearer ${token}`};
-const detailsResult = await axios.get({headers:headers})
-console.log(detailsResult);
+        const headers = { Authorization: `Bearer ${token}` };
+        const detailsResult = await axios.get({ headers: headers });
+        console.log(detailsResult);
         navigate("/");
       } else {
         toast.error(data.message);
@@ -103,15 +101,16 @@ console.log(detailsResult);
               <div>{formik.errors.product}</div>
             ) : null}
 
-<label htmlFor="image">Upload image:</label>
+            <label htmlFor="image">Upload image:</label>
             <input
-            id="image"
-            name="image"
-            type="file"
-            onChange={(event) => {
-                formik.setFieldValue("image", event.currentTarget.files[0])
-                console.log(event.currentTarget.files[0])
-            }}/>
+              id="image"
+              name="image"
+              type="file"
+              onChange={(event) => {
+                formik.setFieldValue("image", event.currentTarget.files[0]);
+                console.log(event.currentTarget.files[0]);
+              }}
+            />
             {formik.touched.image && formik.errors.image ? (
               <div>{formik.errors.image}</div>
             ) : null}
@@ -129,7 +128,7 @@ console.log(detailsResult);
               <div>{formik.errors.price}</div>
             ) : null}
 
-<label htmlFor="rating">Rating: </label>
+            <label htmlFor="rating">Rating: </label>
             <input
               id="rating"
               name="rating"
@@ -142,10 +141,7 @@ console.log(detailsResult);
               <div>{formik.errors.price}</div>
             ) : null}
 
-
-
-            <input type = "submit" />
-
+            <input type="submit" />
           </form>
         </div>
       </div>
