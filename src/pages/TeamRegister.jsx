@@ -3,22 +3,24 @@ import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-//import axios from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import postData from "../requests/postRequest";
+// import postData from "../requests/postRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FormData from "form-data";
 // import { ImageInput } from "formik-file-and-image-input/lib";
 
 function TeamRegisterPage() {
   const navigate = useNavigate();
+  const url = import.meta.env.VITE_API_URL;
 
   const TeamSchema = Yup.object().shape({
     name: Yup.string().required("username is required"),
     phoneNumber: Yup.string().required("password is required"),
     email: Yup.string().required("email is required"),
     jobRole: Yup.string().required("job role is required"),
-    photo: Yup.mixed().required("Photo is required"),
+    image: Yup.mixed().required("Photo is required"),
   });
 
   const formik = useFormik({
@@ -27,13 +29,25 @@ function TeamRegisterPage() {
       phoneNumber: "",
       email: "",
       jobRole: "",
-      photo: null,
+      image: null,
     },
     validationSchema: TeamSchema,
     onSubmit: async (values) => {
-      const data = await postData(values, "/teams/postTeamMember");
+
+      let formData = new FormData();
+
+      formData.append("name", values.name);
+      formData.append("phoneNumber", values.phoneNumber);
+      formData.append("email", values.email);
+      formData.append("jobRole", values.jobRole);
+      formData.append("image", values.image);
+
+      const data = await axios.post(`${url}/teams/postTeamMember`, formData)
+
+
+      // const data = await postData(values, "/teams/postTeamMember");
       console.log(data);
-      if (data.data.success) {
+      if (data.statusText === "OK") {
         toast.success("Registration successful");
 
         navigate("/");
@@ -94,7 +108,7 @@ function TeamRegisterPage() {
             ) : null}
 
             <div className="radio-group">
-            <label htmlFor="jobRole">Class Time:</label>
+            <label htmlFor="jobRole">Job Role preferred:</label>
             <div className="radio-option">
                       <input
                         id="jobRole"
@@ -130,16 +144,17 @@ function TeamRegisterPage() {
                     </div>
             </div>
 
-            <label htmlFor="photo">Upload photo:</label>
+            <label htmlFor="image">Upload photo:</label>
             <input
-            id="photo"
-            name="photo"
+            id="image"
+            name="image"
             type="file"
             onChange={(event) => {
-                formik.setFieldValue("photo", event.currentTarget.files[0])
-            }}/>
-            {formik.touched.photo && formik.errors.photo ? (
-              <div>{formik.errors.photo}</div>
+              formik.setFieldValue("image", event.currentTarget.files[0])
+              console.log(event.currentTarget.files[0], 'image')
+          }}/>
+            {formik.touched.image && formik.errors.image ? (
+              <div>{formik.errors.image}</div>
             ) : null}
 
             <input type="submit" />
