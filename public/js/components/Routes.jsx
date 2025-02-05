@@ -16,6 +16,7 @@ import BlogDetailsPage from "../../../src/pages/BlogDetails";
 import BlogPage from "../../../src/pages/Blog";
 import ContactPage from "../../../src/pages/Contact";
 import AddProductPage from "../../../src/pages/AddProduct";
+import ResetPasswordPage from "../../../src/pages/ResetPassword";
 // import Header from "./Header";
 // import Footer from "./Footer";
 
@@ -31,6 +32,7 @@ function AppRoutes() {
           <Route path="signUp" element={<SignUpPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="forgotPassword" element={<ForgotPasswordPage />} />
+          <Route path="resetPassword" element={<ResetPasswordPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="addProduct" element={<AddProductPage />} />
           <Route path="shop" element={<ShopPage />} />

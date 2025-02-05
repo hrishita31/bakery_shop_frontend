@@ -5,37 +5,33 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import patchData from "../requests/patchRequest";
+// import { useNavigate } from "react-router-dom";
+import postData from "../requests/postRequest";
 
 function ForgotPasswordPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const ForgotPasswordSchema = Yup.object().shape({
-    newPassword: Yup.string().required("password is required")
-    .min(8, "password must be 8 characters long")
-      .matches(/[0-9]/, "Must contain at least one digit")
-      .matches(/[A-Z]/, "Must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Must contain at least one lowercase letter"),
-    confirmPassword: Yup.string().required("new password is required"),
+    username: Yup.string().required("username is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       username: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
+    },  
     validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
-      const data = await patchData(values, "/users/forgotPwd");
-      console.log(data);
+      const data = await postData(values, "/users/getUser");
+      console.log(data, 9876);
+      // console.log(data, 123456);
       if (data.success) {
-        toast.success("Successfully updated the password");
+        
+        const email = data.data.result.email;
+        toast.success(`User found! Email sent to ${email || "the registered email id"} `);
 
-        navigate("/login");
+        // navigate("/");
       } else {
-        toast.error(data.message)
+        toast.error(data.message || "User not found, please enter correct username")
       }
     },
   });
@@ -67,30 +63,8 @@ function ForgotPasswordPage() {
             {formik.touched.username && formik.errors.username ? (
               <div>{formik.errors.username}</div>
             ) : null}
-            <label htmlFor="newPassword">Password</label>
-            <input
-              id="newPassword"
-              name="newPassword"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.newPassword}
-            />
-            {formik.touched.newPassword && formik.errors.newPassword ? (
-              <div>{formik.errors.newPassword}</div>
-            ) : null}
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="confirmPassword"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.confirmPassword}
-            />
-            {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div>{formik.errors.confirmPassword}</div>
-            ) : null}
+            
+            
 
             <input type="submit" />
           </form>

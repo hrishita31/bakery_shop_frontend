@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Popup from "reactjs-popup";
@@ -7,7 +7,7 @@ import "reactjs-popup/dist/index.css";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import postData from "../../requests/postRequest";
-import getData from "../../requests/getRequest";
+// import getData from "../../requests/getRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,15 +47,15 @@ export const Testimonial = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const CarouselRef = useRef();
 
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      const data = await getData("/testimony/getTestimonials");
-      if (data.success) {
-        setTestimonials(data.testimonials);
-      }
-    };
-    fetchTestimonials();
-  }, []);
+  // useEffect(() => {
+  //   const fetchTestimonials = async () => {
+  //     const data = await getData("/testimony/getTestimonials");
+  //     if (data.success) {
+  //       setTestimonials(data.testimonials);
+  //     }
+  //   };
+  //   fetchTestimonials();
+  // }, []);
 
   const formik = useFormik({
     initialValues: {
