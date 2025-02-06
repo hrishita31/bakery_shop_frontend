@@ -1182,8 +1182,8 @@ font-size: 15px;
 
 
 .testimonial__item {
-  background: #ffffff;
-  padding: 40px 45px 35px 50px;
+  background: azure;
+  padding: 40px 25px 35px 50px;
   position: relative;
 }
 .testimonial__item .rating {
@@ -1251,7 +1251,8 @@ font-size: 15px;
   align-items: center;
   margin-top: 3rem;
   overflow-y: auto;
-  height:500px;
+  height:300px;
+  overflow: scroll;
 }
 
 .testimonial-box {
@@ -1361,6 +1362,46 @@ font-size: 15px;
   margin: 0;
 }
 
+/* Rating */
+
+.rating{
+ font-size: 10vh;
+ cursor: pointer;
+}
+
+.one {
+  color: rgb(255, 0, 0);
+}
+ 
+.two {
+  color: rgb(255, 106, 0);
+}
+ 
+.three {
+  color: rgb(251, 255, 120);
+}
+ 
+.four {
+  color: rgb(255, 255, 0);
+}
+ 
+.five {
+  color: rgb(24, 159, 14);
+}
+
+.Container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 60vh;
+   font-size: 60px;
+}
+.Radio{
+   display: none;
+}
+.Rating{
+   cursor: pointer;
+}
 
 /*---------------------
   Instagram
