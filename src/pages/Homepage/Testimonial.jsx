@@ -1,61 +1,55 @@
-/* eslint-disable react/prop-types */
-import { useRef, useState } from "react";
-import Carousel from "react-multi-carousel";
+import { useState } from "react";
+// import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import postData from "../../requests/postRequest";
+// import postData from "../../requests/postRequest";
 // import getData from "../../requests/getRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
-const TestimonialCard = ({ authorName, location, rating, text, image }) => {
-  return (
-    <div className="testimonial-card">
-      <div className="testimonial-author">
-        <div className="testimonial-author-pic">
-          <img src={image} alt={authorName} />
-        </div>
-        <div className="testimonial-author-text">
-          <h5>{authorName.toUpperCase()}</h5>
-          <span>{location}</span>
-        </div>
-        <div className="testimonial-rating">
-          {Array.from({ length: 5 }, (_, index) => (
-            <span
-              key={index}
-              className={
-                index < Math.floor(rating)
-                  ? "icon_star"
-                  : index < rating
-                  ? "icon_star-half_alt"
-                  : "icon_star-empty"
-              }
-            ></span>
-          ))}
-        </div>
-      </div>
-      <p className="testimonial-text">{text}</p>
-    </div>
-  );
-};
+import ShowTestimony from "./DisplayTestimony";
+import RatingFunc from "./RatingComponent";
+
+// const TestimonialCard = ({ name, location, rating, text, image }) => {
+//   return (
+//     <div className="testimonial-card">
+//       <div className="testimonial-author">
+//         <div className="testimonial-author-pic">
+//           <img src={image} alt={name} />
+//         </div>
+//         <div className="testimonial-author-text">
+//           <h5>{name.toUpperCase()}</h5>
+//           <span>{location}</span>
+//         </div>
+//         <div className="testimonial-rating">
+//           {Array.from({ length: 5 }, (_, index) => (
+//             <span
+//               key={index}
+//               className={
+//                 index < Math.floor(rating)
+//                   ? "icon_star"
+//                   : index < rating
+//                   ? "icon_star-half_alt"
+//                   : "icon_star-empty"
+//               }
+//             ></span>
+//           ))}
+//         </div>
+//       </div>
+//       <p className="testimonial-text">{text}</p>
+//     </div>
+//   );
+// };
 
 export const Testimonial = () => {
-  const [testimonials, setTestimonials] = useState([]);
+  const [setTestimonials] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const CarouselRef = useRef();
-
-  // useEffect(() => {
-  //   const fetchTestimonials = async () => {
-  //     const data = await getData("/testimony/getTestimonials");
-  //     if (data.success) {
-  //       setTestimonials(data.testimonials);
-  //     }
-  //   };
-  //   fetchTestimonials();
-  // }, []);
+  // const CarouselRef = useRef();
+  const url = import.meta.env.VITE_API_URL;
 
   const formik = useFormik({
     initialValues: {
@@ -63,33 +57,40 @@ export const Testimonial = () => {
       location: "",
       rating: "",
       quote: "",
-      photo: null,
+      image: null,
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Name is required"),
       location: Yup.string().required("Location is required"),
       rating: Yup.string().required("Rating is required"),
       quote: Yup.string().required("Quote is required"),
-      photo: Yup.mixed().required("Photo is required"),
+      image: Yup.mixed().required("Image is required"),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        const formData = new FormData();
+        let formData = new FormData();
+
         formData.append("name", values.name);
         formData.append("location", values.location);
         formData.append("rating", values.rating);
         formData.append("quote", values.quote);
-        formData.append("photo", values.photo);
-  
-        const data = await postData(formData, "/testimony/postTestimony", {
-          headers: { "Content-Type": "multipart/form-data" }, // Ensure correct content type
-        });
-  
-        if (data.data.success) {
+        formData.append("image", values.image);
+
+        const data = await axios.post(
+          `${url}/testimony/postTestimony`,
+          formData
+        );
+
+        console.log(data);
+
+        if (data.statusText === "OK") {
           toast.success("Testimonial submitted successfully!");
-          setTestimonials((prev) => [...prev, { ...values, image: URL.createObjectURL(values.photo) }]);
+          setTestimonials((prev) => [
+            ...prev,
+            { ...values, image: URL.createObjectURL(values.image) },
+          ]);
           setIsPopupOpen(false);
-          resetForm(); // Clear form after success
+          resetForm();
         } else {
           toast.error(data.message);
         }
@@ -98,9 +99,10 @@ export const Testimonial = () => {
       }
     },
   });
-  
 
   return (
+
+    
     <section className="testimonial spad">
       <div className="container">
         <div className="row">
@@ -111,7 +113,8 @@ export const Testimonial = () => {
             </div>
           </div>
         </div>
-        <div className="row" style={{ width: "100%" }}>
+        <ShowTestimony/>
+        {/* <div className="row" style={{ width: "100%" }}>
           {testimonials.length > 0 && (
             <Carousel
               ref={CarouselRef}
@@ -140,11 +143,13 @@ export const Testimonial = () => {
               swipeable
             >
               {testimonials.map((testimonial, index) => (
-                <TestimonialCard key={index} {...testimonial} />
+                <ShowTestimony key={index} {...testimonial} />
               ))}
+              <ShowTestimony />
             </Carousel>
           )}
-        </div>
+          
+        </div> */}
         <Popup
           open={isPopupOpen}
           closeOnDocumentClick
@@ -159,7 +164,9 @@ export const Testimonial = () => {
                   id="name"
                   name="name"
                   type="text"
-                  {...formik.getFieldProps("name")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.name}
                 />
                 {formik.touched.name && formik.errors.name && (
                   <div>{formik.errors.name}</div>
@@ -170,44 +177,42 @@ export const Testimonial = () => {
                   id="location"
                   name="location"
                   type="text"
-                  {...formik.getFieldProps("location")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.location}
                 />
                 {formik.touched.location && formik.errors.location && (
                   <div>{formik.errors.location}</div>
                 )}
-
+              
                 <label htmlFor="rating">Rating</label>
-                <input
-                  id="rating"
-                  name="rating"
-                  type="text"
-                  {...formik.getFieldProps("rating")}
-                />
-                {formik.touched.rating && formik.errors.rating && (
-                  <div>{formik.errors.rating}</div>
-                )}
+                <RatingFunc />
+
 
                 <label htmlFor="quote">Quote</label>
                 <textarea
                   id="quote"
                   name="quote"
-                  {...formik.getFieldProps("quote")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.quote}
                 />
                 {formik.touched.quote && formik.errors.quote && (
                   <div>{formik.errors.quote}</div>
                 )}
 
-                <label htmlFor="photo">Upload photo:</label>
+                <label htmlFor="image">Upload image:</label>
                 <input
-                  id="photo"
-                  name="photo"
+                  id="image"
+                  name="image"
                   type="file"
-                  onChange={(event) =>
-                    formik.setFieldValue("photo", event.currentTarget.files[0])
-                  }
+                  onChange={(event) => {
+                    formik.setFieldValue("image", event.currentTarget.files[0]);
+                    console.log(event.currentTarget.files[0], "image");
+                  }}
                 />
-                {formik.touched.photo && formik.errors.photo && (
-                  <div>{formik.errors.photo}</div>
+                {formik.touched.image && formik.errors.image && (
+                  <div>{formik.errors.image}</div>
                 )}
 
                 <button type="submit">Submit</button>
@@ -222,5 +227,7 @@ export const Testimonial = () => {
     </section>
   );
 };
+
+
 
 export default Testimonial;
