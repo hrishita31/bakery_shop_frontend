@@ -19,11 +19,11 @@ export const ContactPage = () => {
               <div className="row d-flex justify-content-center">
                 <div className="col-lg-4 col-md-7">
                   <div className="map__inner">
-                    <h6>Colorado</h6>
+                    <h6>Ahmedabad</h6>
                     <ul>
-                      <li>1000 Lakepoint Dr, Frisco, CO 80443, USA</li>
+                      <li>Sahaj Apartments, Ahmedabad-380015, Gujarat, India</li>
                       <li>Sweetcake@support.com</li>
-                      <li>+1 800-786-1000</li>
+                      <li>+91 9876543211</li>
                     </ul>
                   </div>
                 </div>
@@ -31,7 +31,7 @@ export const ContactPage = () => {
             </div>
             <div className="map__iframe">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d10784.188505644011!2d19.053119335158936!3d47.48899529453826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1543907528304"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.7215501502537!2d72.51082477350796!3d23.033993915905317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e9b49eee80dd7%3A0xbefbfd7e023fb440!2s2GM7%2BGC3%2C%20Bodakdev%2C%20Ahmedabad%2C%20Gujarat%20380053!5e0!3m2!1sen!2sin!4v1738910332093!5m2!1sen!2sin"
                 height="300"
                 style={{ border: 0 }}
                 allowFullScreen
@@ -44,15 +44,15 @@ export const ContactPage = () => {
             <div className="row">
               <div className="col-lg-4 col-md-6 col-sm-6">
                 <div className="contact__address__item">
-                  <h6>san bernardino</h6>
+                  <h6>Mumbai</h6>
                   <ul>
                     <li>
                       <span className="icon_pin_alt"></span>
-                      <p>795 W 5th St, San Bernardino, CA 92410, USA</p>
+                      <p>Mumbai</p>
                     </li>
                     <li>
                       <span className="icon_headphones"></span>
-                      <p>+1 800-786-1000</p>
+                      <p>+91 9898989898</p>
                     </li>
                     <li>
                       <span className="icon_mail_alt"></span>
@@ -63,15 +63,15 @@ export const ContactPage = () => {
               </div>
               <div className="col-lg-4 col-md-6 col-sm-6">
                 <div className="contact__address__item">
-                  <h6>Los angeles</h6>
+                  <h6>Bangalore</h6>
                   <ul>
                     <li>
                       <span className="icon_pin_alt"></span>
-                      <p>639 S Spring St, Los Angeles, CA 90014, USA</p>
+                      <p>Bangalore</p>
                     </li>
                     <li>
                       <span className="icon_headphones"></span>
-                      <p>+1 213-612-3000</p>
+                      <p>+91 9797979797</p>
                     </li>
                     <li>
                       <span className="icon_mail_alt"></span>
@@ -82,15 +82,15 @@ export const ContactPage = () => {
               </div>
               <div className="col-lg-4 col-md-6 col-sm-6">
                 <div className="contact__address__item">
-                  <h6>san bernardino</h6>
+                  <h6>Hyderabad</h6>
                   <ul>
                     <li>
                       <span className="icon_pin_alt"></span>
-                      <p>1000 Lakepoint Dr, Frisco, CO 80443, USA</p>
+                      <p>Hyderabad</p>
                     </li>
                     <li>
                       <span className="icon_headphones"></span>
-                      <p>+1 800-786-1000</p>
+                      <p>+91 9090909090</p>
                     </li>
                     <li>
                       <span className="icon_mail_alt"></span>

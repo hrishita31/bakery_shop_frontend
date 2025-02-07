@@ -220,8 +220,9 @@ export const Testimonial = () => {
             </div>
           </div>
         </Popup>
-        <button onClick={() => setIsPopupOpen(true)}>
+        <button onClick={() => setIsPopupOpen(true)} className="add-testimony-button">
           Click to add your thoughts!
+          
         </button>
       </div>
     </section>
