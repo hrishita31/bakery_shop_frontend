@@ -119,12 +119,14 @@ ol {
   margin-bottom: 10px;
 }
 .section-title h2 {
+  /* text-align: center; */
   font-size: 46px;
   color: #111111;
   line-height: 60px;
   font-weight: 700;
   font-style: italic;
   font-family: "Playfair Display", serif;
+  
 }
 
 .set-bg {
@@ -219,7 +221,7 @@ body {
 
 .login-box input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -272,7 +274,7 @@ body {
 
 .signUp-box input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -332,7 +334,7 @@ font-size: 15px;
 
 .forgotPwd-box input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -823,7 +825,7 @@ font-size: 15px;
 
 .add-product-box input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -935,14 +937,15 @@ font-size: 15px;
   height: 620px;
 }
 .class__form form input {
-  height: 29px;
+  height: 35px;
   width: 100%;
   padding-left: 20px;
   font-size: 15px;
   color: #444444;
   background: #ffffff;
   border: none;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 .class__form form input::-webkit-input-placeholder {
   color: #444444;
@@ -1026,13 +1029,19 @@ font-size: 15px;
 .radio-option {
   display: flex;
   align-items: left; /* Align text and radio button vertically */
-  margin-bottom: auto; /* Add some spacing between options */
+  margin-bottom: -5px; /* Add some spacing between options */
   white-space: nowrap;
 }
 
 .radio-option input[type="radio"] {
-  margin-right: 8px; /* Add space between radio button and label */
+  margin-right: 5px; /* Add space between radio button and label */
+  margin-top: -5px;
+  vertical-align: middle;
 }
+
+/* input[type="radio"] {
+  
+} */
 
 
 /*---------------------
@@ -1052,7 +1061,7 @@ font-size: 15px;
 }
 
 .team__item {
-  height: 360px;
+  height: 200px;
   position: relative;
   overflow: hidden;
   margin-bottom: 30px;
@@ -1182,7 +1191,7 @@ font-size: 15px;
 
 
 .testimonial__item {
-  background: azure;
+  background: white;
   padding: 40px 25px 35px 50px;
   position: relative;
 }
@@ -1221,6 +1230,7 @@ font-size: 15px;
 .testimonial__author__text {
   overflow: hidden;
   padding-top: 12px;
+  padding-right:90px;
 }
 .testimonial__author__text h5 {
   color: #111111;
@@ -1231,6 +1241,18 @@ font-size: 15px;
 .testimonial__author__text span {
   color: #444444;
   font-size: 14px;
+}
+
+.add-testimony-button{
+    margin-top:30px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.5em 1.0em;
+    font-size: 1em;
+    font-weight: 500;
+    /* color:blue; */
+    font-family: inherit;
+    cursor: pointer;
 }
 
 /* Testimonial Card Container */
@@ -1529,7 +1551,7 @@ font-size: 15px;
 }
 
 .product__item__pic {
-  height: 270px;
+  height: 170px;
   position: relative;
   background-position: center;
 }
@@ -1850,7 +1872,7 @@ font-size: 15px;
 
 .about__video {
   width: 100%;
-  height: 750px;
+  height: 400px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2715,7 +2737,7 @@ font-size: 15px;
 .hero__text {
   text-align: center;
   background: #fff;
-  padding: 65px 70px 70px;
+  padding: 5px 70px 120px;
   position: relative;
 
   display: flex;
@@ -2750,7 +2772,7 @@ font-size: 15px;
 
 .hero__text .primary-btn {
   position: relative;
-  top: 100px;
+  top: 60px;
   opacity: 1;
   transition: all 0.6s;
   margin-top: 20px;

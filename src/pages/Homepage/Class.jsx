@@ -46,7 +46,8 @@ export const Class = () => {
                   </h2>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
-                  <label htmlFor="name">Name</label>
+                  <div>
+                  <label htmlFor="name">Name:</label>
                   <input
                     id="name"
                     name="name"
@@ -58,8 +59,10 @@ export const Class = () => {
                   {formik.touched.name && formik.errors.name ? (
                     <div>{formik.errors.name}</div>
                   ) : null}
+                  </div>
 
-                  <label htmlFor="phoneNumber">Phone Number</label>
+                  <div>
+                  <label htmlFor="phoneNumber">Phone Number:</label>
                   <input
                     id="phoneNumber"
                     name="phoneNumber"
@@ -71,9 +74,11 @@ export const Class = () => {
                   {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
                     <div>{formik.errors.phoneNumber}</div>
                   ) : null}
+                  </div>
 
+                  <div>
                   <div className="radio-group">
-                    <label htmlFor="classTime">Class Time</label>
+                    <label htmlFor="classTime">Class Time:</label>
                     <div className="radio-option">
                       <input
                         id="classTime"
@@ -111,9 +116,11 @@ export const Class = () => {
                   {formik.touched.classTime && formik.errors.classTime ? (
                     <div>{formik.errors.classTime}</div>
                   ) : null}
+                  </div>
 
+                  <div>
                   <div className="radio-group">
-                    <label htmlFor="branch">Branch</label>
+                    <label htmlFor="branch">Branch:</label>
                     <div className="radio-option">
                       <input
                         id="branch"
@@ -140,6 +147,7 @@ export const Class = () => {
                   {formik.touched.branch && formik.errors.branch ? (
                     <div>{formik.errors.branch}</div>
                   ) : null}
+                  </div>
 
                   <input type="submit" />
                 </form>
