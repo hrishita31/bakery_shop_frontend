@@ -8,6 +8,7 @@ const getData = async (endpoint) => {
     // const result = response.data;
     //     console.log(result, 345);
     // console.log(response, 678);
+    console.log(response, 2345)
     if (
       response.status === 200 ||
       response.status === 201 ||
