@@ -2,12 +2,12 @@ import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
 
-const patchData = async (values, endpoint) => {
+const patchData = async (values, endpoint, headers) => {
   console.log({...values}, 987690)
   try {
     const response = await axios.patch(`${url}${endpoint}`, {
       ...values,
-    });
+    }, headers);
     if (
       response.status === 200 ||
       response.status === 201 ||

@@ -2,9 +2,9 @@ import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
 
-const getData = async (endpoint) => {
+const getData = async (endpoint, headers) => {
   try {
-    const response = await axios.get(`${url}${endpoint}`);
+    const response = await axios.get(`${url}${endpoint}`, headers);
     // const result = response.data;
     //     console.log(result, 345);
     // console.log(response, 678);

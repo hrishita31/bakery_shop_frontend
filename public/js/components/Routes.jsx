@@ -17,8 +17,9 @@ import BlogPage from "../../../src/pages/Blog";
 import ContactPage from "../../../src/pages/Contact";
 import AddProductPage from "../../../src/pages/AddProduct";
 import ResetPasswordPage from "../../../src/pages/ResetPassword";
-// import Header from "./Header";
-// import Footer from "./Footer";
+import ViewProfilePage from "../../../src/pages/ViewProfilePage";
+import AddAddressPage from "../../../src/pages/AddAddressPage";
+import ViewAllAddressPage from "../../../src/pages/ViewAllAddressPage";
 
 function AppRoutes() {
   return (
@@ -45,6 +46,9 @@ function AppRoutes() {
           <Route path="blogDetails" element={<BlogDetailsPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="viewDetails" element={<ViewProfilePage />} />
+          <Route path="addEditAddress" element={<AddAddressPage />} />
+          <Route path="viewAllAddress" element={<ViewAllAddressPage />} />
         </Routes>
       </BrowserRouter>
       {/* <Footer /> */}

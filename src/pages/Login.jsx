@@ -26,14 +26,21 @@ function LoginPage() {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/userLogin");
-      // console.log(data, 123456);
+      console.log(data, 123456);
       if (data.data.success) {
         toast.success("Login successful");
-        const token = data.data.result;
-Cookies.set('token', token, { expires: 7, secure: true });
+        const token = data.data.result.token;
+        const details = data.data.result.details;
+
+        Cookies.set("token", token, { expires: 7, secure: true });
+        Cookies.set("details", JSON.stringify(details), {
+          expires: 7,
+          secure: true,
+        });
+
         navigate("/");
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
         // toast.error("Login unsuccessful. Please try again.")
       }
     },
@@ -41,7 +48,6 @@ Cookies.set('token', token, { expires: 7, secure: true });
 
   return (
     <>
-    
       {/* Header section */}
       <Header />
 
@@ -81,16 +87,16 @@ Cookies.set('token', token, { expires: 7, secure: true });
 
             <input type="submit" />
             <div className="forgot-pwd">
-            <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/forgotPassword");
-                      }}
-                    >
-                      forgot password
-                    </a>
-                    </div>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/forgotPassword");
+                }}
+              >
+                forgot password
+              </a>
+            </div>
           </form>
         </div>
       </div>

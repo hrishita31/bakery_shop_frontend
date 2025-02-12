@@ -20,7 +20,7 @@ export const Products = () => {
   }, []);
 
   useEffect(() => {
-    console.log(products);
+    console.log(products, 1234);
   }, [products]);
 
   return (

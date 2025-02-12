@@ -1,13 +1,12 @@
 import axios from "axios";
 
 const url = import.meta.env.VITE_API_URL;
-// axios.defaults.withCredentials = true;
-const postData = async (values, endpoint) => {
+const postData = async (values, endpoint, headers) => {
+  
   try {
-    // const headers = { 'Authorization': 'Bearer my-token' };
     const response = await axios.post(`${url}${endpoint}`, {
       ...values
-    });
+    }, headers);
 
     console.log(response, 890)
     
