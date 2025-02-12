@@ -1,8 +1,59 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const HeaderSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const token = Cookies.get("token");
+  // console.log(token);
+
+  let initials;
+
+  if(token){
+  const firstname = JSON.parse(Cookies.get("details")).firstname;
+  const lastname = JSON.parse(Cookies.get("details")).lastname;
+
+  const initialFirstname = firstname.substring(0, 1);
+  const initialLastname = lastname.substring(0, 1);
+
+  initials = initialFirstname+initialLastname;
+  }
+  // console.log(initials);
+
+  // const HeaderLeftSection = () => {
+  //   if (token) {
+  //     <label>
+       
+  //     </label>
+  //   } else {
+  //     <ul>
+  //       <li>
+  //         <a
+  //           href="#"
+  //           onClick={(e) => {
+  //             e.preventDefault();
+  //             navigate("signUp");
+  //           }}
+  //         >
+  //           Sign up
+  //         </a>
+  //       </li>
+
+  //       <li>
+  //         <a
+  //           href="#"
+  //           onClick={(e) => {
+  //             e.preventDefault();
+  //             navigate("login");
+  //           }}
+  //         >
+  //           Login
+  //         </a>
+  //       </li>
+  //     </ul>
+  //   }
+  // };
 
   const isActive = (path) => location.pathname === path;
   return (
@@ -14,6 +65,8 @@ export const HeaderSection = () => {
               <div className="col-lg-12">
                 <div className="header__top__inner">
                   <div className="header__top__left">
+                    {/* <HeaderLeftSection /> */}
+                    {token ? "" : 
                     <ul>
                       <li>
                         <a
@@ -39,10 +92,10 @@ export const HeaderSection = () => {
                         </a>
                       </li>
                     </ul>
+}
                   </div>
 
                   <div className="header__logo">
-                    {/* <a href="cake_shop/src/pages/HomePage.jsx"/> */}
                     <a
                       href="#"
                       onClick={(e) => {
@@ -88,7 +141,6 @@ export const HeaderSection = () => {
               <nav className="header__menu mobile-menu">
                 <ul>
                   <li className={isActive("/") ? "active" : ""}>
-                    {/* <a href="cake_shop/src/pages/HomePage.jsx">Home</a> */}
                     <a
                       href="#"
                       onClick={(e) => {
@@ -109,11 +161,8 @@ export const HeaderSection = () => {
                     >
                       About
                     </a>
-
-                    {/* <a href="cake_shop/src/pages/AboutPage.jsx">About</a> */}
                   </li>
                   <li className={isActive("/shop") ? "active" : ""}>
-                    {/* <a href="cake_shop/src/pages/ShopPage.jsx">Shop</a> */}
                     <a
                       href="#"
                       onClick={(e) => {
@@ -217,6 +266,44 @@ export const HeaderSection = () => {
                     >
                       Contact
                     </a>
+                  </li>
+
+                  <li
+                    className={
+                      isActive("/logout" | "/viewProfile" | "/editAddress")
+                        ? "active"
+                        : ""
+                    }
+                  >
+                  {/* <a href="#">Details</a> */}
+                  <a href="#">{token ? initials: "Details"}</a>
+                    <ul className="dropdown">
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate("/viewDetails");
+                          }}
+                        >
+                          View profile
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            Cookies.remove("token");
+                            Cookies.remove("details");
+                            e.preventDefault();
+
+                            //function for navigate to delete the stored token
+                          }}
+                        >
+                          Logout
+                        </a>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </nav>

@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.30.0",
     "axios": "^1.7.9",
+    "country-state-city": "^3.2.1",
     "form-data": "^4.0.1",
     "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
