@@ -30,7 +30,7 @@ function ViewAllAddressPage() {
         {
           params: { username },
           headers,
-        },
+        }
         // {
         //   headers,
         // }
@@ -119,7 +119,19 @@ function ViewAllAddressPage() {
                   </div>
                 ))}
               </div>
+              <div className="add-address-btn">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/addEditAddress");
+                }}
+              >
+                Add new address
+              </a>
             </div>
+            </div>
+            
           </div>
         </>
       ) : (

@@ -2,13 +2,63 @@ import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import Cookies from "js-cookie";
-import { useNavigate, useLocation } from "react-router-dom";
+import { IconUserPlus } from "@tabler/icons-react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import Popup from "reactjs-popup";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function ViewProfilePage() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const username = JSON.parse(Cookies.get("details")).usrname;
+  const url = import.meta.env.VITE_API_URL;
 
-  const isActive = (path) => location.pathname === path;
+  const [profilePic, setProfilePic] = useState("");
+  const image_url = import.meta.env.VITE_IMAGE_URL;
+
+  useEffect(() => {
+    axios
+      .get(`${url}/users/displayProfilePicture?username=${username}`)
+      .then((res) => {
+        console.log(res, "res"), console.log(res.data.result, 899990);
+        setProfilePic(res.data.result);
+      })
+      .catch(() => toast.error("Failed to fetch profile"));
+  }, []);
+
+  useEffect(() => {
+    // console.log(profilePic, 124);
+  }, [profilePic]);
+
+  console.log(profilePic.image, 5654);
+
+  const handleUpload = async (event) => {
+    if (!event.target.files[0]) {
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("image", event.target.files[0]);
+    console.log(formData, 9009);
+
+    try {
+      const response = await axios.patch(
+        `${url}/users/addProfilePicture?username=${username}`,
+        formData
+      );
+
+      console.log(response, 789);
+      if (response.status === 200) {
+        window.location.reload();
+
+        toast.success("Profile picture updated successfully!");
+      } else {
+        toast.error(response.data.message || "Something went wrong!");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -21,56 +71,39 @@ function ViewProfilePage() {
       {/* View details section */}
       <div className="details-container">
         <div className="profile-box">
-          <div className="details-info">
-            <label>Firstname:</label>
-            <span>{JSON.parse(Cookies.get("details")).firstname}</span>
+          <div className="profile-container">
+            <div className="image-container">
+              <label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  hidden
+                  onChange={handleUpload}
+                />
+                {profilePic.image ? (
+                  <img
+                    src={`${image_url}/images/user/${profilePic.image.filename}`}
+                    alt="profile"
+                  />
+                ) : (
+                  <IconUserPlus size={200} />
+                )}
+              </label>
+            </div>
+            <div className="details-info">
+              <label>
+                {JSON.parse(Cookies.get("details")).firstname}{" "}
+                {JSON.parse(Cookies.get("details")).lastname}
+              </label>
 
-            <label>Lastname:</label>
-            <span>{JSON.parse(Cookies.get("details")).lastname}</span>
+              <label>Username</label>
+              <span>{JSON.parse(Cookies.get("details")).usrname}</span>
 
-            <label>Username:</label>
-            <span>{JSON.parse(Cookies.get("details")).usrname}</span>
-
-            <label>Email:</label>
-            <span>{JSON.parse(Cookies.get("details")).email}</span>
-
-            <label>Address:</label>
+              <label>Email</label>
+              <span>{JSON.parse(Cookies.get("details")).email}</span>
+            </div>
           </div>
-
-          <li
-            className={
-              isActive("/addEditAddress" | "/allAddresses" | "/deleteAddress")
-                ? "active"
-                : ""
-            }
-          >
-            <a>Address</a>
-            <ul className="dropdown">
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/addEditAddress");
-                  }}
-                >
-                  Add address
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/viewAllAddress");
-                  }}
-                >
-                  View all addresses
-                </a>
-              </li>
-            </ul>
-          </li>
         </div>
       </div>
 
