@@ -293,11 +293,22 @@ export const HeaderSection = () => {
                         <a
                           href="#"
                           onClick={(e) => {
+                            e.preventDefault();
+                            navigate("/viewAllAddress");
+                          }}
+                        >
+                          View address details
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
                             Cookies.remove("token");
                             Cookies.remove("details");
                             e.preventDefault();
 
-                            //function for navigate to delete the stored token
+                            navigate("/login")
                           }}
                         >
                           Logout
