@@ -35,7 +35,6 @@ function ViewAllAddressPage() {
         //   headers,
         // }
       );
-      console.log("saved address: ", response);
       setAddress(response.data.result);
     } catch (error) {
       toast.error("Failed to fetch address: ", error.message);

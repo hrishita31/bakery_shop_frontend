@@ -1,42 +1,16 @@
+// import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import { IconShoppingCart } from "@tabler/icons-react";
+
 export const Menu = () => {
+  // const navigate = useNavigate();
+
   return (
     <>
       <div className="offcanvas-menu-overlay"></div>
       <div className="offcanvas-menu-wrapper">
-        <div className="offcanvas__cart">
-          <div className="offcanvas__cart__links">
-            <a href="#" className="search-switch">
-              <img src="img/icon/search.png" alt="" />
-            </a>
-            <a href="#">
-              <img src="img/icon/heart.png" alt="" />
-            </a>
-          </div>
-
-          <div className="offcanvas__cart__item">
-            <a href="#">
-              <img src="img/icon/cart.png" alt="" />
-              <span>0</span>
-            </a>
-            <div className="cart__price">
-              Cart:<span>$0.00</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="offcanvas__logo"></div>
-
-        <div id="mobile-menu-wrap"></div>
-        <div className="offcanvas__option">
-          <ul>
-            
-            
-            <li>
-              <a href="#">Sign in</a>{" "}
-              <span className="arrow_carrot-down"></span>
-            </li>
-          </ul>
-        </div>
+        
+        
       </div>
     </>
   );

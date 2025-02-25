@@ -20,17 +20,13 @@ function ViewProfilePage() {
     axios
       .get(`${url}/users/displayProfilePicture?username=${username}`)
       .then((res) => {
-        console.log(res, "res"), console.log(res.data.result, 899990);
         setProfilePic(res.data.result);
       })
       .catch(() => toast.error("Failed to fetch profile"));
   }, []);
 
   useEffect(() => {
-    // console.log(profilePic, 124);
   }, [profilePic]);
-
-  console.log(profilePic.image, 5654);
 
   const handleUpload = async (event) => {
     if (!event.target.files[0]) {
@@ -39,15 +35,11 @@ function ViewProfilePage() {
 
     let formData = new FormData();
     formData.append("image", event.target.files[0]);
-    console.log(formData, 9009);
-
     try {
       const response = await axios.patch(
         `${url}/users/addProfilePicture?username=${username}`,
         formData
       );
-
-      console.log(response, 789);
       if (response.status === 200) {
         window.location.reload();
 

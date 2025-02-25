@@ -43,10 +43,6 @@ function TeamRegisterPage() {
       formData.append("image", values.image);
 
       const data = await axios.post(`${url}/teams/postTeamMember`, formData)
-
-
-      // const data = await postData(values, "/teams/postTeamMember");
-      console.log(data);
       if (data.statusText === "OK") {
         toast.success("Registration successful");
 
@@ -151,7 +147,6 @@ function TeamRegisterPage() {
             type="file"
             onChange={(event) => {
               formik.setFieldValue("image", event.currentTarget.files[0])
-              console.log(event.currentTarget.files[0], 'image')
           }}/>
             {formik.touched.image && formik.errors.image ? (
               <div>{formik.errors.image}</div>

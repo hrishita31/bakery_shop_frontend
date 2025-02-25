@@ -20,10 +20,7 @@ export const Team = () => {
   }, []);
 
   useEffect(() => {
-    console.log(team);
   }, [team]);
-
-  console.log(team, "team");
 
   return (
     <>

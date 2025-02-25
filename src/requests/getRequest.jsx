@@ -5,10 +5,6 @@ const url = import.meta.env.VITE_API_URL;
 const getData = async (endpoint, headers) => {
   try {
     const response = await axios.get(`${url}${endpoint}`, headers);
-    // const result = response.data;
-    //     console.log(result, 345);
-    // console.log(response, 678);
-    console.log(response, 2345)
     if (
       response.status === 200 ||
       response.status === 201 ||

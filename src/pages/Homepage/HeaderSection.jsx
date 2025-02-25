@@ -1,12 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { checkoutCart } from "../../react-redux/cartSlice";
 
 export const HeaderSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const dispatch = useDispatch();
   const token = Cookies.get("token");
-  // console.log(token);
+  const cart = useSelector((state) => state.cart);
 
   let initials;
 
@@ -19,42 +21,6 @@ export const HeaderSection = () => {
 
   initials = initialFirstname+initialLastname;
   }
-  // console.log(initials);
-
-  // const HeaderLeftSection = () => {
-  //   if (token) {
-  //     <label>
-       
-  //     </label>
-  //   } else {
-  //     <ul>
-  //       <li>
-  //         <a
-  //           href="#"
-  //           onClick={(e) => {
-  //             e.preventDefault();
-  //             navigate("signUp");
-  //           }}
-  //         >
-  //           Sign up
-  //         </a>
-  //       </li>
-
-  //       <li>
-  //         <a
-  //           href="#"
-  //           onClick={(e) => {
-  //             e.preventDefault();
-  //             navigate("login");
-  //           }}
-  //         >
-  //           Login
-  //         </a>
-  //       </li>
-  //     </ul>
-  //   }
-  // };
-
   const isActive = (path) => location.pathname === path;
   return (
     <>
@@ -117,13 +83,14 @@ export const HeaderSection = () => {
                       </a>
                     </div>
                     <div className="header__top__right__cart">
-                      <a href="#">
+                      <a href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/shoppingCart");
+                      }}>
                         <img src="img/icon/cart.png" alt="" />
-                        <span>0</span>
+                        <span>{cart.length}</span>
                       </a>
-                      <div className="cart__price">
-                        Cart:<span>$0.00</span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -193,7 +160,7 @@ export const HeaderSection = () => {
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/shoppingcart");
+                            navigate("/shoppingCart");
                           }}
                         >
                           Shopping Cart
@@ -307,6 +274,7 @@ export const HeaderSection = () => {
                             Cookies.remove("token");
                             Cookies.remove("details");
                             e.preventDefault();
+                            dispatch(checkoutCart(cart));
 
                             navigate("/login")
                           }}

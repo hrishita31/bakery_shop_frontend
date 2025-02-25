@@ -22,7 +22,6 @@ export const Class = () => {
     validationSchema: ClassSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/classes/classRegistration");
-      console.log(data);
       if (data.data.success) {
         toast.success("Registration successful");
       } else {

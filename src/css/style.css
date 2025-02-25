@@ -1544,7 +1544,7 @@ font-size: 15px;
   opacity: 0;
   visibility: hidden;
 }
-.product__item:hover .product__item__text .cart_add {
+.product__item:hover .product__item__text {
   opacity: 1;
   visibility: visible;
   bottom: -4px;
@@ -1589,15 +1589,20 @@ font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
 }
-.product__item__text .product__item__price {
+
+.product__item__price{
+  
+}
+
+/* .product__item__text .product__item__price {
   color: #111111;
   font-weight: 600;
   font-size: 16px;
   -webkit-transition: all, 0.3s;
   -o-transition: all, 0.3s;
   transition: all, 0.3s;
-}
-.product__item__text .cart_add {
+} */
+/* .product__item__text .cart_add {
   position: absolute;
   left: 0;
   bottom: -20px;
@@ -1615,7 +1620,7 @@ font-size: 15px;
   display: inline-block;
   border-bottom: 2px solid #f08632;
   padding-bottom: 4px;
-}
+} */
 
 /*---------------------
   Footer
@@ -2468,6 +2473,23 @@ font-size: 15px;
 /*---------------------
   Shopping Cart
 -----------------------*/
+
+.table__contents{
+  display: flex;
+}
+
+.product__table{
+  width:300px;
+}
+
+.quantity__table{
+  width: 200px;
+}
+
+.total_table{
+  width: 120px;
+}
+
 .shopping__cart__table {
   margin-bottom: 30px;
 }
@@ -2483,6 +2505,7 @@ font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
   padding-bottom: 25px;
+  padding-left: 60px;
 }
 .shopping__cart__table table tbody tr {
   border-bottom: 1px solid #f2f2f2;
@@ -2490,17 +2513,22 @@ font-size: 15px;
 .shopping__cart__table table tbody tr td {
   padding-bottom: 30px;
   padding-top: 30px;
+  /* position: relative;  */
+  /* bottom: 60px; */
 }
 .shopping__cart__table table tbody tr td.product__cart__item {
-  width: 400px;
+  width: 340px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic {
   float: left;
   margin-right: 30px;
+  display: flex;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__text {
   overflow: hidden;
   padding-top: 21px;
+  display: flex;
+  width: 195px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__text h6 {
   color: #111111;
@@ -2516,10 +2544,42 @@ font-size: 15px;
 }
 .shopping__cart__table table tbody tr td.quantity__item {
   width: 175px;
+  position: relative;
+  bottom: 60px;
 }
+.shopping__cart__table table tbody tr td.quantity__item .quantity{
+  
+  display: flex;
+}
+
+.product__item__details{
+  display: flex;
+  flex-direction: column;
+  width: 233px;
+}
+
+.shopping__cart__table table tbody tr td.quantity__item .quantity .decrease__quantity {
+  float :left;
+  width: 30%;
+  border-top:solid;
+  border-left: solid;
+  border-bottom: solid;
+}
+
 .shopping__cart__table table tbody tr td.quantity__item .quantity .pro-qty {
-  width: 90px;
+  float: left;
+  width: 30%;
+  border-style:solid;
 }
+
+.shopping__cart__table table tbody tr td.quantity__item .quantity .increase__quantity {
+  float : right;
+  width: 30%;
+  border-top:solid;
+  border-right:solid;
+  border-bottom: solid;
+}
+
 .shopping__cart__table table tbody tr td.quantity__item .quantity .pro-qty input {
   width: 65px;
   border: none;
@@ -2540,7 +2600,15 @@ font-size: 15px;
   font-size: 16px;
   font-weight: 600;
   width: 140px;
+  position: relative;
+  bottom: 60px;
 }
+
+.shopping__cart__table table tbody tr td.cart__close {
+  position: relative;
+  bottom: 60px;
+}
+
 .shopping__cart__table table tbody tr td.cart__close span {
   font-size: 18px;
   display: inline-block;
@@ -2628,6 +2696,8 @@ font-size: 15px;
 .cart__total {
   background: #fdf3ea;
   padding: 35px 40px 40px;
+  position: sticky;
+  top:50px;
 }
 .cart__total h6 {
   color: #111111;
@@ -4520,9 +4590,9 @@ font-size: 15px;
     width: auto;
   }
 
-  .shopping__cart__table table tbody tr td.cart__price {
+  /* .shopping__cart__table table tbody tr td.cart__price {
     width: auto;
-  }
+  } */
 
   .wishlist__cart__table {
     overflow-x: auto;
@@ -4540,6 +4610,8 @@ font-size: 15px;
   .wishlist__cart__table table tbody tr td.quantity__item {
     width: auto;
   }
+
+
 
   .wishlist__cart__table table tbody tr td.cart__price {
     width: auto;
