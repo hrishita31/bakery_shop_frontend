@@ -15,7 +15,7 @@ export const Categories = () => {
         params: { category },
       });
       console.log(data, 345);
-      console.log("Desserts present:" ,data.result)
+
     } catch (error) {
       toast.error(`Error fetching the category: ${category}. ${error.message}`);
     }

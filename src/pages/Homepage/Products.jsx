@@ -3,25 +3,42 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import {AddToCart} from "./AddToCart"
+import { addToCart } from "../../react-redux/cartSlice";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "./AddToCart";
 
 export const Products = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const url = import.meta.env.VITE_API_URL;
   const image_url = import.meta.env.VITE_IMAGE_URL;
+  const dispatch = useDispatch();
+
   useEffect(() => {
     axios
       .get(`${url}/products/displayProduct`)
       .then((res) => {
-        console.log(res, "res");
         setProducts(res.data.result);
       })
       .catch(() => toast.error("Failed to fetch poducts"));
   }, []);
 
   useEffect(() => {
-    console.log(products, 1234);
   }, [products]);
+
+  const addCart = (productId, dessertName, price, image, productDetails, quantity = 1) => {
+    dispatch(
+      addToCart({
+        productId,
+        dessertName,
+        price,
+        image,
+        productDetails : productDetails || [],
+        quantity,
+      })
+    );
+  };
 
   return (
     <>
@@ -62,7 +79,19 @@ export const Products = () => {
                         Rs.{product.price}
                       </div>
                       <div className="cart_add">
-                        <a href="#">Add to cart</a>
+                        <button
+                          onClick={() => {
+                            addItemToCart(product._id);
+                            addCart(
+                              product._id,
+                              product.dessertName,
+                              product.price,
+                              product.image.filename
+                            );
+                          }}
+                        >
+                          Add To Cart
+                        </button>
                       </div>
                     </div>
                   </div>

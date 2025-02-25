@@ -22,8 +22,6 @@ function ForgotPasswordPage() {
     validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/getUser");
-      console.log(data, 9876);
-      // console.log(data, 123456);
       if (data.success) {
         
         const email = data.data.result.email;

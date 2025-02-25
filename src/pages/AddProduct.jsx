@@ -34,16 +34,14 @@ function AddProductPage() {
     },
     validationSchema: ProductSchema,
     onSubmit: async (values) => {
-      console.log(values, 4567);
       let formData = new FormData();
-      // formData = {...values}
 
       formData.append("category", values.category);
       formData.append("product", values.product);
       formData.append("image", values.image);
       formData.append("price", values.price);
       formData.append("rating", values.rating);
-      // console.log(formData, 123);
+      
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
       const data = await axios.post(`${url}/products/newProduct`, formData, {
@@ -108,7 +106,6 @@ function AddProductPage() {
               type="file"
               onChange={(event) => {
                 formik.setFieldValue("image", event.currentTarget.files[0]);
-                console.log(event.currentTarget.files[0]);
               }}
             />
             {formik.touched.image && formik.errors.image ? (

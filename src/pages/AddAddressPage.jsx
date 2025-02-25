@@ -41,7 +41,6 @@ function AddAddressPage() {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values, 6789);
     const token = Cookies.get("token");
     const headers = { Authorization: `Bearer ${token}` };
     let response;
@@ -124,9 +123,6 @@ function AddAddressPage() {
         state: resultData.state,
         city: resultData.city,
       });
-
-      console.log(formik, 123);
-
       setSelectedCountry(resultData.country);
 
       setStates(State.getStatesOfCountry(resultData.country));

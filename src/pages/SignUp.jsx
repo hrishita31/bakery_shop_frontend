@@ -74,7 +74,6 @@ function SignUpPage() {
       formData.append("confirmPassword", values.confirmPassword);
 
       const data = await axios.post(`${url}/users/newUser`, formData);
-      console.log(data, 344);
 
       // const data = await postData(values, "/users/newUser");
       if (data.data.success) {
@@ -188,7 +187,6 @@ function SignUpPage() {
               type="file"
               onChange={(event) => {
                 formik.setFieldValue("image", event.currentTarget.files[0]);
-                console.log(event.currentTarget.files[0], "image target");
               }}
             />
             {formik.errors.image ? <div>{formik.errors.image}</div> : null}

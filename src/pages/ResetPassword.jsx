@@ -42,10 +42,7 @@ function ResetPasswordPage() {
       }
       
       const finalData = { ...values, token:token};
-      console.log(finalData, 67);
       const data = await patchData(finalData, "/users/resetPassword");
-
-      console.log(data, 123);
       if (data.success) {
         toast.success("Successfully updated the password");
 
