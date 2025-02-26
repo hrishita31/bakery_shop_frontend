@@ -6,13 +6,13 @@ import Cookies from "js-cookie";
 
 const url = import.meta.env.VITE_API_URL;
 
-const username = JSON.parse(Cookies.get("details")).usrname;
-
 export const checkoutCart = createAsyncThunk(
   "products/checkout",
   async (cartItems, { rejectWithValue }) => {
+    const username = JSON.parse(Cookies.get("details")).usrname;
     const updatedCart = [{username: username}, ...cartItems]
     console.log(updatedCart, "cart items");
+    
     try {
       const response = await axios.post(`${url}/products/checkout`, {
         cart: updatedCart,
@@ -106,6 +106,36 @@ const cartSlice = createSlice({
       state.cart = removeItem;
     },
     
+    addToCartFromFavs : (state, action) => {
+      if (!Array.isArray(state.cart)) {
+        state.cart = [];
+      }
+
+      console.log("Current Cart:", state.cart);
+      console.log("Payload:", action.payload);
+
+      const itemInCart = state.cart.find(
+        (item) => item.productId === action.payload.productId
+      );
+
+      if (itemInCart) {
+        console.log("Product already in cart");
+      } else {
+        state.cart.push({
+          ...action.payload,
+          dessertName : action.payload.dessertName,
+          image : action.payload.image,
+          price: action.payload.price,
+          quantity:1,
+          // productDetails: action.payload.productDetails || [],
+        });
+        console.log("Updated Cart:", state.cart);
+      }
+    },
+
+    clearCart: (state) =>{
+      state.cart = [];
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -129,5 +159,5 @@ const cartSlice = createSlice({
 });
 
 export const cartReducer = cartSlice.reducer;
-export const { addToCart, incrementQuantity, decrementQuantity, removeItem } =
+export const { addToCart, incrementQuantity, decrementQuantity, removeItem, clearCart } =
   cartSlice.actions;

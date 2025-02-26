@@ -1,8 +1,50 @@
 import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { addItemToCart } from "./Homepage/AddToCart";
+import { IconSquareRoundedX } from "@tabler/icons-react";
+import { useDispatch } from "react-redux";
+import { deleteFromFavs } from "./DeleteFromFavs";
+import { addToCart } from "../react-redux/cartSlice";
 
 export const WishlistPage = () => {
+  const [favs, setFavs] = useState([]);
+  const url = import.meta.env.VITE_API_URL;
+  const image_url = import.meta.env.VITE_IMAGE_URL;
+  const username = JSON.parse(Cookies.get("details")).usrname;
+  const dispatch = useDispatch();
+
+  const addCart = (productId, dessertName, price, image, quantity = 1) => {
+    dispatch(
+      addToCart({
+        productId,
+        dessertName,
+        price,
+        image,
+        quantity,
+      })
+    );
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${url}/products/getFavs?username=${username}`)
+      .then((res) => {
+        setFavs(res.data.result);
+      })
+      .catch(() => toast.error("Failed to fetch fav products"));
+  }, []);
+ 
+  useEffect(() => {
+    console.log(favs, "favs");
+
+  }, [favs]);
+
   return (
     <>
       {/* header section */}
@@ -20,93 +62,73 @@ export const WishlistPage = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>Product</th>
-                      <th>Unit Price</th>
-                      <th>Stock</th>
-                      <th></th>
-                      <th></th>
+                      <div className="favs__table__headers">
+                        <div className="favs__product">
+                          <th>Product</th>
+                        </div>
+                        <div className="favs__price">
+                          <th>Unit Price</th>
+                        </div>
+                        <div className="favs__stock">
+                          <th>Stock</th>
+                        </div>
+                        <th></th>
+                        <th></th>
+                      </div>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="product__cart__item">
-                        <div className="product__cart__item__pic">
-                          <img src="img/shop/cart/cart-1.jpg" alt="" />
+                      {favs.map((item) => (
+                        <div
+                          key={item._id}
+                          className="favs__product__cart__item"
+                        >
+                          <td className="product__cart__item">
+                            <div className="product__cart__item__pic">
+                              <img
+                                src={`${image_url}/images/product/${item.productDetails[0].image.filename}`}
+                                // src = {`${image_url}/images/product/${item.image}`}
+                                alt=""
+                              />
+                            </div>
+                            <div className="product__cart__item__text">
+                              <h6>{item.dessertName}</h6>
+                            </div>
+                          </td>
+                          <td className="cart__price">Rs. {item.price}</td>
+                          <td className="cart__stock">In stock</td>
+                          <td className="cart__btn">
+                            <div className="primary-btn">
+                              <button
+                                onClick={() => {
+                                  console.log(item, "item");
+                                  addItemToCart(item.productId);
+                                  addCart(
+                                    item.productId,
+                                    item.dessertName,
+                                    item.price,
+                                    item.productDetails[0].image.filename
+                                  );
+                                }}
+                              >
+                                Add To Cart
+                              </button>
+                            </div>
+                          </td>
+                          <td className="cart__close">
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                deleteFromFavs(item.productId);
+                              }}
+                            >
+                              <IconSquareRoundedX color="red" />
+                            </a>
+                          </td>
                         </div>
-                        <div className="product__cart__item__text">
-                          <h6>Vanilla Salted Caramel</h6>
-                        </div>
-                      </td>
-                      <td className="cart__price">$ 15.00</td>
-                      <td className="cart__stock">In stock</td>
-                      <td className="cart__btn">
-                        <a href="#" className="primary-btn">
-                          Add to cart
-                        </a>
-                      </td>
-                      <td className="cart__close">
-                        <span className="icon_close"></span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product__cart__item">
-                        <div className="product__cart__item__pic">
-                          <img src="img/shop/cart/cart-2.jpg" alt="" />
-                        </div>
-                        <div className="product__cart__item__text">
-                          <h6>German Chocolate</h6>
-                        </div>
-                      </td>
-                      <td className="cart__price">$ 32.50</td>
-                      <td className="cart__stock">In stock</td>
-                      <td className="cart__btn">
-                        <a href="#" className="primary-btn">
-                          Add to cart
-                        </a>
-                      </td>
-                      <td className="cart__close">
-                        <span className="icon_close"></span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product__cart__item">
-                        <div className="product__cart__item__pic">
-                          <img src="img/shop/cart/cart-3.jpg" alt="" />
-                        </div>
-                        <div className="product__cart__item__text">
-                          <h6>SWEET AUTUMN LEAVES</h6>
-                        </div>
-                      </td>
-                      <td className="cart__price">$ 23.50</td>
-                      <td className="cart__stock">In stock</td>
-                      <td className="cart__btn">
-                        <a href="#" className="primary-btn">
-                          Add to cart
-                        </a>
-                      </td>
-                      <td className="cart__close">
-                        <span className="icon_close"></span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="product__cart__item">
-                        <div className="product__cart__item__pic">
-                          <img src="img/shop/cart/cart-4.jpg" alt="" />
-                        </div>
-                        <div className="product__cart__item__text">
-                          <h6>Gluten Free Mini Dozen</h6>
-                        </div>
-                      </td>
-                      <td className="cart__price">$ 32.50</td>
-                      <td className="cart__stock">In stock</td>
-                      <td className="cart__btn">
-                        <a href="#" className="primary-btn">
-                          Add to cart
-                        </a>
-                      </td>
-                      <td className="cart__close">
-                        <span className="icon_close"></span>
-                      </td>
+                      ))}
                     </tr>
                   </tbody>
                 </table>

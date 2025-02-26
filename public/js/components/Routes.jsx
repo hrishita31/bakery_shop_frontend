@@ -30,25 +30,25 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<Layout />} />
           <Route index element={<HomePage />} />
-          <Route path="signUp" element={<SignUpPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="forgotPassword" element={<ForgotPasswordPage />} />
-          <Route path="resetPassword" element={<ResetPasswordPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="addProduct" element={<AddProductPage />} />
-          <Route path="shop" element={<ShopPage />} />
-          <Route path="shopDetails" element={<ShopDetailsPage />} />
-          <Route path="shoppingCart" element={<ShoppingCartPage />} />
-          <Route path="checkout" element={<CheckoutPage />} />
-          <Route path="wishlist" element={<WishlistPage />} />
-          <Route path="class" element={<ClassPage />} />
-          <Route path="registerToTeam" element={<TeamRegisterPage />} />
-          <Route path="blogDetails" element={<BlogDetailsPage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="contact" element={<ContactPage />} />
-          <Route path="viewDetails" element={<ViewProfilePage />} />
-          <Route path="addEditAddress" element={<AddAddressPage />} />
-          <Route path="viewAllAddress" element={<ViewAllAddressPage />} />
+          <Route path="/signUp" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          <Route path="/resetPassword" element={<ResetPasswordPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/addProduct" element={<AddProductPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shopDetails" element={<ShopDetailsPage />} />
+          <Route path="/shoppingCart" element={<ShoppingCartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/class" element={<ClassPage />} />
+          <Route path="/registerToTeam" element={<TeamRegisterPage />} />
+          <Route path="/blogDetails" element={<BlogDetailsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/viewDetails" element={<ViewProfilePage />} />
+          <Route path="/addEditAddress" element={<AddAddressPage />} />
+          <Route path="/viewAllAddress" element={<ViewAllAddressPage />} />
         </Routes>
       </BrowserRouter>
       {/* <Footer /> */}

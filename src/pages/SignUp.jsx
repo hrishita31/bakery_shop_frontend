@@ -25,33 +25,14 @@ function SignUpPage() {
       .matches(/[0-9]/, "Must contain at least one digit")
       .matches(/[A-Z]/, "Must contain at least one uppercase letter")
       .matches(/[a-z]/, "Must contain at least one lowercase letter")
-      // .matches(
-      //   /^[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/,
-      //   "Need one special character"
-      // )
       .required("password is required"),
     confirmPassword: Yup.string()
       .min(8, "password must be 8 characters long")
       .matches(/[0-9]/, "Must contain at least one digit")
       .matches(/[A-Z]/, "Must contain at least one uppercase letter")
       .matches(/[a-z]/, "Must contain at least one lowercase letter")
-      // .matches(
-      //   /^[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/,
-      //   "Need one special character"
-      // )
       .required("password is required"),
   });
-
-  // const setProfilePic = async () => {
-  //   // const data = await postData(values, "/users/getUser");
-  //   const response = await axios.get(`${url}/users/getUser`);
-  //   const resultData = response.data.result;
-  //   <img src={resultData.image} alt={resultData.username} />;
-  // };
-
-  // const setEmptyPic = () => {
-  //   <IconUserPlus />;
-  // };
 
   const formik = useFormik({
     initialValues: {
@@ -74,22 +55,12 @@ function SignUpPage() {
       formData.append("confirmPassword", values.confirmPassword);
 
       const data = await axios.post(`${url}/users/newUser`, formData);
-
-      // const data = await postData(values, "/users/newUser");
       if (data.data.success) {
         toast.success("Successfully signed up");
-
         navigate("/");
-        
-        // if (data.data.result.image) {
-        //   setProfilePic();
-        // } else {
-        //   setEmptyPic();
-        // }
       
       } else {
         toast.error(data.message);
-        // toast.error("Login unsuccessful. Please try again.")
       }
     },
   });

@@ -1591,7 +1591,7 @@ font-size: 15px;
 }
 
 .product__item__price{
-  
+
 }
 
 /* .product__item__text .product__item__price {
@@ -2925,6 +2925,20 @@ font-size: 15px;
 /*---------------------
   Wishlist
 -----------------------*/
+
+.favs__table__headers{
+  display: flex;
+}
+
+.favs__product{
+  width: 390px;
+  margin-left:200px;
+}
+
+.favs__price{
+  width: 170px;
+}
+
 .wishlist__cart__table table {
   width: 100%;
 }

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import {AddToCart} from "./AddToCart"
 import { addToCart } from "../../react-redux/cartSlice";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "./AddToCart";
+import { addItemToFavs } from "./AddToFavs";
 
 export const Products = () => {
   const navigate = useNavigate();
@@ -21,20 +21,18 @@ export const Products = () => {
       .then((res) => {
         setProducts(res.data.result);
       })
-      .catch(() => toast.error("Failed to fetch poducts"));
+      .catch(() => toast.error("Failed to fetch products"));
   }, []);
 
-  useEffect(() => {
-  }, [products]);
+  useEffect(() => {}, [products]);
 
-  const addCart = (productId, dessertName, price, image, productDetails, quantity = 1) => {
+  const addCart = (productId, dessertName, price, image, quantity = 1) => {
     dispatch(
       addToCart({
         productId,
         dessertName,
         price,
         image,
-        productDetails : productDetails || [],
         quantity,
       })
     );
@@ -77,6 +75,18 @@ export const Products = () => {
                       </h6>
                       <div className="product__item__price">
                         Rs.{product.price}
+                      </div>
+                      <div className="product__add__favs">
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            console.log(product, "product");
+                            addItemToFavs(product._id);
+                          }}
+                        >
+                          <img src="img/icon/heart.png" alt="" />
+                        </a>
                       </div>
                       <div className="cart_add">
                         <button
