@@ -36,6 +36,8 @@ export const Testimonial = () => {
     },
     validationSchema: testimonialSchema,
     onSubmit: async (values, { resetForm }) => {
+      console.log("Formik submit triggered");
+      console.log("Formik Errors:", formik.errors);
       try {
         let formData = new FormData();
 
@@ -145,8 +147,8 @@ export const Testimonial = () => {
                   <div>{formik.errors.image}</div>
                 ) : null}
 
-                <input type="submit" />
-                {/* <button type="submit">Submit</button> */}
+                {/* <input type="submit" /> */}
+                <button type="submit" onClick={() => console.log("submit clicked")}>Submit</button>
               </form>
             </div>
           </div>

@@ -24,14 +24,6 @@ function ShoppingCartPage() {
   const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
-  const username = JSON.parse(Cookies.get("details")).usrname;
-
-  // useEffect(()=>{
-  //   if(token){
-  //      dispatch(fetchCartData(username));
-  //   }
-  // },[token, username, dispatch])
-
   const handleCheckout = async () => {
     console.log(cart, "checkout cart");
     dispatch(checkoutCart(cart));
@@ -76,7 +68,7 @@ function ShoppingCartPage() {
     if (cart.length === 0) {
      // dispatch(fetchCartData(username));
     }
-  }, [cart.length, username, dispatch]);
+  }, [cart.length, Cookies.get("details"), dispatch]);
 
   return (
     <>
@@ -118,8 +110,8 @@ function ShoppingCartPage() {
                                 <img
                                   src={`${image_url}/images/product/${item.image}`}
                                   // src={`${image_url}/images/product/${item?.productDetails[0]?.image?.filename}`}
-                                  // alt={item.dessertName}
-                                  alt={item?.productDetails[0]?.dessertName}
+                                  alt={item.dessertName}
+                                  // alt={item?.productDetails[0]?.dessertName}
                                 />
                               </div>
                               <div className="product__cart__item__text">
@@ -135,7 +127,6 @@ function ShoppingCartPage() {
                                     href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      console.log(item.productId, "product id");
                                       {
                                         item.quantity === 1
                                           ? reduceCount(item.productId)
@@ -152,9 +143,8 @@ function ShoppingCartPage() {
                                   <a
                                     href="#"
                                     onClick={(e) => {
-                                      console.log(item, 7907);
+                                      console.log(item, "item");
                                       e.preventDefault();
-                                      console.log(item, 770707);
                                       incrementToCart(item.productId);
                                     }}
                                   >

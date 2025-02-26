@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { checkoutCart } from "../../react-redux/cartSlice";
+import { clearCart } from "../../react-redux/cartSlice";
 
 export const HeaderSection = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ export const HeaderSection = () => {
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("login");
+                            navigate("/login");
                           }}
                         >
                           Login
@@ -78,7 +78,11 @@ export const HeaderSection = () => {
                       <a href="#" className="search-switch">
                         <img src="img/icon/search.png" alt="" />
                       </a>
-                      <a href="#">
+                      <a href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/wishlist");
+                      }}>
                         <img src="img/icon/heart.png" alt="" />
                       </a>
                     </div>
@@ -274,7 +278,8 @@ export const HeaderSection = () => {
                             Cookies.remove("token");
                             Cookies.remove("details");
                             e.preventDefault();
-                            dispatch(checkoutCart(cart));
+                            // dispatch(checkoutCart(cart));
+                            dispatch(clearCart());
 
                             navigate("/login")
                           }}
