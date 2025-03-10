@@ -10,22 +10,42 @@ import "react-toastify/dist/ReactToastify.css";
 import patchData from "../requests/patchRequest";
 
 function ResetPasswordPage() {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const location = useLocation();
 
   const ResetPasswordSchema = Yup.object().shape({
     newPassword: Yup.string()
-      .required("password is required")
-      .min(8, "password must be 8 characters long")
-      .matches(/[0-9]/, "Must contain at least one digit")
-      .matches(/[A-Z]/, "Must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Must contain at least one lowercase letter"),
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[0-9]/, "Password must contain at least one digit (0-9)")
+      .matches(
+        /[A-Z]/,
+        "Password must contain at least one uppercase letter (A-Z)"
+      )
+      .matches(
+        /[a-z]/,
+        "Password must contain at least one lowercase letter (a-z)"
+      )
+      .matches(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@, $, !, %, *, ?, &)"
+      ),
     confirmPassword: Yup.string()
-      .required("new password is required")
-      .min(8, "password must be 8 characters long")
-      .matches(/[0-9]/, "Must contain at least one digit")
-      .matches(/[A-Z]/, "Must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Must contain at least one lowercase letter"),
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[0-9]/, "Password must contain at least one digit (0-9)")
+      .matches(
+        /[A-Z]/,
+        "Password must contain at least one uppercase letter (A-Z)"
+      )
+      .matches(
+        /[a-z]/,
+        "Password must contain at least one lowercase letter (a-z)"
+      )
+      .matches(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@, $, !, %, *, ?, &)"
+      ),
   });
 
   const formik = useFormik({
@@ -37,11 +57,11 @@ function ResetPasswordPage() {
     onSubmit: async (values) => {
       const searchParams = new URLSearchParams(location.search);
       const token = searchParams.get("token") || "";
-      if(!token){
-        toast.error("Invalid or expired token. Please request again")
+      if (!token) {
+        toast.error("Invalid or expired token. Please request again");
       }
-      
-      const finalData = { ...values, token:token};
+
+      const finalData = { ...values, token: token };
       const data = await patchData(finalData, "/users/resetPassword");
       if (data.success) {
         toast.success("Successfully updated the password");
@@ -66,11 +86,15 @@ function ResetPasswordPage() {
           <h2>Reset Password</h2>
 
           <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="newPassword">Password</label>
+            <div className="reset__password__label">
+              <label htmlFor="newPassword">Password</label>
+              <label className="compulsory__fill_input">*</label>
+            </div>
             <input
               id="newPassword"
               name="newPassword"
               type="text"
+              placeholder="Enter new password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.newPassword}
@@ -78,11 +102,16 @@ function ResetPasswordPage() {
             {formik.touched.newPassword && formik.errors.newPassword ? (
               <div>{formik.errors.newPassword}</div>
             ) : null}
-            <label htmlFor="confirmPassword">Confirm Password</label>
+
+            <div className="reset__password__label">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <label className="compulsory__fill_input">*</label>
+            </div>
             <input
               id="confirmPassword"
               name="confirmPassword"
               type="confirmPassword"
+              placeholder="Confirm new password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.confirmPassword}
@@ -91,7 +120,10 @@ function ResetPasswordPage() {
               <div>{formik.errors.confirmPassword}</div>
             ) : null}
 
-            <input type="submit" />
+            {/* <input type="submit" /> */}
+            <button type="submit" className="submit-btn">
+            Submit
+          </button>
           </form>
         </div>
       </div>

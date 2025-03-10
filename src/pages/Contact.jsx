@@ -1,8 +1,107 @@
 import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
+import Map from "./Homepage/Map";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const ContactPage = () => {
+  const url = import.meta.env.VITE_API_URL;
+  const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+  const ContactWithUsSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required")
+    .test(
+      "isValidName",
+      "Should have atleast one alphabet",
+      (value) => {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+
+        let validConditions = 0;
+
+        const numberOfMustBeValidConditions = 1;
+        const conditions = [hasLowerCase, hasUpperCase];
+        conditions.forEach((condition) =>
+          condition ? validConditions++ : null
+        );
+        if (validConditions >= numberOfMustBeValidConditions) {
+          return true;
+        }
+        return false;
+      }
+    ),
+    email: Yup.string().required("Email is required")
+    .test(
+      "isValidEmail",
+      "Should have atleast one alphabet or a digit",
+      (value) => {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+        const hasNumber = /[0-9]/.test(value);
+        const hasSpecialChar = /[@]/.test(value);
+        let validConditions = 0;
+        const numberOfMustBeValidConditions = 1;
+        const conditions = [hasLowerCase, hasUpperCase, hasNumber, hasSpecialChar];
+        conditions.forEach((condition) =>
+          condition ? validConditions++ : null
+        );
+        if (validConditions >= numberOfMustBeValidConditions) {
+          return true;
+        }
+        return false;
+      }
+    ),
+    message: Yup.string().required("Message is required")
+    .test(
+      "isValidMessage",
+      "Should have atleast one alphabet",
+      (value) => {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+        const hasDigits = /[0-9]/.test(value);
+        let validConditions = 0;
+
+        const numberOfMustBeValidConditions = 1;
+        const conditions = [hasLowerCase, hasUpperCase, hasDigits];
+        conditions.forEach((condition) =>
+          condition ? validConditions++ : null
+        );
+        if (validConditions >= numberOfMustBeValidConditions) {
+          return true;
+        }
+        return false;
+      }
+    ),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+    validationSchema: ContactWithUsSchema,
+    onSubmit: async (values) => {
+      console.log(values, 234);
+      const data = await axios.post(`${url}/users/connectWithUs`, values, {
+        headers,
+      });
+
+      console.log(data, 123);
+      if (data.statusText === "OK") {
+        toast.success("Successfully submitted your message");
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
+
   return (
     <>
       {/* header section */}
@@ -14,32 +113,7 @@ export const ContactPage = () => {
       {/* contact section */}
       <section className="contact spad">
         <div className="container">
-          <div className="map">
-            <div className="container">
-              <div className="row d-flex justify-content-center">
-                <div className="col-lg-4 col-md-7">
-                  <div className="map__inner">
-                    <h6>Ahmedabad</h6>
-                    <ul>
-                      <li>Sahaj Apartments, Ahmedabad-380015, Gujarat, India</li>
-                      <li>Sweetcake@support.com</li>
-                      <li>+91 9876543211</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="map__iframe">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.7215501502537!2d72.51082477350796!3d23.033993915905317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e9b49eee80dd7%3A0xbefbfd7e023fb440!2s2GM7%2BGC3%2C%20Bodakdev%2C%20Ahmedabad%2C%20Gujarat%20380053!5e0!3m2!1sen!2sin!4v1738910332093!5m2!1sen!2sin"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen
-                aria-hidden="false"
-                tabIndex="0"
-              ></iframe>
-            </div>
-          </div>
+          <Map />
           <div className="contact__address">
             <div className="row">
               <div className="col-lg-4 col-md-6 col-sm-6">
@@ -115,22 +189,64 @@ export const ContactPage = () => {
             </div>
             <div className="col-lg-8">
               <div className="contact__form">
-                <form action="#">
-                  <div className="row">
-                    <div className="col-lg-6">
-                      <input type="text" placeholder="Name" />
+                <div className="row">
+                  <form onSubmit={formik.handleSubmit}>
+                    <div className="contact__details">
+                      <div className="contact__name__details">
+                        <label htmlFor="name">Name</label><label className="compulsory__fill">*</label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.name}
+                          placeholder="Name"
+                        />
+                        {formik.touched.name && formik.errors.name ? (
+                          <div className="error-login">{formik.errors.name}</div>
+                        ) : null}
+                      </div>
+                      <div className="contact__email__details">
+                        <label htmlFor="email">Email</label><label className="compulsory__fill">*</label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="text"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.email}
+                          placeholder="Email"
+                        />
+                        {formik.touched.email && formik.errors.email ? (
+                          <div className="error-login">{formik.errors.email}</div>
+                        ) : null}
+                      </div>
                     </div>
-                    <div className="col-lg-6">
-                      <input type="text" placeholder="Email" />
+                    <div className="contact__message__details">
+                      <label htmlFor="message">Message</label><label className="compulsory__fill">*</label>
+                      <input 
+                        id="message"
+                        name="message"
+                        type="textarea"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.message}
+                        placeholder="Message"
+                      />
+                      {formik.touched.message && formik.errors.message ? (
+                        <div className="error-login">{formik.errors.message}</div>
+                      ) : null}
                     </div>
-                    <div className="col-lg-12">
-                      <textarea placeholder="Message"></textarea>
-                      <button type="submit" className="site-btn">
-                        Send Us
-                      </button>
+
+                    <div className="submit__connect">
+                      {/* <input type="submit" /> */}
+                      <button type="submit" className="submit-btn">
+            Submit
+          </button>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

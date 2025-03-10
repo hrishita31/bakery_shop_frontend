@@ -8,7 +8,6 @@ import { IconMinus } from "@tabler/icons-react";
 import {
   checkoutCart,
   decrementQuantity,
-  // fetchCartData,
   incrementQuantity,
   removeItem,
 } from "../react-redux/cartSlice";
@@ -66,7 +65,7 @@ function ShoppingCartPage() {
   useEffect(() => {
     console.log(cart, "cart");
     if (cart.length === 0) {
-     // dispatch(fetchCartData(username));
+      // dispatch(fetchCartData(username));
     }
   }, [cart.length, Cookies.get("details"), dispatch]);
 
@@ -83,100 +82,111 @@ function ShoppingCartPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="shopping__cart__table">
-                <table>
-                  <div className="shopping__cart__table__headers">
-                    <thead>
-                      <tr>
-                        <div className="table__contents">
-                        <div className="product__table"><th>Product</th></div>
-                        <div className="quantity__table"><th>Quantity</th></div>
-                        <div className="total_table"><th>Total</th></div>
-                        </div>
-                      </tr>
-                    </thead>
-                  </div>
-                  <tbody>
-                    <tr>
-                      {cart &&
-                        cart.map((item) => (
-                          <div
-                            key={item.productId}
-                            className="shopping__cart__table__body"
-                          >
-                            <td className="product__cart__item">
-                              <div className="product__item__details">
-                              <div className="product__cart__item__pic">
-                                <img
-                                  src={`${image_url}/images/product/${item.image}`}
-                                  // src={`${image_url}/images/product/${item?.productDetails[0]?.image?.filename}`}
-                                  alt={item.dessertName}
-                                  // alt={item?.productDetails[0]?.dessertName}
-                                />
-                              </div>
-                              <div className="product__cart__item__text">
-                                <h6>{item.dessertName}</h6>
-                                {/* <h6>{item?.productDetails[0]?.dessertName}</h6> */}
-                              </div>
-                              </div>
-                            </td>
-                            <td className="quantity__item">
-                              <div className="quantity">
-                                <div className="decrease__quantity">
-                                  <a
-                                    href="#"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      {
-                                        item.quantity === 1
-                                          ? reduceCount(item.productId)
-                                          : null;
-                                      }
-                                      decrementFromCart(item.productId);
-                                    }}
-                                  >
-                                    <IconMinus color="black" />
-                                  </a>
-                                </div>
-                                <div className="pro-qty">{item.quantity}</div>
-                                <div className="increase__quantity">
-                                  <a
-                                    href="#"
-                                    onClick={(e) => {
-                                      console.log(item, "item");
-                                      e.preventDefault();
-                                      incrementToCart(item.productId);
-                                    }}
-                                  >
-                                    <IconPlus color="black" />
-                                  </a>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="cart__price">
-                              Rs. {item.price * item.quantity}
-                            </td>
-                            
-                            <td className="cart__close">
-                              <a
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  deleteFromCart(item.productId);
-                                  removeFromCart(item.productId);
-                                }}
-                              >
-                                <IconSquareRoundedX color="red" />
-                              </a>
-                            </td>
+              {cart.length ? (
+                <div className="shopping__cart__table">
+                  <table>
+                    <div className="shopping__cart__table__headers">
+                      <thead>
+                        <tr>
+                          <div className="table__contents">
+                            <div className="product__table">
+                              <th>Product</th>
+                            </div>
+                            <div className="quantity__table">
+                              <th>Quantity</th>
+                            </div>
+                            <div className="total_table">
+                              <th>Total</th>
+                            </div>
                           </div>
-                        ))}
-                      {/* </div> */}
-                      {/* ))} */}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                        </tr>
+                      </thead>
+                    </div>
+                    <tbody>
+                      <tr>
+                        {cart &&
+                          cart.map((item) => (
+                            <div
+                              key={item.productId}
+                              className="shopping__cart__table__body"
+                            >
+                              <td className="product__cart__item">
+                                <div className="product__item__details">
+                                  <div className="product__cart__item__pic">
+                                    <img
+                                      className="product__cart__item__img"
+                                      // src={`${image_url}/images/product/${item.image}`}
+                                      src={`${image_url}/images/product/${item?.productDetails[0]?.image?.filename}`}
+                                      // alt={item.dessertName}
+                                      alt={item?.productDetails[0]?.dessertName}
+                                    />
+                                  </div>
+                                  <div className="product__cart__item__text">
+                                    {/* <h6>{item.dessertName}</h6> */}
+                                    <h6>
+                                      {item?.productDetails[0]?.dessertName}
+                                    </h6>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="quantity__item">
+                                <div className="quantity">
+                                  <div className="decrease__quantity">
+                                    <a
+                                      href="#"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        {
+                                          item.quantity === 1
+                                            ? reduceCount(item.productId)
+                                            : null;
+                                        }
+                                        decrementFromCart(item.productId);
+                                      }}
+                                    >
+                                      <IconMinus color="black" />
+                                    </a>
+                                  </div>
+                                  <div className="pro-qty">{item.quantity}</div>
+                                  <div className="increase__quantity">
+                                    <a
+                                      href="#"
+                                      onClick={(e) => {
+                                        console.log(item, "item");
+                                        e.preventDefault();
+                                        incrementToCart(item.productId);
+                                      }}
+                                    >
+                                      <IconPlus color="black" />
+                                    </a>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="cart__price">
+                                Rs. {item.price * item.quantity}
+                              </td>
+
+                              <td className="cart__close">
+                                <a
+                                  href="#"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    deleteFromCart(item.productId);
+                                    removeFromCart(item.productId);
+                                  }}
+                                >
+                                  <IconSquareRoundedX color="red" />
+                                </a>
+                              </td>
+                            </div>
+                          ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <h3>Cart empty</h3>
+              )}
 
               <div className="row">
                 <div className="col-lg-6 col-md-6 col-sm-6">

@@ -8,21 +8,86 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
+import Cookies from "js-cookie";
 import ShowTestimony from "./DisplayTestimony";
-import RatingFunc from "./RatingComponent";
+import { RatingFunc } from "./RatingComponent";
 
 export const Testimonial = () => {
   const [setTestimonials] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   // const CarouselRef = useRef();
   const url = import.meta.env.VITE_API_URL;
+  const token = Cookies.get("token");
+        const headers = { Authorization: `Bearer ${token}` };
 
   const testimonialSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    location: Yup.string().required("Location is required"),
+    name: Yup.string()
+      .required("Name is required")
+      .test(
+        "isValidName",
+        "Should have atleast one alphabet or a digit",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
+    location: Yup.string()
+      .required("Location is required")
+      .test(
+        "isValidLocation",
+        "Should have atleast one alphabet or a digit",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
     rating: Yup.string().required("Rating is required"),
-    quote: Yup.string().required("Quote is required"),
+    quote: Yup.string()
+      .required("Quote is required")
+      .test(
+        "isValidQuote",
+        "Should have atleast one alphabet or a digit",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
     image: Yup.mixed().required("Image is required"),
   });
 
@@ -36,8 +101,6 @@ export const Testimonial = () => {
     },
     validationSchema: testimonialSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("Formik submit triggered");
-      console.log("Formik Errors:", formik.errors);
       try {
         let formData = new FormData();
 
@@ -49,7 +112,9 @@ export const Testimonial = () => {
 
         const data = await axios.post(
           `${url}/testimony/postTestimony`,
-          formData
+          formData, {
+            headers,
+          }
         );
 
         if (data.statusText === "OK") {
@@ -90,51 +155,69 @@ export const Testimonial = () => {
             <div className="testimonial-box">
               <h2>Share Your Testimonial</h2>
               <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="name">Name</label>
+                <div className="testimony__label">
+                  <label htmlFor="name">Name</label>
+                  <label className="compulsory__fill_input">*</label>
+                </div>
                 <input
                   id="name"
                   name="name"
                   type="text"
+                  placeholder="Name"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.name}
                 />
                 {formik.touched.name && formik.errors.name ? (
-                  <div>{formik.errors.name}</div>
+                  <div className="error-login">{formik.errors.name}</div>
                 ) : null}
 
-                <label htmlFor="location">Location</label>
+                <div className="testimony__label">
+                  <label htmlFor="location">Location</label>
+                  <label className="compulsory__fill_input">*</label>
+                </div>
                 <input
                   id="location"
                   name="location"
                   type="text"
+                  placeholder="Location"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.location}
                 />
                 {formik.touched.location && formik.errors.location ? (
-                  <div>{formik.errors.location}</div>
+                  <div className="error-login">{formik.errors.location}</div>
                 ) : null}
 
-                <label htmlFor="rating">Rating</label>
-                <RatingFunc />
+                <div className="testimony__label">
+                  <label htmlFor="rating">Rating</label>
+                  <label className="compulsory__fill_input">*</label>
+                </div>
+                <RatingFunc formik={formik} />
                 {formik.touched.rating && formik.errors.rating ? (
-                  <div>{formik.errors.rating}</div>
+                  <div className="error">{formik.errors.rating}</div>
                 ) : null}
 
-                <label htmlFor="quote">Quote</label>
+                <div className="testimony__label">
+                  <label htmlFor="quote">Quote</label>
+                  <label className="compulsory__fill_input">*</label>
+                </div>
                 <textarea
                   id="quote"
                   name="quote"
+                  placeholder="Add your thoughts"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.quote}
                 />
                 {formik.touched.quote && formik.errors.quote ? (
-                  <div>{formik.errors.quote}</div>
+                  <div className="error">{formik.errors.quote}</div>
                 ) : null}
 
-                <label htmlFor="image">Upload image:</label>
+                <div className="testimony__label">
+                  <label htmlFor="image">Upload image</label>
+                  <label className="compulsory__fill_input">*</label>
+                </div>
                 <input
                   id="image"
                   name="image"
@@ -144,11 +227,11 @@ export const Testimonial = () => {
                   }}
                 />
                 {formik.touched.image && formik.errors.image ? (
-                  <div>{formik.errors.image}</div>
+                  <div className="error">{formik.errors.image}</div>
                 ) : null}
 
                 {/* <input type="submit" /> */}
-                <button type="submit" onClick={() => console.log("submit clicked")}>Submit</button>
+                <button type="submit">Submit</button>
               </form>
             </div>
           </div>

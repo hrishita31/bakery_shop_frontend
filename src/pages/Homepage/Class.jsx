@@ -3,13 +3,41 @@ import { useFormik } from "formik";
 import postData from "../../requests/postRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 export const Class = () => {
+
+  const token = Cookies.get("token");
+      const headers = { Authorization: `Bearer ${token}` };
+
   const ClassSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    phoneNumber: Yup.string().required("Phone number is required"),
-    classTime: Yup.string().required("class time is required"),
-    branch: Yup.string().required("branch preferred is required"),
+    name: Yup.string()
+      .required("Name is required")
+      .test(
+        "isValidName",
+        "Should have atleast one alphabet",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
+    phoneNumber: Yup.string()
+      .required("Phone number is required")
+      .matches(/^\d{10}$/, "Phone number must be a 10-digit number"),
+    classTime: Yup.string().required("Class time is required"),
+    branch: Yup.string().required("Branch preferred is required"),
   });
 
   const formik = useFormik({
@@ -21,8 +49,10 @@ export const Class = () => {
     },
     validationSchema: ClassSchema,
     onSubmit: async (values) => {
-      const data = await postData(values, "/classes/classRegistration");
-      if (data.data.success) {
+      const data = await postData(values, "/classes/classRegistration", {
+        headers,
+      });
+      if (data.success) {
         toast.success("Registration successful");
       } else {
         toast.error(data.message);
@@ -46,109 +76,131 @@ export const Class = () => {
                 </div>
                 <form onSubmit={formik.handleSubmit}>
                   <div>
-                  <label htmlFor="name">Name:</label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.name}
-                  />
-                  {formik.touched.name && formik.errors.name ? (
-                    <div>{formik.errors.name}</div>
-                  ) : null}
+                    <div className="class__label">
+                      <label htmlFor="name">Name</label>
+                      <label className="compulsory__fill">*</label>
+                    </div>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      placeholder="Name"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.name}
+                    />
+                    {formik.touched.name && formik.errors.name ? (
+                      <div className="error-class">{formik.errors.name}</div>
+                    ) : null}
                   </div>
 
                   <div>
-                  <label htmlFor="phoneNumber">Phone Number:</label>
-                  <input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.phoneNumber}
-                  />
-                  {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
-                    <div>{formik.errors.phoneNumber}</div>
-                  ) : null}
+                    <div className="class__label">
+                      <label htmlFor="phoneNumber">Phone number</label>
+                      <label className="compulsory__fill">*</label>
+                    </div>
+                    <input
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      type="text"
+                      placeholder="Phone number"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.phoneNumber}
+                    />
+                    {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                      <div className="error-class">
+                        {formik.errors.phoneNumber}
+                      </div>
+                    ) : null}
                   </div>
 
                   <div>
-                  <div className="radio-group">
-                    <label htmlFor="classTime">Class Time:</label>
-                    <div className="radio-option">
-                      <input
-                        id="classTime"
-                        name="classTime"
-                        type="radio"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="4:00-5:00"
-                      />
-                      4:00-5:00
+                    <div className="radio-group">
+                      <div className="class__label">
+                        <label htmlFor="classTime">Class Time</label>
+                        <label className="compulsory__fill_input">*</label>
+                      </div>
+                      <div className="radio-option-class">
+                        <input
+                          id="classTime"
+                          name="classTime"
+                          type="radio"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value="4:00-5:00"
+                        />
+                        4:00-5:00
+                      </div>
+                      <div className="radio-option-class">
+                        <input
+                          id="classTime"
+                          name="classTime"
+                          type="radio"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value="5:00-6:00"
+                        />
+                        5:00-6:00
+                      </div>
+                      <div className="radio-option-class">
+                        <input
+                          id="classTime"
+                          name="classTime"
+                          type="radio"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value="6:00-7:00"
+                        />
+                        6:00-7:00
+                      </div>
                     </div>
-                    <div className="radio-option">
-                      <input
-                        id="classTime"
-                        name="classTime"
-                        type="radio"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="5:00-6:00"
-                      />
-                      5:00-6:00
-                    </div>
-                    <div className="radio-option">
-                      <input
-                        id="classTime"
-                        name="classTime"
-                        type="radio"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="6:00-7:00"
-                      />
-                      6:00-7:00
-                    </div>
-                  </div>
-                  {formik.touched.classTime && formik.errors.classTime ? (
-                    <div>{formik.errors.classTime}</div>
-                  ) : null}
+                    {formik.touched.classTime && formik.errors.classTime ? (
+                      <div className="error-class">
+                        {formik.errors.classTime}
+                      </div>
+                    ) : null}
                   </div>
 
                   <div>
-                  <div className="radio-group">
-                    <label htmlFor="branch">Branch:</label>
-                    <div className="radio-option">
-                      <input
-                        id="branch"
-                        name="branch"
-                        type="radio"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="Bopal"
-                      />
-                      Bopal
+                    <div className="radio-group">
+                      <div className="class__label">
+                        <label htmlFor="branch">Branch</label>
+                        <label className="compulsory__fill_input">*</label>
+                      </div>
+                      <div className="radio-option-class">
+                        <input
+                          id="branch"
+                          name="branch"
+                          type="radio"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value="Bopal"
+                        />
+                        Bopal
+                      </div>
+                      <div className="radio-option-class">
+                        <input
+                          id="branch"
+                          name="branch"
+                          type="radio"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value="Shyamal"
+                        />
+                        Shyamal
+                      </div>
                     </div>
-                    <div className="radio-option">
-                      <input
-                        id="branch"
-                        name="branch"
-                        type="radio"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="Shyamal"
-                      />
-                      Shyamal
-                    </div>
+                    {formik.touched.branch && formik.errors.branch ? (
+                      <div className="error-class">{formik.errors.branch}</div>
+                    ) : null}
                   </div>
-                  {formik.touched.branch && formik.errors.branch ? (
-                    <div>{formik.errors.branch}</div>
-                  ) : null}
+                  <div className="class__submit">
+                    {/* <input type="submit" /> */}
+                    <button type="submit" className="submit-btn">
+                      Submit
+                    </button>
                   </div>
-
-                  <input type="submit" />
                 </form>
               </div>
             </div>
@@ -160,7 +212,7 @@ export const Class = () => {
                 style={{ backgroundImage: `url(img/about-video.jpg)` }}
               >
                 <a
-                  href="https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1"
+                  href=""
                   className="play-btn video-popup"
                   target="_blank"
                   rel="noopener noreferrer"

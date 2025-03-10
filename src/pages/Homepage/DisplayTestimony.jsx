@@ -5,24 +5,28 @@ import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import { RatingContainer, Radio, Rating } from "./RatingStyles";
 import Carousel from "react-multi-carousel";
+import Cookies from "js-cookie";
 
 export const ShowTestimony = () => {
   const [testimony, setTestimony] = useState([]);
   const url = import.meta.env.VITE_API_URL;
   const image_url = import.meta.env.VITE_IMAGE_URL;
   const CarouselRef = useRef();
+  const token = Cookies.get("token");
+  const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
     axios
-      .get(`${url}/testimony/displayTestimony`)
+      .get(`${url}/testimony/displayTestimony`, {
+        headers,
+      })
       .then((res) => {
         setTestimony(res.data.result);
       })
       .catch(() => toast.error("Failed to fetch testimony"));
   }, []);
 
-  useEffect(() => {
-  }, [testimony]);
+  useEffect(() => {}, [testimony]);
 
   const responsive = {
     desktop: { breakpoint: { max: 3000, min: 1024 }, items: 2 },
@@ -58,20 +62,19 @@ export const ShowTestimony = () => {
           >
             {testimony.map((testimonyItem) => (
               <div key={testimonyItem._id} className="testimonial__item">
-              
-                  <div className="testimonial__author">
-                    <div className="testimonial__author__pic">
-                      <img
-                        src={`${image_url}/images/testimony/${testimonyItem.image.filename}`}
-                        alt={testimonyItem.name}
-                      />
-                    </div>
-                    <div className="testimonial__author__text">
-                      <h5>{testimonyItem.name}</h5>
-                      <span>{testimonyItem.location}</span>
-                    </div>
+                <div className="testimonial__author">
+                  <div className="testimonial__author__pic">
+                    <img
+                      src={`${image_url}/images/testimony/${testimonyItem.image.filename}`}
+                      alt={testimonyItem.name}
+                    />
                   </div>
-                  <div>
+                  <div className="testimonial__author__text">
+                    <h5>{testimonyItem.name}</h5>
+                    <span>{testimonyItem.location}</span>
+                  </div>
+                </div>
+                <div>
                   <div className="rating">
                     <RatingContainer>
                       {[...Array(5)].map((_, index) => {
@@ -95,10 +98,9 @@ export const ShowTestimony = () => {
                       })}
                     </RatingContainer>
                   </div>
-                  </div>
-                  <p>{testimonyItem.quote}</p>
                 </div>
-              
+                <p>{testimonyItem.quote}</p>
+              </div>
             ))}
           </Carousel>
         )}
