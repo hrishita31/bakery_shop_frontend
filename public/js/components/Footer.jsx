@@ -9,7 +9,7 @@ export const Footer = () => {
       <div className="container">
         <div className="row">
           
-          <div className="col-lg-4 col-md-6 col-sm-6">
+          <div className="col-lg-6">
             <div className="footer__widget">
               <h6>WORKING HOURS</h6>
               <ul>
@@ -21,7 +21,7 @@ export const Footer = () => {
           </div>
 
           
-          <div className="col-lg-4 col-md-6 col-sm-6">
+          <div className="col-lg-6">
             <div className="footer__about">
               <div className="footer__logo">
                 <Link to="/">
@@ -49,19 +49,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          
-          <div className="col-lg-4 col-md-6 col-sm-6">
-            <div className="footer__newslatter">
-              <h6>Subscribe</h6>
-              <p>Get the latest updates and offers.</p>
-              <form action="#">
-                <input type="text" placeholder="Email" />
-                <button type="submit">
-                  <i className="fa fa-send-o"></i>
-                </button>
-              </form>
-            </div>
-          </div>
         </div>
       </div>
 

@@ -13,6 +13,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {Loader} from "./Loader"
 
 function AddAddressPage() {
   const url = import.meta.env.VITE_API_URL;
@@ -21,6 +22,7 @@ function AddAddressPage() {
 
   const [searchParams] = useSearchParams();
   const addressId = searchParams.get("_id");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [countries] = useState(Country.getAllCountries());
   const [states, setStates] = useState([]);
@@ -31,13 +33,61 @@ function AddAddressPage() {
   const [selectedState, setSelectedState] = useState("");
 
   const AddressSchema = Yup.object().shape({
-    addressLine1: Yup.string().required("Address Line 1 is required"),
-    addressLine2: Yup.string().required("Address Line 2 is required"),
-    landmark: Yup.string().required("Landmark is required"),
+    addressLine1: Yup.string()
+      .required("Address Line 1 is required")
+      .min(5, "Must be at least 5 character long")
+      .test(
+        "isValidLine1",
+        "Should have atleast one alphabet or a digit",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+          const hasNumber = /[0-9]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase, hasNumber];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
+    addressLine2: Yup.string()
+      .required("Address Line 2 is required")
+      .min(5, "Must be at least 5 character long")
+      .test(
+        "isValidLine2",
+        "Should have atleast one alphabet or a digit",
+        (value) => {
+          const hasUpperCase = /[A-Z]/.test(value);
+          const hasLowerCase = /[a-z]/.test(value);
+          const hasNumber = /[0-9]/.test(value);
+
+          let validConditions = 0;
+
+          const numberOfMustBeValidConditions = 1;
+          const conditions = [hasLowerCase, hasUpperCase, hasNumber];
+          conditions.forEach((condition) =>
+            condition ? validConditions++ : null
+          );
+          if (validConditions >= numberOfMustBeValidConditions) {
+            return true;
+          }
+          return false;
+        }
+      ),
+    landmark: Yup.string(),
     country: Yup.string().required("Country is required"),
     state: Yup.string().required("State is required"),
     city: Yup.string().required("City is required"),
-    pincode: Yup.number().required("Pincode is required"),
+    pincode: Yup.string()
+      .required("Pincode is required")
+      .matches(/^\d{6}$/, "Pincode must be a 6-digit number"),
   });
 
   const handleSubmit = async (values) => {
@@ -52,6 +102,7 @@ function AddAddressPage() {
           headers,
         }
       );
+      
     } else {
       response = await postData(
         { username, ...values },
@@ -79,9 +130,11 @@ function AddAddressPage() {
       country: "",
       state: "",
       city: "",
-      pincode: 0,
+      pincode: "",
     },
     validationSchema: AddressSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: handleSubmit,
   });
 
@@ -92,6 +145,7 @@ function AddAddressPage() {
     setSelectedCountry(e.target.value);
     setStates(State.getStatesOfCountry(e.target.value));
     setTag(tag + 1);
+    formik.setFieldValue("country", e.target.value);
   };
 
   const handlestateChange = (e) => {
@@ -99,6 +153,7 @@ function AddAddressPage() {
     formik.values.city = "";
     setSelectedState(e.target.value);
     setCities(City.getCitiesOfState(selectedCountry, e.target.value));
+    formik.setFieldValue("state", e.target.value);
   };
 
   const handleCityChange = (e) => {
@@ -123,12 +178,15 @@ function AddAddressPage() {
         state: resultData.state,
         city: resultData.city,
       });
+
       setSelectedCountry(resultData.country);
 
       setStates(State.getStatesOfCountry(resultData.country));
       setSelectedState(resultData.state);
 
       setCities(City.getCitiesOfState(resultData.country, resultData.state));
+
+      setIsLoading(false)
     } catch (error) {
       toast.error(error.message);
     }
@@ -136,10 +194,16 @@ function AddAddressPage() {
 
   useEffect(() => {
     if (addressId) {
+      setIsLoading(true)
       fetchAddressDetails();
     }
   }, []);
   return (
+
+
+    isLoading ?
+       <Loader /> :
+    
     <>
       {/* Header section */}
       <Header />
@@ -149,52 +213,9 @@ function AddAddressPage() {
 
       {/* Add Address section */}
       <div className="form-container">
-        <div className="select-box">
-          <select
-            className="form-select"
-            onChange={(e) => handleCountryChange(e)}
-            value={formik.values.country}
-          >
-            <option value="">Select country</option>
-            {countries.map((country) => (
-              <option key={country.isoCode} value={country.isoCode}>
-                {country.name}
-              </option>
-            ))}
-          </select>
-
-          <select
-            disabled={!selectedCountry}
-            className="form-select"
-            onChange={(e) => handlestateChange(e)}
-            value={formik.values.state}
-          >
-            <option value="">Select state</option>
-            {states.map((state) => (
-              <option key={state.isoCode} value={state.isoCode}>
-                {state.name}
-              </option>
-            ))}
-          </select>
-
-          <select
-            disabled={!selectedState}
-            className="form-select"
-            onChange={handleCityChange}
-            value={formik.values.city}
-          >
-            <option value="">Select city</option>
-            {cities.map((city) => (
-              <option key={city.name} value={city.name}>
-                {city.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         <form onSubmit={formik.handleSubmit}>
           <div className="input-group">
-            <label htmlFor="addressLine1">Address Line 1:</label>
+            <label htmlFor="addressLine1">Address Line 1</label><label className="compulsory__fill">*</label>
             <input
               id="addressLine1"
               name="addressLine1"
@@ -202,6 +223,7 @@ function AddAddressPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.addressLine1}
+              placeholder="Address Line 1"
             />
             {formik.touched.addressLine1 && formik.errors.addressLine1 ? (
               <div className="error">{formik.errors.addressLine1}</div>
@@ -209,7 +231,7 @@ function AddAddressPage() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="addressLine2">Address Line 2:</label>
+            <label htmlFor="addressLine2">Address Line 2</label><label className="compulsory__fill">*</label>
             <input
               id="addressLine2"
               name="addressLine2"
@@ -217,6 +239,7 @@ function AddAddressPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.addressLine2}
+              placeholder="Address Line 2"
             />
             {formik.touched.addressLine2 && formik.errors.addressLine2 ? (
               <div className="error">{formik.errors.addressLine2}</div>
@@ -224,7 +247,7 @@ function AddAddressPage() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="landmark">Landmark:</label>
+            <label htmlFor="landmark">Landmark</label>
             <input
               id="landmark"
               name="landmark"
@@ -232,6 +255,7 @@ function AddAddressPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.landmark}
+              placeholder="Landmark"
             />
             {formik.touched.landmark && formik.errors.landmark ? (
               <div className="error">{formik.errors.landmark}</div>
@@ -239,7 +263,7 @@ function AddAddressPage() {
           </div>
 
           <div className="input-group">
-            <label htmlFor="pincode">Pincode:</label>
+            <label htmlFor="pincode">Pincode</label><label className="compulsory__fill">*</label>
             <input
               id="pincode"
               name="pincode"
@@ -247,10 +271,72 @@ function AddAddressPage() {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.pincode}
+              placeholder="Pincode"
             />
             {formik.touched.pincode && formik.errors.pincode ? (
               <div className="error">{formik.errors.pincode}</div>
             ) : null}
+          </div>
+
+          <div className="select-box">
+            <div className="select-country">
+              <select
+                className="form-select"
+                onChange={handleCountryChange}
+                value={formik.values.country}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select country</option><label className="compulsory__fill">*</label>
+                {countries.map((country) => (
+                  <option key={country.isoCode} value={country.isoCode}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+              {formik.touched.country && formik.errors.country ? (
+                <div className="error-select-box">{formik.errors.country}</div>
+              ) : null}
+            </div>
+
+            <div className="select-state">
+              <select
+                disabled={!selectedCountry}
+                className="form-select"
+                onChange={handlestateChange}
+                value={formik.values.state}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select state</option><label className="compulsory__fill">*</label>
+                {states.map((state) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+              {formik.touched.state && formik.errors.state ? (
+                <div className="error-select-box">{formik.errors.state}</div>
+              ) : null}
+            </div>
+
+            <div className="select-city">
+              <select
+                disabled={!selectedState}
+                className="form-select"
+                onChange={handleCityChange}
+                value={formik.values.city}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select city</option><label className="compulsory__fill">*</label>
+                {cities.map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+              {formik.touched.city && formik.errors.city ? (
+                <div className="error-select-box">{formik.errors.city}</div>
+              ) : null}
+            </div>
           </div>
           {/* <input type="submit" /> */}
           <button type="submit" className="submit-btn">

@@ -14,10 +14,14 @@ import { addToCart } from "../react-redux/cartSlice";
 
 export const WishlistPage = () => {
   const [favs, setFavs] = useState([]);
+  const [tag, setTag] = useState(0);
+  
   const url = import.meta.env.VITE_API_URL;
   const image_url = import.meta.env.VITE_IMAGE_URL;
   const username = JSON.parse(Cookies.get("details")).usrname;
   const dispatch = useDispatch();
+  const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
 
   const addCart = (productId, dessertName, price, image, quantity = 1) => {
     dispatch(
@@ -33,17 +37,16 @@ export const WishlistPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${url}/products/getFavs?username=${username}`)
+      .get(`${url}/products/getFavs?username=${username}`, {
+        headers,
+      })
       .then((res) => {
         setFavs(res.data.result);
       })
       .catch(() => toast.error("Failed to fetch fav products"));
-  }, []);
+  }, [tag]);
  
-  useEffect(() => {
-    console.log(favs, "favs");
-
-  }, [favs]);
+ 
 
   return (
     <>
@@ -58,7 +61,7 @@ export const WishlistPage = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="wishlist__cart__table">
+              {favs.length ?<div className="wishlist__cart__table">
                 <table>
                   <thead>
                     <tr>
@@ -86,7 +89,7 @@ export const WishlistPage = () => {
                         >
                           <td className="product__cart__item">
                             <div className="product__cart__item__pic">
-                              <img
+                              <img className="product__cart__item__img"
                                 src={`${image_url}/images/product/${item.productDetails[0].image.filename}`}
                                 // src = {`${image_url}/images/product/${item.image}`}
                                 alt=""
@@ -98,8 +101,8 @@ export const WishlistPage = () => {
                           </td>
                           <td className="cart__price">Rs. {item.price}</td>
                           <td className="cart__stock">In stock</td>
-                          <td className="cart__btn">
-                            <div className="primary-btn">
+                          <td className="cart_add">
+                            
                               <button
                                 onClick={() => {
                                   console.log(item, "item");
@@ -114,17 +117,19 @@ export const WishlistPage = () => {
                               >
                                 Add To Cart
                               </button>
-                            </div>
+                        
                           </td>
                           <td className="cart__close">
                             <a
                               href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                deleteFromFavs(item.productId);
+                              onClick={() => {
+                              
+                                deleteFromFavs(item.productId, setFavs);
+                                setTag(tag+1)
+
                               }}
                             >
-                              <IconSquareRoundedX color="red" />
+                              <IconSquareRoundedX color="red" size="28"/>
                             </a>
                           </td>
                         </div>
@@ -132,7 +137,8 @@ export const WishlistPage = () => {
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </div> : <h2>Empty wishlist</h2>}
+              
             </div>
           </div>
         </div>

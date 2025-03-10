@@ -1,8 +1,164 @@
 import Header from "../../public/js/components/Header";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect, useCallback } from "react";
+import { addToCart } from "../react-redux/cartSlice";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "./Homepage/AddToCart";
+import { addItemToFavs } from "./Homepage/AddToFavs";
+import Cookies from "js-cookie";
+import { deleteFromFavs } from "./DeleteFromFavs";
+
+function useDebounce(value, delay) {
+  const [debounceValue, setDebounceValue] = useState(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebounceValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+  return debounceValue;
+}
 
 function ShopPage() {
+  const url = import.meta.env.VITE_API_URL;
+  const image_url = import.meta.env.VITE_IMAGE_URL;
+  const dispatch = useDispatch();
+  const token = Cookies.get("token");
+    const headers = { Authorization: `Bearer ${token}` };
+  const [selectedValue, setSelectedValue] = useState("");
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [query, setQuery] = useState("");
+  const username = JSON.parse(Cookies.get("details")).usrname;
+  const [favProductId, setFavProductId] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${url}/products/getFavs?username=${username}`, {
+        headers,
+      })
+      .then((res) => {
+        setFavProductId(res.data.result.map((item) => item.productId));
+      })
+      .catch(() => toast.error("Failed to fetch products"));
+  }, []);
+
+  const debouncedQuery = useDebounce(query, 2000);
+
+  useEffect(() => {
+    axios
+      .get(`${url}/products/getCategory`)
+      .then((res) => {
+        setCategories(res.data.result);
+      })
+      .catch(() => toast.error("Failed to fetch categories"));
+  }, []);
+
+  const handleCategoryClick = async (category) => {
+    const response = await axios.post(
+      `${url}/products/getProductFromCategory?category=${category}`
+    );
+    if (response.statusText === "OK") {
+      setProducts(response.data.result);
+    } else {
+      toast.error(response.message);
+    }
+  };
+
+  const viewProducts = async () => {
+    try {
+      const response = await axios.get(`${url}/products/displayProduct`);
+      console.log(response);
+      setProducts(response.data.result);
+    } catch {
+      toast.error("Failed to fetch products");
+    }
+  };
+
+  const handleCategoryChange = async (e) => {
+    const value = e.target.value;
+    setSelectedCategory(value);
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      handleCategoryClick(selectedCategory);
+    } else {
+      viewProducts();
+    }
+  }, [selectedCategory]);
+
+  const searchProducts = useCallback(async (product) => {
+    const response = await axios.post(
+      `${url}/products/searchProduct?product=${product}`
+    );
+    if (response.statusText === "OK") {
+      setProducts(response.data.result);
+    } else {
+      toast.error(response.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    searchProducts(debouncedQuery);
+  }, [debouncedQuery, searchProducts]);
+
+  const handleProduct = (e) => {
+    setQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${url}/products/displayProduct`)
+      .then((res) => {
+        setProducts(res.data.result);
+      })
+      .catch(() => toast.error("Failed to fetch products"));
+  }, []);
+
+  useEffect(() => {}, [products]);
+
+  useEffect(() => {}, [categories]);
+
+  const handleOptionClick = async (value) => {
+    const response = await axios.post(`${url}/products/${value}`);
+    if (response.statusText === "OK") {
+      setProducts(response.data.result);
+    } else {
+      toast.error(response.message);
+    }
+  };
+
+  const handleChange = (e) => {
+    if (selectedValue) {
+      viewProducts();
+    } else {
+      const value = e.target.value;
+      setSelectedValue(value);
+      handleOptionClick(value);
+    }
+  };
+
+  const addCart = (productId, dessertName, price, image, quantity = 1) => {
+    dispatch(
+      addToCart({
+        productId,
+        dessertName,
+        price,
+        image,
+        quantity,
+      })
+    );
+  };
+
   return (
     <>
       {/* header section */}
@@ -12,293 +168,112 @@ function ShopPage() {
       <Breadcrumb title="Shop"></Breadcrumb>
 
       {/*  shop section */}
+      <div className="shop__option">
+        <div className="row">
+          <div className="col-lg-7 col-md-7">
+            <div className="shop__option__search">
+              <form action="#">
+                <select onChange={handleCategoryChange}>
+                  <option value="">Categories</option>
+                  {categories.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  type="text"
+                  onChange={handleProduct}
+                  value={query}
+                  placeholder="Search"
+                />
+              </form>
+            </div>
+          </div>
+
+          <div className="col-lg-5 col-md-5">
+            <div className="shop__option__right">
+              <select onChange={handleChange}>
+                <option value="">Default sorting</option>
+                <option value="sortProductsAscending">A to Z</option>
+                <option value="sortProductsDescending">Z to A</option>
+                <option value="sortPriceDescending">High to low price</option>
+                <option value="sortPriceAscending">Low to high price</option>
+              </select>
+              {/* <p>Selected value : {selectedValue}</p> */}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <Products /> */}
       <section className="shop spad">
         <div className="container">
-          <div className="shop__option">
-            <div className="row">
-              <div className="col-lg-7 col-md-7">
-                <div className="shop__option__search">
-                  <form action="#">
-                    <select>
-                      <option value="">Categories</option>
-                      <option value="">Red Velvet</option>
-                      <option value="">Cup Cake</option>
-                      <option value="">Biscuit</option>
-                    </select>
-                    <input type="text" placeholder="Search" />
-                    <button type="submit">
-                      <i className="fa fa-search"></i>
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <div className="col-lg-5 col-md-5">
-                <div className="shop__option__right">
-                  <select>
-                    <option value="">Default sorting</option>
-                    <option value="">A to Z</option>
-                    <option value="">1 - 8</option>
-                    <option value="">Name</option>
-                  </select>
-                  <a href="#">
-                    <i className="fa fa-list"></i>
-                  </a>
-                  <a href="#">
-                    <i className="fa fa-reorder"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="row">
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-1.jpg" />
-
-                  <div className="product__label">
-                    <span>Cupcake</span>
+            {products.map((product) => (
+              <div key={product._id} className="col-lg-3 col-md-6 col-sm-6">
+                <div className="product__item">
+                  <div className="product__item__pic set-bg">
+                    <img
+                      src={`${image_url}/images/product/${product.image.filename}`}
+                      alt={product.dessertName}
+                    />
+                    <div className="product__label">
+                      <span>{product.category.toUpperCase()}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Dozen Cupcakes</a>
-                  </h6>
-                  <div className="product__item__price">$32.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-2.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Cookies and Cream</a>
-                  </h6>
-                  <div className="product__item__price">$30.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-3.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Gluten Free Mini Dozen</a>
-                  </h6>
-                  <div className="product__item__price">$31.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-4.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Cookie Dough</a>
-                  </h6>
-                  <div className="product__item__price">$25.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
+                  <div className="product__item__text">
+                    <h6>
+                      <a href="#">{product.dessertName.toUpperCase()}</a>
+                    </h6>
+                    <div className="product__item__details">
+                      <div className="product__item__price">
+                        Rs. {product.price}
+                      </div>
+                      <div className="product__add__favs">
+                        {favProductId.includes(product._id) ? (
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              deleteFromFavs(product._id, setFavProductId);
+                            }}
+                          >
+                            <img src="img/icon/red-heart.png" alt="" />
+                          </a>
+                        ) : (
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              console.log(product, 124);
+                              addItemToFavs(product._id, setFavProductId);
+                            }}
+                          >
+                            <img src="img/icon/heart.png" alt="" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <div className="cart_add">
+                      <button
+                        onClick={() => {
+                          addItemToCart(product._id);
+                          addCart(
+                            product._id,
+                            product.dessertName,
+                            product.price,
+                            product.image.filename
+                          );
+                        }}
+                      >
+                        Add To Cart
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-5.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Vanilla Salted Caramel</a>
-                  </h6>
-                  <div className="product__item__price">$05.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-6.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">German Chocolate</a>
-                  </h6>
-                  <div className="product__item__price">$14.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-7.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Dulce De Leche</a>
-                  </h6>
-                  <div className="product__item__price">$32.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-8.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">Mississippi Mud</a>
-                  </h6>
-                  <div className="product__item__price">$08.00</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-9.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">VEGAN/GLUTEN FREE</a>
-                  </h6>
-                  <div className="product__item__price">$98.85</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-10.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">SWEET CELTICS</a>
-                  </h6>
-                  <div className="product__item__price">$5.77</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-11.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">SWEET AUTUMN LEAVES</a>
-                  </h6>
-                  <div className="product__item__price">$26.41</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="product__item">
-                <div className="product__item__pic set-bg">
-                  <img src="img/shop/product-12.jpg" />
-                  <div className="product__label">
-                    <span>Cupcake</span>
-                  </div>
-                </div>
-                <div className="product__item__text">
-                  <h6>
-                    <a href="#">PALE YELLOW SWEET</a>
-                  </h6>
-                  <div className="product__item__price">$22.47</div>
-                  <div className="cart_add">
-                    <a href="#">Add to cart</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="shop__last__option">
-            <div className="row">
-              <div className="col-lg-6 col-md-6 col-sm-6">
-                <div className="shop__pagination">
-                  <a href="#">1</a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">
-                    <span className="arrow_carrot-right"></span>
-                  </a>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-6 col-sm-6">
-                <div className="shop__last__text">
-                  <p>Showing 1-9 of 10 results</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

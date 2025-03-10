@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export const Team = () => {
   const navigate = useNavigate();
@@ -12,15 +13,17 @@ export const Team = () => {
 
   useEffect(() => {
     axios
-      .get(`${url}/teams/displayMember`)
+      .get(`${url}/teams/displayTeamMembers`)
       .then((res) => {
+        console.log(res.data.result);
         setTeam(res.data.result);
       })
-      .catch(() => toast.error("Failed to fetch members"));
+      .catch(() => {
+        toast.error("No members");
+      });
   }, []);
 
-  useEffect(() => {
-  }, [team]);
+  useEffect(() => {}, [team]);
 
   return (
     <>
@@ -34,56 +37,63 @@ export const Team = () => {
               </div>
             </div>
             <div className="col-lg-5 col-md-5 col-sm-5">
-              <div className="team__btn">
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/registerToTeam");
-                  }}
-                >
-                  Join Us
-                </a>
-              </div>
+              <button
+                className="register-to-team-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/registerToTeam");
+                }}
+              >
+                Join Us
+              </button>
+
+              {JSON.parse(Cookies.get("details")).isAdmin ? (
+                  <div className="view-registrations">
+                    <button
+                      className="view-registrations-btn"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate("/viewAllRegistrations");
+                      }}
+                    >
+                      View all Registrations
+                    </button>
+                  </div>
+                
+              ) : (
+                ""
+              )}
             </div>
           </div>
           {team?.length ? (
-          <>
-            <div className="row">
-              {team.map((teamItem) => (
-                <div key={teamItem._id} className="col-lg-3 col-md-6 col-sm-6">
-                  <div className="team__item set-bg">
-                    <img
-                      src={`${image_url}/images/member/${teamItem.image.filename}`}
-                      alt={teamItem.name}
-                    />
+            <>
+              <div className="row">
+                {team.map((teamItem) => (
+                  <div
+                    key={teamItem._id}
+                    className="col-lg-3 col-md-6 col-sm-6"
+                  >
+                    <div className="team__members__display">
+                      <div className="team__item set-bg">
+                        <img
+                          className="team__member__image"
+                          src={`${image_url}/images/member/${teamItem.image.filename}`}
+                          alt={teamItem.name}
+                        />
+                      </div>
 
-                    <div className="team__item__text">
-                      <h6>{teamItem.name}</h6>
-                      <span>{teamItem.jobRole}</span>
-                      <div className="team__item__social">
-                        <a href="#">
-                          <i className="fa fa-facebook"></i>
-                        </a>
-                        <a href="#">
-                          <i className="fa fa-twitter"></i>
-                        </a>
-                        <a href="#">
-                          <i className="fa fa-instagram"></i>
-                        </a>
-                        <a href="#">
-                          <i className="fa fa-youtube-play"></i>
-                        </a>
+                      <div className="team__item__text">
+                        <h6>{teamItem.name}</h6>
+                        <span>{teamItem.jobRole}</span>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div>No members</div>
-        )}
+                ))}
+              </div>
+            </>
+          ) : (
+            <div>No members</div>
+          )}
         </div>
       </section>
     </>

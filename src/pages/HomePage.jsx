@@ -1,11 +1,7 @@
 import { HeaderSection } from "./Homepage/HeaderSection";
 import { Menu } from "./Homepage/Menu";
-import About from "./Homepage/About";
-import Categories from "./Homepage/Categories";
+// import Categories from "./Homepage/Categories";
 import Products from "./Homepage/Products";
-import Class from "./Homepage/Class";
-import Team from "./Homepage/Team";
-import Testimonial from "./Homepage/Testimonial";
 import Instagram from "./Homepage/Instagram";
 import Map from "./Homepage/Map";
 import Search from "./Homepage/Search";
@@ -24,23 +20,11 @@ export const HomePage = () => {
       {/*Hero section*/}
       <Hero />
 
-      {/*About section*/}
-      <About />
-
       {/*categories section*/}
-      <Categories />
+      {/* <Categories /> */}
 
       {/*product section*/}
       <Products />
-
-      {/*Class section*/}
-      <Class />
-
-      {/*Team section*/}
-      <Team />
-
-      {/*Testimonial section*/}
-      <Testimonial />
 
       {/*Instagram section*/}
       <Instagram />

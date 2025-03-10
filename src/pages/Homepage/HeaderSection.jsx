@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../../react-redux/cartSlice";
+import { saveCartOnLogout } from "../../react-redux/cartSlice";
 
 export const HeaderSection = () => {
   const navigate = useNavigate();
@@ -12,14 +13,14 @@ export const HeaderSection = () => {
 
   let initials;
 
-  if(token){
-  const firstname = JSON.parse(Cookies.get("details")).firstname;
-  const lastname = JSON.parse(Cookies.get("details")).lastname;
+  if (token) {
+    const firstname = JSON.parse(Cookies.get("details")).firstname;
+    const lastname = JSON.parse(Cookies.get("details")).lastname;
 
-  const initialFirstname = firstname.substring(0, 1);
-  const initialLastname = lastname.substring(0, 1);
+    const initialFirstname = firstname.substring(0, 1).toUpperCase();
+    const initialLastname = lastname.substring(0, 1).toUpperCase();
 
-  initials = initialFirstname+initialLastname;
+    initials = initialFirstname + initialLastname;
   }
   const isActive = (path) => location.pathname === path;
   return (
@@ -32,33 +33,35 @@ export const HeaderSection = () => {
                 <div className="header__top__inner">
                   <div className="header__top__left">
                     {/* <HeaderLeftSection /> */}
-                    {token ? "" : 
-                    <ul>
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("signUp");
-                          }}
-                        >
-                          Sign up
-                        </a>
-                      </li>
+                    {token ? (
+                      ""
+                    ) : (
+                      <ul>
+                        <li>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate("/signUp");
+                            }}
+                          >
+                            Sign up
+                          </a>
+                        </li>
 
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/login");
-                          }}
-                        >
-                          Login
-                        </a>
-                      </li>
-                    </ul>
-}
+                        <li>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              navigate("/login");
+                            }}
+                          >
+                            Login
+                          </a>
+                        </li>
+                      </ul>
+                    )}
                   </div>
 
                   <div className="header__logo">
@@ -75,23 +78,24 @@ export const HeaderSection = () => {
 
                   <div className="header__top__right">
                     <div className="header__top__right__links">
-                      <a href="#" className="search-switch">
-                        <img src="img/icon/search.png" alt="" />
-                      </a>
-                      <a href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/wishlist");
-                      }}>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate("/wishlist");
+                        }}
+                      >
                         <img src="img/icon/heart.png" alt="" />
                       </a>
                     </div>
                     <div className="header__top__right__cart">
-                      <a href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/shoppingCart");
-                      }}>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate("/shoppingCart");
+                        }}
+                      >
                         <img src="img/icon/cart.png" alt="" />
                         <span>{cart.length}</span>
                       </a>
@@ -147,11 +151,7 @@ export const HeaderSection = () => {
                   <li
                     className={
                       isActive(
-                        "/shoppingcart" |
-                          "/checkout" |
-                          "/wishlist" |
-                          "class" |
-                          "blogDetails"
+                        "/shoppingcart" | "/checkout" | "/wishlist" | "class"
                       )
                         ? "active"
                         : ""
@@ -203,29 +203,7 @@ export const HeaderSection = () => {
                           Class
                         </a>
                       </li>
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/blogDetails");
-                          }}
-                        >
-                          Blog Details
-                        </a>
-                      </li>
                     </ul>
-                  </li>
-                  <li className={isActive("/blog") ? "active" : ""}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/blog");
-                      }}
-                    >
-                      Blog
-                    </a>
                   </li>
                   <li className={isActive("/contact") ? "active" : ""}>
                     <a
@@ -246,8 +224,8 @@ export const HeaderSection = () => {
                         : ""
                     }
                   >
-                  {/* <a href="#">Details</a> */}
-                  <a href="#">{token ? initials: "Details"}</a>
+                    {/* <a href="#">Details</a> */}
+                    <a href="#">{token ? initials : "Details"}</a>
                     <ul className="dropdown">
                       <li>
                         <a
@@ -275,13 +253,16 @@ export const HeaderSection = () => {
                         <a
                           href="#"
                           onClick={(e) => {
+                            console.log(cart, "is cart quantity updated or not")
+                            dispatch(saveCartOnLogout(cart));
                             Cookies.remove("token");
                             Cookies.remove("details");
                             e.preventDefault();
                             // dispatch(checkoutCart(cart));
+                            
                             dispatch(clearCart());
 
-                            navigate("/login")
+                            navigate("/login");
                           }}
                         >
                           Logout

@@ -9,9 +9,9 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import DeleteAddress from "./DeleteAddressPage";
 import Popup from "reactjs-popup";
-import "reactjs-popup/dist/index.css";
 import { IconTrash } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";
+import { Country, State } from "country-state-city";
 
 function ViewAllAddressPage() {
   const navigate = useNavigate();
@@ -30,10 +30,10 @@ function ViewAllAddressPage() {
         {
           params: { username },
           headers,
+        },
+        {
+          headers,
         }
-        // {
-        //   headers,
-        // }
       );
       setAddress(response.data.result);
     } catch (error) {
@@ -44,6 +44,16 @@ function ViewAllAddressPage() {
   useEffect(() => {
     fetchAddress();
   }, []);
+
+  const handleDeleteAddress = async (id, close) => {
+    try {
+      await DeleteAddress(id);
+      await fetchAddress();
+      close();
+    } catch (error) {
+      toast.error("Failed to delete address.", error);
+    }
+  };
 
   return (
     <>
@@ -65,72 +75,130 @@ function ViewAllAddressPage() {
                     className="col-lg-3 col-md-6 col-sm-6"
                   >
                     <div className="address-container">
-                      <div>
-                        <label>Address:</label>
+                      <div className="address__label">
+                        {/* <label>Address: </label> */}
 
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate(`/addEditAddress?_id=${addressItem._id}`);
-                          }}
-                        >
-                          <IconPencil color="black" />
-                        </a>
-
-                        <Popup
-                          trigger={
-                            <button>
-                              <IconTrash />
-                            </button>
-                          }
-                          modal
-                          nested
-                        >
-                          {(close) => (
-                            <>
-                              <h4>
-                                Are you sure you want to delete the address?
-                              </h4>
-                              <button
-                                onClick={() => {
-                                  DeleteAddress(addressItem._id);
-                                  close();
-                                  fetchAddress();
-                                }}
-                              >
-                                Yes
-                              </button>
-                              <button onClick={() => close()}>No</button>
-                            </>
-                          )}
-                        </Popup>
+                        <div className="address__icons">
+                          <div className="address__edit">
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate(
+                                  `/addEditAddress?_id=${addressItem._id}`
+                                );
+                              }}
+                            >
+                              <IconPencil color="black" />
+                            </a>
+                          </div>
+                          <div className="address__delete">
+                            <Popup
+                              trigger={
+                                <button className="member__status__button">
+                                  <IconTrash color="black" />
+                                </button>
+                              }
+                              modal
+                              nested
+                            >
+                              {(close) => (
+                                <>
+                                  <div className="modal__member">
+                                    <span>
+                                      Are you sure you want to delete the
+                                      address?
+                                    </span>
+                                    <div className="modal__status">
+                                      <div className="modal__yes">
+                                        <button
+                                          className="modal__yes__button"
+                                          onClick={() => {
+                                            console.log("log1");
+                                            handleDeleteAddress(
+                                              addressItem._id,
+                                              close
+                                            );
+                                            console.log("log2");
+                                          }}
+                                        >
+                                          Yes
+                                        </button>
+                                      </div>
+                                      <div className="modal__no">
+                                      <button className="modal__no__button" onClick={close}>No</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+                            </Popup>
+                          </div>
+                        </div>
                       </div>
 
                       <span>
-                        {addressItem.addressLine1}, {addressItem.addressLine2},{" "}
-                        {addressItem.landmark}, {addressItem.city},{" "}
-                        {addressItem.state}, {addressItem.country},{" "}
-                        {addressItem.pincode}
-                        <div></div>
+                        <span>
+                          {addressItem.addressLine1}, {addressItem.addressLine2}
+                          ,
+                        </span>
+                        {addressItem.landmark ? (
+                          <>
+                            <span>{addressItem.landmark},</span>
+                            <span>
+                              {addressItem.city},{" "}
+                              {
+                                State.getStateByCodeAndCountry(
+                                  addressItem.state,
+                                  addressItem.country
+                                ).name
+                              }
+                              ,{" "}
+                              {
+                                Country.getCountryByCode(addressItem.country)
+                                  .name
+                              }{" "}
+                              - {addressItem.pincode}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span>
+                              {addressItem.city},{" "}
+                              {
+                                State.getStateByCodeAndCountry(
+                                  addressItem.state,
+                                  addressItem.country
+                                ).name
+                              }
+                              ,{" "}
+                              {
+                                Country.getCountryByCode(addressItem.country)
+                                  .name
+                              }{" "}
+                              - {addressItem.pincode}
+                            </span>
+                          </>
+                        )}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="add-address-btn">
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/addEditAddress");
-                }}
-              >
-                Add new address
-              </a>
+
+              <div className="class__submit">
+                <button
+                  type="submit"
+                  className="submit-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/addEditAddress");
+                  }}
+                >
+                  Add new address
+                </button>
+              </div>
             </div>
-            </div>
-            
           </div>
         </>
       ) : (

@@ -12,21 +12,24 @@ import { useEffect, useState } from "react";
 function ViewProfilePage() {
   const username = JSON.parse(Cookies.get("details")).usrname;
   const url = import.meta.env.VITE_API_URL;
+  const token = Cookies.get("token");
+  const headers = { Authorization: `Bearer ${token}` };
 
   const [profilePic, setProfilePic] = useState("");
   const image_url = import.meta.env.VITE_IMAGE_URL;
 
   useEffect(() => {
     axios
-      .get(`${url}/users/displayProfilePicture?username=${username}`)
+      .get(`${url}/users/displayProfilePicture?username=${username}`, {
+        headers,
+      })
       .then((res) => {
         setProfilePic(res.data.result);
-      })
-      .catch(() => toast.error("Failed to fetch profile"));
+      });
+    // .catch(() => toast.info("Add your profile ph"));
   }, []);
 
-  useEffect(() => {
-  }, [profilePic]);
+  useEffect(() => {}, [profilePic]);
 
   const handleUpload = async (event) => {
     if (!event.target.files[0]) {
@@ -38,7 +41,10 @@ function ViewProfilePage() {
     try {
       const response = await axios.patch(
         `${url}/users/addProfilePicture?username=${username}`,
-        formData
+        formData,
+        {
+          headers,
+        }
       );
       if (response.status === 200) {
         window.location.reload();

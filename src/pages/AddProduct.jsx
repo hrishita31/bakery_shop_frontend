@@ -3,9 +3,7 @@ import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-//import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import postData from "../requests/postRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FormData from "form-data";
@@ -17,11 +15,46 @@ function AddProductPage() {
   const url = import.meta.env.VITE_API_URL;
 
   const ProductSchema = Yup.object().shape({
-    category: Yup.string().required("category is required"),
-    product: Yup.string().required("product is required"),
+    category: Yup.string()
+      .required("Category is required")
+      .test("isValidCategory", "Should have atleast one alphabet", (value) => {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+
+        let validConditions = 0;
+
+        const numberOfMustBeValidConditions = 1;
+        const conditions = [hasLowerCase, hasUpperCase];
+        conditions.forEach((condition) =>
+          condition ? validConditions++ : null
+        );
+        if (validConditions >= numberOfMustBeValidConditions) {
+          return true;
+        }
+        return false;
+      }),
+    product: Yup.string()
+      .required("Product is required")
+      .test("isValidCategory", "Should have atleast one alphabet", (value) => {
+        const hasUpperCase = /[A-Z]/.test(value);
+        const hasLowerCase = /[a-z]/.test(value);
+
+        let validConditions = 0;
+
+        const numberOfMustBeValidConditions = 1;
+        const conditions = [hasLowerCase, hasUpperCase];
+        conditions.forEach((condition) =>
+          condition ? validConditions++ : null
+        );
+        if (validConditions >= numberOfMustBeValidConditions) {
+          return true;
+        }
+        return false;
+      }),
     image: Yup.mixed().required("Product image is required"),
-    price: Yup.string().required("price is required"),
-    rating: Yup.string(),
+    price: Yup.string()
+      .required("Price is required")
+      .matches(/[1-9]/, "Price must contain at least one digit (1-9)"),
   });
 
   const formik = useFormik({
@@ -29,8 +62,7 @@ function AddProductPage() {
       category: "",
       product: "",
       image: null,
-      price: 0,
-      rating: "",
+      price: "",
     },
     validationSchema: ProductSchema,
     onSubmit: async (values) => {
@@ -40,8 +72,7 @@ function AddProductPage() {
       formData.append("product", values.product);
       formData.append("image", values.image);
       formData.append("price", values.price);
-      formData.append("rating", values.rating);
-      
+
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
       const data = await axios.post(`${url}/products/newProduct`, formData, {
@@ -51,7 +82,7 @@ function AddProductPage() {
       if (data.statusText === "OK") {
         toast.success("Successfully added new product");
         const headers = { Authorization: `Bearer ${token}` };
-        const detailsResult =await axios.get({ headers: headers });
+        const detailsResult = await axios.get({ headers: headers });
         console.log(detailsResult);
         navigate("/");
       } else {
@@ -73,72 +104,77 @@ function AddProductPage() {
         <div className="add-product-box">
           <h2>Add Product</h2>
           <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="category">Category: </label>
-            <input
-              id="category"
-              name="category"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.category}
-            />
-            {formik.touched.category && formik.errors.category ? (
-              <div>{formik.errors.category}</div>
-            ) : null}
+            <div className="input-group">
+              <label htmlFor="category">Category</label>
+              <label className="compulsory__fill__admin">*</label>
+              <input
+                id="category"
+                name="category"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.category}
+                placeholder="Category"
+              />
+              {formik.touched.category && formik.errors.category ? (
+                <div className="error-login">{formik.errors.category}</div>
+              ) : null}
+            </div>
 
-            <label htmlFor="product">Product: </label>
-            <input
-              id="product"
-              name="product"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.product}
-            />
-            {formik.touched.product && formik.errors.product ? (
-              <div>{formik.errors.product}</div>
-            ) : null}
+            <div className="input-group">
+              <label htmlFor="product">Product</label>
+              <label className="compulsory__fill__admin">*</label>
+              <input
+                id="product"
+                name="product"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.product}
+                placeholder="Product"
+              />
+              {formik.touched.product && formik.errors.product ? (
+                <div className="error-login">{formik.errors.product}</div>
+              ) : null}
+            </div>
 
-            <label htmlFor="image">Upload image:</label>
-            <input
-              id="image"
-              name="image"
-              type="file"
-              onChange={(event) => {
-                formik.setFieldValue("image", event.currentTarget.files[0]);
-              }}
-            />
-            {formik.touched.image && formik.errors.image ? (
-              <div>{formik.errors.image}</div>
-            ) : null}
+            <div className="input-group">
+              <label htmlFor="image">Upload image</label>
+              <label className="compulsory__fill__admin">*</label>
+              <input
+                id="image"
+                name="image"
+                type="file"
+                onChange={(event) => {
+                  formik.setFieldValue("image", event.currentTarget.files[0]);
+                }}
+              />
+              {formik.touched.image && formik.errors.image ? (
+                <div className="error-login">{formik.errors.image}</div>
+              ) : null}
+            </div>
 
-            <label htmlFor="price">Price: </label>
-            <input
-              id="price"
-              name="price"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.price}
-            />
-            {formik.touched.price && formik.errors.price ? (
-              <div>{formik.errors.price}</div>
-            ) : null}
+            <div className="input-group">
+              <label htmlFor="price">Price</label>
+              <label className="compulsory__fill__admin">*</label>
+              <input
+                id="price"
+                name="price"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.price}
+                placeholder="Price"
+              />
+              {formik.touched.price && formik.errors.price ? (
+                <div className="error-login">{formik.errors.price}</div>
+              ) : null}
+            </div>
 
-            <label htmlFor="rating">Rating: </label>
-            <input
-              id="rating"
-              name="rating"
-              type="text"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.rating}
-            />
-            {formik.touched.rating && formik.errors.rating ? (
-              <div>{formik.errors.price}</div>
-            ) : null}
-
-            <input type="submit" />
+            {/* <input type="submit" /> */}
+            <button type="submit" className="submit-btn">
+              Save
+            </button>
           </form>
         </div>
       </div>

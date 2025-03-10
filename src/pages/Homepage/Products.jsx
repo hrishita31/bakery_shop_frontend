@@ -7,6 +7,8 @@ import { addToCart } from "../../react-redux/cartSlice";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "./AddToCart";
 import { addItemToFavs } from "./AddToFavs";
+import { deleteFromFavs } from "../DeleteFromFavs";
+import Cookies from "js-cookie";
 
 export const Products = () => {
   const navigate = useNavigate();
@@ -14,6 +16,24 @@ export const Products = () => {
   const url = import.meta.env.VITE_API_URL;
   const image_url = import.meta.env.VITE_IMAGE_URL;
   const dispatch = useDispatch();
+  const token = Cookies.get("token");
+  const headers = { Authorization: `Bearer ${token}` };
+
+  const [favProductId, setFavProductId] = useState("");
+
+  useEffect(() => {
+    if (Cookies.get("token")) {
+      const username = JSON.parse(Cookies.get("details")).usrname;
+      axios
+        .get(`${url}/products/getFavs?username=${username}`, {
+          headers,
+        })
+        .then((res) => {
+          setFavProductId(res.data.result.map((item) => item.productId));
+        })
+        .catch(() => toast.error("Failed to fetch products"));
+    }
+  }, []);
 
   useEffect(() => {
     axios
@@ -40,19 +60,24 @@ export const Products = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="add-product">
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/addProduct");
-            }}
-          >
-            Click to add product
-          </a>
+      {JSON.parse(Cookies.get("details")).isAdmin ? (
+        <div className="container">
+          <div className="add-product">
+            <button
+              className="add-product-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/addProduct");
+              }}
+            >
+              Click to add product
+            </button>
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
+
       {products?.length ? (
         <>
           <section className="product spad">
@@ -66,27 +91,41 @@ export const Products = () => {
                         alt={product.dessertName}
                       />
                       <div className="product__label">
-                        <span>{product.dessertName}</span>
+                        <span>{product.category.toUpperCase()}</span>
                       </div>
                     </div>
                     <div className="product__item__text">
                       <h6>
-                        <a href="#">{product.category}</a>
+                        <a href="#">{product.dessertName.toUpperCase()}</a>
                       </h6>
-                      <div className="product__item__price">
-                        Rs.{product.price}
-                      </div>
-                      <div className="product__add__favs">
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            console.log(product, "product");
-                            addItemToFavs(product._id);
-                          }}
-                        >
-                          <img src="img/icon/heart.png" alt="" />
-                        </a>
+                      <div className="product__item__details">
+                        <div className="product__item__price">
+                          Rs.{product.price}
+                        </div>
+                        <div className="product__add__favs">
+                          {favProductId.includes(product._id) ? (
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                deleteFromFavs(product._id, setFavProductId);
+                              }}
+                            >
+                              <img src="img/icon/red-heart.png" alt="" />
+                            </a>
+                          ) : (
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                console.log(product, 124);
+                                addItemToFavs(product._id, setFavProductId);
+                              }}
+                            >
+                              <img src="img/icon/heart.png" alt="" />
+                            </a>
+                          )}
+                        </div>
                       </div>
                       <div className="cart_add">
                         <button

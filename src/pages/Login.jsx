@@ -9,9 +9,12 @@ import postData from "../requests/postRequest";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import { fetchCartData } from "../react-redux/cartSlice";
+import { useDispatch } from "react-redux";
 
 function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required("username is required"),
@@ -26,7 +29,8 @@ function LoginPage() {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/userLogin");
-      if (data.data.success) {
+      console.log(data, 235);
+      if (data.success) {
         toast.success("Login successful");
         const token = data.data.result.token;
         const details = data.data.result.details;
@@ -38,9 +42,10 @@ function LoginPage() {
         });
 
         navigate("/");
+        const username = JSON.parse(Cookies.get("details")).usrname;
+        dispatch(fetchCartData(username));
       } else {
         toast.error(data.message);
-        // toast.error("Login unsuccessful. Please try again.")
       }
     },
   });
@@ -59,32 +64,44 @@ function LoginPage() {
           <h2>Login</h2>
 
           <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="username">Username</label>
+            <div className="login__label">
+              <label htmlFor="username">Username</label>
+              <label className="compulsory__fill_input">*</label>
+            </div>
             <input
               id="username"
               name="username"
               type="text"
+              placeholder="Username"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.username}
             />
             {formik.touched.username && formik.errors.username ? (
-              <div>{formik.errors.username}</div>
+              <div className="error-login">{formik.errors.username}</div>
             ) : null}
-            <label htmlFor="password">Password</label>
+
+            <div className="login__label">
+              <label htmlFor="password">Password</label>
+              <label className="compulsory__fill_input">*</label>
+            </div>
             <input
               id="password"
               name="password"
               type="password"
+              placeholder="Password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
             />
             {formik.touched.password && formik.errors.password ? (
-              <div>{formik.errors.password}</div>
+              <div className="error-login">{formik.errors.password}</div>
             ) : null}
 
-            <input type="submit" />
+            {/* <input type="submit" /> */}
+            <button type="submit" className="submit-btn">
+            Submit
+          </button>
             <div className="forgot-pwd">
               <a
                 href="#"
@@ -94,6 +111,16 @@ function LoginPage() {
                 }}
               >
                 forgot password
+              </a>
+            </div>
+            <div className="create__new__account">
+              <a href="#"
+              onClick={(e)=>{
+                e.preventDefault();
+                navigate("/signUp")
+              }}
+              >
+                Create a new account?
               </a>
             </div>
           </form>
