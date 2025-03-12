@@ -32,7 +32,6 @@ export const HeaderSection = () => {
               <div className="col-lg-12">
                 <div className="header__top__inner">
                   <div className="header__top__left">
-                    {/* <HeaderLeftSection /> */}
                     {token ? (
                       ""
                     ) : (

@@ -9,15 +9,12 @@ export const deleteFromCart = (productId) => {
 
   const token = Cookies.get("token");
   const headers = { Authorization: `Bearer ${token}` };
+  console.log(headers);
 
   const cartDelete = async () => {
     try {
       await axios.delete(
-        `${url}/products/deleteFromCart?_id=${productId}`,
-        {
-          data: { username: username },
-        },
-        {
+        `${url}/products/deleteFromCart?_id=${productId}&username=${username}`, {
           headers,
         }
       );

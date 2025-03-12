@@ -29,7 +29,7 @@ export const reduceCount = (productId) => {
 
     const reduceQuantity = async() => {
         try{
-           await axios.patch(`${url}/products/decrementProductQuantity?productId=${productId}`, {
+           await axios.patch(`${url}/products/decrementProductQuantity?productId=${productId}`, {},{
             headers,
            })
             

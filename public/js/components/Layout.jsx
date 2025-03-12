@@ -1,18 +1,16 @@
-import Header from "./Header";
-import Preloader from "../../../src/pages/Homepage/Preloader";
-import Footer from "./Footer";
+// import Header from "./Header";
+// import Preloader from "../../../src/pages/Homepage/Preloader";
+// import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Layout() {
   return (
     <>
-      <Preloader />
-      <Header /> 
+    <Header/>
 
-      <main>
-        <Outlet />
-      </main>
-
+      <Outlet />
       <Footer />
     </>
   );

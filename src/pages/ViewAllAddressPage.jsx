@@ -89,7 +89,9 @@ function ViewAllAddressPage() {
                                 );
                               }}
                             >
+                              <button className="member__edit__button">
                               <IconPencil color="black" />
+                              </button>
                             </a>
                           </div>
                           <div className="address__delete">
@@ -114,12 +116,10 @@ function ViewAllAddressPage() {
                                         <button
                                           className="modal__yes__button"
                                           onClick={() => {
-                                            console.log("log1");
                                             handleDeleteAddress(
                                               addressItem._id,
                                               close
                                             );
-                                            console.log("log2");
                                           }}
                                         >
                                           Yes

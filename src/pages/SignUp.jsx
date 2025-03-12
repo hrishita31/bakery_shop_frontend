@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -168,8 +166,6 @@ function SignUpPage() {
 
   return (
     <>
-      {/* header section */}
-      <Header />
 
       {/* breadcrumbs section */}
       <Breadcrumb title="Sign up"></Breadcrumb>
@@ -299,9 +295,6 @@ function SignUpPage() {
           </form>
         </div>
       </div>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

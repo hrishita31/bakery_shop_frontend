@@ -26,8 +26,6 @@ export const checkoutCart = createAsyncThunk(
       toast.success("Checkout successful");
       return updatedCart;
     } catch (error) {
-      //toast.error("Checkout failed");
-      console.log(error.message);
       return toast.error(
         rejectWithValue(error?.response?.data || "an error occurred")
       );
@@ -107,7 +105,9 @@ const cartSlice = createSlice({
           productDetails: [
             {
               dessertName: action.payload.dessertName,
-              image: action.payload.image,
+              image: {
+                filename : action.payload.image,
+              }
             },
           ],
           // productDetails: action.payload.productDetails || [],

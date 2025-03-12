@@ -37,17 +37,8 @@ export const Team = () => {
               </div>
             </div>
             <div className="col-lg-5 col-md-5 col-sm-5">
-              <button
-                className="register-to-team-btn"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate("/registerToTeam");
-                }}
-              >
-                Join Us
-              </button>
-
-              {JSON.parse(Cookies.get("details")).isAdmin ? (
+              <div className="register__team">
+                {JSON.parse(Cookies.get("details")).isAdmin ? (
                   <div className="view-registrations">
                     <button
                       className="view-registrations-btn"
@@ -59,10 +50,20 @@ export const Team = () => {
                       View all Registrations
                     </button>
                   </div>
-                
-              ) : (
-                ""
-              )}
+                ) : (
+                  ""
+                )}
+
+                <button
+                  className="register-to-team-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/registerToTeam");
+                  }}
+                >
+                  Join Us
+                </button>
+              </div>
             </div>
           </div>
           {team?.length ? (
