@@ -57,7 +57,6 @@ export const RatingFunc = ({ formik }) => {
                   value={givenRating}
                   onClick={() => {
                     setRate(givenRating);
-                    console.log("rating given", givenRating)
                     formik.setFieldValue("rating", givenRating); 
                   }}
                 />

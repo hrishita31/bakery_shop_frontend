@@ -75,15 +75,13 @@ function AddProductPage() {
 
       const token = Cookies.get("token");
       const headers = { Authorization: `Bearer ${token}` };
+      
       const data = await axios.post(`${url}/products/newProduct`, formData, {
         headers,
       });
 
       if (data.statusText === "OK") {
         toast.success("Successfully added new product");
-        const headers = { Authorization: `Bearer ${token}` };
-        const detailsResult = await axios.get({ headers: headers });
-        console.log(detailsResult);
         navigate("/");
       } else {
         toast.error(data.message);

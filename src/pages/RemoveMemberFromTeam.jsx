@@ -10,7 +10,7 @@ export const deleteMember = async(memberId, setAllMembers) => {
         console.log(headers);
 
     try {
-        const response = await axios.post(`${url}/teams/deleteMember?_id=${memberId}`, {
+        const response = await axios.post(`${url}/teams/deleteMember?_id=${memberId}`,{}, {
             headers,
         });
     

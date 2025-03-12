@@ -1181,8 +1181,11 @@ Page Not Found
   Team
 -----------------------*/
 
+.register__team{
+  display: flex;
+}
+
 .view-registrations-btn{
-  width: 50%;
     padding: 10px;
     background: #f96e00;
     color: white;
@@ -1190,7 +1193,7 @@ Page Not Found
     border-radius: 5px;
     cursor: pointer;
     margin-top: 30px;
-    margin-left: 235px;
+    margin-left: 100px;
 }
 
 .register-to-team-btn{
@@ -1202,7 +1205,7 @@ Page Not Found
     border-radius: 5px;
     cursor: pointer;
     margin-top: 30px;
-    margin-left: 350px;
+    margin-left: 50px;
   
 }
 .team {
@@ -1530,6 +1533,8 @@ max-width: 100%;
   border-radius: 12px;
 }
 
+
+
 .members__table table tbody .member__table__container tr td.member__status .member__status__accept a button.member__status__button{
   background-color: #f96e00;
   color: white;
@@ -1648,8 +1653,8 @@ margin-bottom: 50px;
 }
 
 .testimonial__author__pic img {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid black;
@@ -2588,7 +2593,7 @@ margin-bottom: 50px;
   margin-top: -20px;
 }
 
-.address__icons{
+.address__label .address__icons{
   display: flex;
 }
 
@@ -2635,6 +2640,12 @@ margin-bottom: 50px;
   border-radius: 5px;
   cursor: pointer;
   margin-left:14px;
+}
+
+.member__edit__button{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 
 /*---------------------
@@ -2889,6 +2900,26 @@ margin-bottom: 50px;
 .shop__option__right select:focus {
   outline: none;
   border-color: #007bff;
+}
+
+.inputWithButton {
+  position: relative;
+  height: 30px;
+  width : 210px;
+}
+
+.inputWithButton input{
+    width: 70%;
+    height: 40px;
+    padding-right: 60px;
+}
+
+.inputWithButton button {
+  padding : 0px;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  /* top : 5px; */
 }
 
 .shop__option__search input {
@@ -5676,5 +5707,11 @@ margin-bottom: 30px;
 
 .w-full {
   width: 100%;
+  margin-left: 30px;
+  margin-right: 40px;
+}
+
+.react-multi-carousel-list.w-full.react-multi-carousel-track ul.react-multi-carousel-track{
+  margin-left: 155px;
 }
 

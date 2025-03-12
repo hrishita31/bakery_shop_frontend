@@ -12,11 +12,7 @@ export const deleteFromFavs = (productId, setFavProductId) => {
   const favsDelete = async () => {
     try {
       await axios.delete(
-        `${url}/products/deleteFromFavs?_id=${productId}`,
-        {
-          data: { username: username },
-        },
-        {
+        `${url}/products/deleteFromFavs?_id=${productId}&username=${username}`, {
           headers,
         }
       );

@@ -6,15 +6,13 @@ import Cookies from "js-cookie";
 export const acceptTeamMember = async (memberId, setAllMembers) => {
   const url = import.meta.env.VITE_API_URL;
   const token = Cookies.get("token");
-  console.log(token);
   const headers = { Authorization: `Bearer ${token}` };
-  console.log(headers);
 
   try {
     const response = await axios.post(
-      `${url}/teams/addToTeam?_id=${memberId}`,
+      `${url}/teams/addToTeam?_id=${memberId}`,{},
       {
-        headers,
+       headers: headers,
       }
     );
 

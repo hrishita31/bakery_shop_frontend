@@ -31,7 +31,8 @@ function AppRoutes() {
       <BrowserRouter>
 
         <Routes>
-          <Route path="/" element={<Layout />} />
+        
+          <Route  element={<Layout />} >
           <Route index element={<HomePage />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -50,6 +51,7 @@ function AppRoutes() {
           <Route path="/viewDetails" element={<LoginRoute Component={ViewProfilePage } />} />
           <Route path="/addEditAddress" element={<LoginRoute Component={AddAddressPage } />} />
           <Route path="/viewAllAddress" element={<LoginRoute Component={ViewAllAddressPage } />} />
+          </Route>
 
           {/* only the admin can access these pages */}
           <Route path="/addProduct" element={<PrivateRoute Component={AddProductPage } />} />
@@ -59,6 +61,8 @@ function AppRoutes() {
           <Route path="/userNotAuthorized" element={<UserNotAuthenticated />} />
 
           <Route path="*" element={<PageNotFound />} />
+
+          
         </Routes>
       </BrowserRouter>
       {/* <Footer /> */}

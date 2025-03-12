@@ -4,26 +4,24 @@ import Breadcrumb from "./Breadcrumbs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { addToCart } from "../react-redux/cartSlice";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "./Homepage/AddToCart";
 import { addItemToFavs } from "./Homepage/AddToFavs";
 import Cookies from "js-cookie";
 import { deleteFromFavs } from "./DeleteFromFavs";
+import { IconCircleDashedX } from "@tabler/icons-react";
 
 function useDebounce(value, delay) {
-  const [debounceValue, setDebounceValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebounceValue(value);
+      setDebouncedValue(value);
     }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [value, delay]);
-  return debounceValue;
+  return debouncedValue;
 }
 
 function ShopPage() {
@@ -31,150 +29,100 @@ function ShopPage() {
   const image_url = import.meta.env.VITE_IMAGE_URL;
   const dispatch = useDispatch();
   const token = Cookies.get("token");
-    const headers = { Authorization: `Bearer ${token}` };
-  const [selectedValue, setSelectedValue] = useState("");
+  const headers = { Authorization: `Bearer ${token}` };
+  const username = JSON.parse(Cookies.get("details")).usrname;
+
+  const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [query, setQuery] = useState("");
-  const username = JSON.parse(Cookies.get("details")).usrname;
-  const [favProductId, setFavProductId] = useState("");
+  const debouncedQuery = useDebounce(query, 2000);
+  const [favProductId, setFavProductId] = useState([]);
+  const [sortOption, setSortOption] = useState("");
 
   useEffect(() => {
     axios
-      .get(`${url}/products/getFavs?username=${username}`, {
-        headers,
-      })
-      .then((res) => {
-        setFavProductId(res.data.result.map((item) => item.productId));
-      })
-      .catch(() => toast.error("Failed to fetch products"));
+      .get(`${url}/products/getFavs?username=${username}`, { headers })
+      .then((res) =>
+        setFavProductId(res.data.result.map((item) => item.productId))
+      )
+      .catch(() => toast.error("Failed to fetch favorites"));
   }, []);
-
-  const debouncedQuery = useDebounce(query, 2000);
 
   useEffect(() => {
     axios
       .get(`${url}/products/getCategory`)
-      .then((res) => {
-        setCategories(res.data.result);
-      })
+      .then((res) => setCategories(res.data.result))
       .catch(() => toast.error("Failed to fetch categories"));
   }, []);
-
-  const handleCategoryClick = async (category) => {
-    const response = await axios.post(
-      `${url}/products/getProductFromCategory?category=${category}`
-    );
-    if (response.statusText === "OK") {
-      setProducts(response.data.result);
-    } else {
-      toast.error(response.message);
-    }
-  };
 
   const viewProducts = async () => {
     try {
       const response = await axios.get(`${url}/products/displayProduct`);
-      console.log(response);
+      setAllProducts(response.data.result);
       setProducts(response.data.result);
     } catch {
       toast.error("Failed to fetch products");
     }
   };
 
-  const handleCategoryChange = async (e) => {
-    const value = e.target.value;
-    setSelectedCategory(value);
-  };
+  useEffect(() => {
+    viewProducts();
+  }, []);
 
   useEffect(() => {
+    let filteredProducts = allProducts;
+
     if (selectedCategory) {
-      handleCategoryClick(selectedCategory);
-    } else {
-      viewProducts();
+      filteredProducts = filteredProducts.filter(
+        (product) =>
+          product.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
     }
-  }, [selectedCategory]);
 
-  const searchProducts = useCallback(async (product) => {
-    const response = await axios.post(
-      `${url}/products/searchProduct?product=${product}`
-    );
-    if (response.statusText === "OK") {
-      setProducts(response.data.result);
-    } else {
-      toast.error(response.message);
+    if (debouncedQuery) {
+      filteredProducts = filteredProducts.filter((product) =>
+        product.dessertName.toLowerCase().includes(debouncedQuery.toLowerCase())
+      );
     }
-  }, []);
 
-  useEffect(() => {
-    searchProducts(debouncedQuery);
-  }, [debouncedQuery, searchProducts]);
-
-  const handleProduct = (e) => {
-    setQuery(e.target.value);
-  };
-
-  useEffect(() => {
-    axios
-      .get(`${url}/products/displayProduct`)
-      .then((res) => {
-        setProducts(res.data.result);
-      })
-      .catch(() => toast.error("Failed to fetch products"));
-  }, []);
-
-  useEffect(() => {}, [products]);
-
-  useEffect(() => {}, [categories]);
-
-  const handleOptionClick = async (value) => {
-    const response = await axios.post(`${url}/products/${value}`);
-    if (response.statusText === "OK") {
-      setProducts(response.data.result);
-    } else {
-      toast.error(response.message);
+    switch (sortOption) {
+      case "A-Z":
+        filteredProducts.sort((a, b) =>
+          a.dessertName.localeCompare(b.dessertName)
+        );
+        break;
+      case "Z-A":
+        filteredProducts.sort((a, b) =>
+          b.dessertName.localeCompare(a.dessertName)
+        );
+        break;
+      case "Low-High":
+        filteredProducts.sort((a, b) => a.price - b.price);
+        break;
+      case "High-Low":
+        filteredProducts.sort((a, b) => b.price - a.price);
+        break;
+      default:
+        break;
     }
-  };
 
-  const handleChange = (e) => {
-    if (selectedValue) {
-      viewProducts();
-    } else {
-      const value = e.target.value;
-      setSelectedValue(value);
-      handleOptionClick(value);
-    }
-  };
-
-  const addCart = (productId, dessertName, price, image, quantity = 1) => {
-    dispatch(
-      addToCart({
-        productId,
-        dessertName,
-        price,
-        image,
-        quantity,
-      })
-    );
-  };
+    setProducts([...filteredProducts]);
+  }, [selectedCategory, debouncedQuery, sortOption, allProducts]);
 
   return (
     <>
-      {/* header section */}
       <Header />
+      <Breadcrumb title="Shop" />
 
-      {/* breadcrumb section */}
-      <Breadcrumb title="Shop"></Breadcrumb>
-
-      {/*  shop section */}
       <div className="shop__option">
         <div className="row">
           <div className="col-lg-7 col-md-7">
             <div className="shop__option__search">
               <form action="#">
-                <select onChange={handleCategoryChange}>
-                  <option value="">Categories</option>
+                <select onChange={(e) => setSelectedCategory(e.target.value)}>
+                  <option value="">All Categories</option>
                   {categories.map((item) => (
                     <option key={item} value={item}>
                       {item}
@@ -182,31 +130,40 @@ function ShopPage() {
                   ))}
                 </select>
 
-                <input
-                  type="text"
-                  onChange={handleProduct}
-                  value={query}
-                  placeholder="Search"
-                />
+                <div className="inputWithButton">
+                  <input
+                    type="text"
+                    onChange={(e) => setQuery(e.target.value)}
+                    value={query}
+                    placeholder="Search"
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setQuery("");
+                    }}
+                  >
+                    <IconCircleDashedX color="red" size={20} />
+                  </button>
+                </div>
               </form>
             </div>
           </div>
 
           <div className="col-lg-5 col-md-5">
             <div className="shop__option__right">
-              <select onChange={handleChange}>
+              <select onChange={(e) => setSortOption(e.target.value)}>
                 <option value="">Default sorting</option>
-                <option value="sortProductsAscending">A to Z</option>
-                <option value="sortProductsDescending">Z to A</option>
-                <option value="sortPriceDescending">High to low price</option>
-                <option value="sortPriceAscending">Low to high price</option>
+                <option value="A-Z">A to Z</option>
+                <option value="Z-A">Z to A</option>
+                <option value="High-Low">High to Low Price</option>
+                <option value="Low-High">Low to High Price</option>
               </select>
-              {/* <p>Selected value : {selectedValue}</p> */}
             </div>
           </div>
         </div>
       </div>
-      {/* <Products /> */}
+
       <section className="shop spad">
         <div className="container">
           <div className="row">
@@ -246,7 +203,6 @@ function ShopPage() {
                             href="#"
                             onClick={(e) => {
                               e.preventDefault();
-                              console.log(product, 124);
                               addItemToFavs(product._id, setFavProductId);
                             }}
                           >
@@ -259,11 +215,14 @@ function ShopPage() {
                       <button
                         onClick={() => {
                           addItemToCart(product._id);
-                          addCart(
-                            product._id,
-                            product.dessertName,
-                            product.price,
-                            product.image.filename
+                          dispatch(
+                            addToCart({
+                              productId: product._id,
+                              dessertName: product.dessertName,
+                              price: product.price,
+                              image: product.image.filename,
+                              quantity: 1,
+                            })
                           );
                         }}
                       >
@@ -278,7 +237,6 @@ function ShopPage() {
         </div>
       </section>
 
-      {/* Footer section */}
       <Footer />
     </>
   );

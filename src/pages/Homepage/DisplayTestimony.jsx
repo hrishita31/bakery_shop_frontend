@@ -45,7 +45,7 @@ export const ShowTestimony = () => {
             autoPlay
             autoPlaySpeed={9000}
             centerMode={false}
-            className=""
+            className="react-multi-carousel-track"
             containerClass="w-full"
             draggable
             infinite

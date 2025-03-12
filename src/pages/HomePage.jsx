@@ -20,9 +20,6 @@ export const HomePage = () => {
       {/*Hero section*/}
       <Hero />
 
-      {/*categories section*/}
-      {/* <Categories /> */}
-
       {/*product section*/}
       <Products />
 

@@ -4,7 +4,7 @@ import Team from "./Homepage/Team";
 import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 
-function AboutPage() {
+const AboutPage = () => {
   return (
     <>
       {/* Header section */}
