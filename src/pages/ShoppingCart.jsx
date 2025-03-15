@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import { useNavigate } from "react-router-dom";
 import { IconSquareRoundedX } from "@tabler/icons-react";
@@ -71,9 +69,6 @@ function ShoppingCartPage() {
 
   return (
     <>
-      {/* header section */}
-      <Header />
-
       {/* breadcrumb section */}
       <Breadcrumb title="Shopping Cart"></Breadcrumb>
 
@@ -220,10 +215,7 @@ function ShoppingCartPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer section */}
-      <Footer />
-    </>
+    </>                     
   );
 }
 

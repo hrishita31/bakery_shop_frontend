@@ -27,7 +27,6 @@ import {UserNotAuthenticated} from "../../../src/pages/Auth/UserNotAuthenticated
 function AppRoutes() {
   return (
     <>
-      {/* <Header /> */}
       <BrowserRouter>
 
         <Routes>
@@ -61,11 +60,9 @@ function AppRoutes() {
           <Route path="/userNotAuthorized" element={<UserNotAuthenticated />} />
 
           <Route path="*" element={<PageNotFound />} />
-
           
         </Routes>
       </BrowserRouter>
-      {/* <Footer /> */}
     </>
   );
 }

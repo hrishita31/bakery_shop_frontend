@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -58,9 +56,6 @@ function ForgotPasswordPage() {
   });
   return (
     <>
-      {/* Header section */}
-      <Header />
-
       {/* Breadcrumb section */}
       <Breadcrumb title="Forgot Password" />
 
@@ -93,9 +88,6 @@ function ForgotPasswordPage() {
           </form>
         </div>
       </div>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

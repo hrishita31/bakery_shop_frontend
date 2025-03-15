@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import { Country, State, City } from "country-state-city";
 import { useEffect, useState } from "react";
@@ -205,8 +203,7 @@ function AddAddressPage() {
        <Loader /> :
     
     <>
-      {/* Header section */}
-      <Header />
+
 
       {/* Breadcrumbs section */}
       <Breadcrumb title={addressId ? "Edit Address" : "Add Address"} />
@@ -344,9 +341,6 @@ function AddAddressPage() {
           </button>
         </form>
       </div>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

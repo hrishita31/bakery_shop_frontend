@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,9 +48,6 @@ export const WishlistPage = () => {
 
   return (
     <>
-      {/* header section */}
-      <Header />
-
       {/* breadcrumb section */}
       <Breadcrumb title="Wishlist"></Breadcrumb>
 
@@ -143,9 +138,6 @@ export const WishlistPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 };

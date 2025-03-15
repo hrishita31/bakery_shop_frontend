@@ -1,14 +1,10 @@
-import Header from "../../public/js/components/Header";
 import Testimonial from "./Homepage/Testimonial";
 import Team from "./Homepage/Team";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 
 const AboutPage = () => {
   return (
     <>
-      {/* Header section */}
-      <Header />
 
       {/* Breadcrumb */}
       <Breadcrumb title="About Us"></Breadcrumb>
@@ -35,9 +31,6 @@ const AboutPage = () => {
 
       {/* Team section */}
       <Team />
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

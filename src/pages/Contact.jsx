@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import Map from "./Homepage/Map";
 import * as Yup from "yup";
@@ -104,9 +102,6 @@ export const ContactPage = () => {
 
   return (
     <>
-      {/* header section */}
-      <Header />
-
       {/* breadcrumb section */}
       <Breadcrumb title="Contact"></Breadcrumb>
 
@@ -252,9 +247,6 @@ export const ContactPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 };

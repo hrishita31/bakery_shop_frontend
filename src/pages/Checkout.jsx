@@ -1,12 +1,8 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 
 function CheckoutPage() {
   return (
     <>
-      {/* Header section */}
-      <Header />
 
       {/* Breadcrumb section */}
       <Breadcrumb title="Checkout"></Breadcrumb>
@@ -198,9 +194,6 @@ function CheckoutPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }
