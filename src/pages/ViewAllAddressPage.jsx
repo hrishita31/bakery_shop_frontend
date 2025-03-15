@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -57,9 +55,6 @@ function ViewAllAddressPage() {
 
   return (
     <>
-      {/* Header section */}
-      <Header />
-
       {/* Breadcrumbs section */}
       <Breadcrumb title="Saved addresses" />
 
@@ -204,9 +199,6 @@ function ViewAllAddressPage() {
       ) : (
         <div>No address</div>
       )}
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

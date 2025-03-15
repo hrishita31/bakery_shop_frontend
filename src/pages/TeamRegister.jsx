@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -101,8 +99,6 @@ function TeamRegisterPage() {
   });
   return (
     <>
-      {/* Header section */}
-      <Header />
 
       {/* Breadcrumb section */}
       <Breadcrumb title="Team Registration" />
@@ -230,9 +226,6 @@ function TeamRegisterPage() {
           </form>
         </div>
       </div>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

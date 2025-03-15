@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import Cookies from "js-cookie";
 import { IconUserPlus } from "@tabler/icons-react";
@@ -60,8 +58,6 @@ function ViewProfilePage() {
 
   return (
     <>
-      {/* Header section */}
-      <Header />
 
       {/* Breadcrumb section */}
       <Breadcrumb title="Details" />
@@ -104,9 +100,6 @@ function ViewProfilePage() {
           </div>
         </div>
       </div>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

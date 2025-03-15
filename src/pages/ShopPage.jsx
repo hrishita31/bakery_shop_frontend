@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -113,7 +111,6 @@ function ShopPage() {
 
   return (
     <>
-      <Header />
       <Breadcrumb title="Shop" />
 
       <div className="shop__option">
@@ -236,8 +233,6 @@ function ShopPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </>
   );
 }

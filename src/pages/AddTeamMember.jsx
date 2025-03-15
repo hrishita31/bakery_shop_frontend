@@ -1,5 +1,3 @@
-import Header from "../../public/js/components/Header";
-import Footer from "../../public/js/components/Footer";
 import Breadcrumb from "./Breadcrumbs";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -34,8 +32,6 @@ function AddTeamMemberPage() {
 
   return (
     <>
-      {/* Header section */}
-      <Header />
 
       {/* Breadcrumb section */}
       <Breadcrumb title="Add to Team" />
@@ -173,9 +169,6 @@ function AddTeamMemberPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer section */}
-      <Footer />
     </>
   );
 }

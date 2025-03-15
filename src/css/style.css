@@ -431,11 +431,17 @@ margin-top:-20px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -13px;
+  margin-top: -43px;
   margin-left: -13px;
   border-radius: 60px;
   animation: loader 0.8s linear infinite;
   -webkit-animation: loader 0.8s linear infinite;
+}
+
+.loader__text span{
+  position: absolute;
+  top: 280px;
+  right: 585px;
 }
 
 @keyframes loader {
@@ -547,7 +553,7 @@ margin-top:-20px;
   Header
 -----------------------*/
 .header {
-  background: #f08632;
+  background:  #f96e00;
 }
 
 .header__top {
@@ -2648,6 +2654,19 @@ margin-bottom: 50px;
   bottom: 20px;
 }
 
+/*--------------------
+ loader
+---------------------- */
+.spinner{
+  position: absolute;
+  bottom: 100px;
+  height: 150px;
+}
+
+.loader__text{
+  height: 130px;  
+}
+
 /*---------------------
   About
 -----------------------*/
@@ -2917,7 +2936,7 @@ margin-bottom: 50px;
 .inputWithButton button {
   padding : 0px;
   position: absolute;
-  top: 7px;
+  top: 4px;
   right: 7px;
   /* top : 5px; */
 }
@@ -2928,6 +2947,9 @@ margin-bottom: 50px;
   border: 1px solid #ddd;
   font-size: 16px;
   width: 200px;
+  position: absolute;
+  bottom: -6px;
+  right: 5px;
 }
 
 .shop__option__search input::placeholder {

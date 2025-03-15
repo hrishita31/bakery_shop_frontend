@@ -3,9 +3,11 @@ export const Loader = () => {
     <>
     <div className="loader">
       <div className="spinner"></div>
-      
+    
     </div>
-    <p>Loading...</p>
+    <div className="loader__text">
+    <span>Loading...</span>
+    </div>
     </>
   );
 };
