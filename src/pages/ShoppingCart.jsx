@@ -22,7 +22,6 @@ function ShoppingCartPage() {
   const navigate = useNavigate();
 
   const handleCheckout = async () => {
-    console.log(cart, "checkout cart");
     dispatch(checkoutCart(cart));
     // dispatch(fetchCartData(username));
   };
@@ -57,11 +56,9 @@ function ShoppingCartPage() {
   };
 
   useEffect(() => {
-    console.log(cart, "cart");
   }, [cart]);
 
   useEffect(() => {
-    console.log(cart, "cart");
     if (cart.length === 0) {
       // dispatch(fetchCartData(username));
     }
@@ -147,7 +144,6 @@ function ShoppingCartPage() {
                                     <a
                                       href="#"
                                       onClick={(e) => {
-                                        console.log(item, "item");
                                         e.preventDefault();
                                         incrementToCart(item.productId);
                                       }}

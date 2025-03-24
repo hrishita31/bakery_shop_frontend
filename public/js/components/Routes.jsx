@@ -50,11 +50,12 @@ function AppRoutes() {
           <Route path="/viewDetails" element={<LoginRoute Component={ViewProfilePage } />} />
           <Route path="/addEditAddress" element={<LoginRoute Component={AddAddressPage } />} />
           <Route path="/viewAllAddress" element={<LoginRoute Component={ViewAllAddressPage } />} />
-          </Route>
+          
 
           {/* only the admin can access these pages */}
           <Route path="/addProduct" element={<PrivateRoute Component={AddProductPage } />} />
           <Route path="/viewAllRegistrations" element={<PrivateRoute Component={AddTeamMemberPage } />} />
+          </Route>
 
           <Route path="/userNotAuthenticated" element={<UserNotAuthorized />} />
           <Route path="/userNotAuthorized" element={<UserNotAuthenticated />} />

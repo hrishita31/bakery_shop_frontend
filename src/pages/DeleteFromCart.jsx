@@ -9,7 +9,6 @@ export const deleteFromCart = (productId) => {
 
   const token = Cookies.get("token");
   const headers = { Authorization: `Bearer ${token}` };
-  console.log(headers);
 
   const cartDelete = async () => {
     try {

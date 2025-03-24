@@ -4,10 +4,14 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { useNavigate } from "react-router-dom";
-import postData from "../requests/postRequest";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 function ForgotPasswordPage() {
   // const navigate = useNavigate();
+  const url = import.meta.env.VITE_API_URL;
+  const token = Cookies.get("token");
+  const headers = { Authorization: `Bearer ${token}` };
 
   const ForgotPasswordSchema = Yup.object().shape({
     username: Yup.string()
@@ -41,15 +45,21 @@ function ForgotPasswordPage() {
     },
     validationSchema: ForgotPasswordSchema,
     onSubmit: async (values) => {
-      const data = await postData(values, "/users/getUser");
-      if (data.success) {
-        const email = data.data.result.email;
+      const response = await axios.post(
+        `${url}/users/getUser`,
+        { ...values },
+        {
+          headers: headers,
+        }
+      );
+      if (response.statusText === "OK") {
+        const email = response.data.result.email;
         toast.success(
           `User found! Email sent to ${email || "the registered email id"} `
         );
       } else {
         toast.error(
-          data.message || "User not found, please enter correct username"
+          response.message || "User not found, please enter correct username"
         );
       }
     },
@@ -66,7 +76,8 @@ function ForgotPasswordPage() {
 
           <form onSubmit={formik.handleSubmit}>
             <div className="forgot__password__label">
-            <label htmlFor="username">Username</label><label className="compulsory__fill_input">*</label>
+              <label htmlFor="username">Username</label>
+              <label className="compulsory__fill_input">*</label>
             </div>
             <input
               id="username"
@@ -83,8 +94,8 @@ function ForgotPasswordPage() {
 
             {/* <input type="submit" /> */}
             <button type="submit" className="submit-btn">
-            Submit
-          </button>
+              Submit
+            </button>
           </form>
         </div>
       </div>

@@ -7,7 +7,6 @@ export const deleteMember = async(memberId, setAllMembers) => {
     const url = import.meta.env.VITE_API_URL;
     const token = Cookies.get("token");
         const headers = { Authorization: `Bearer ${token}` };
-        console.log(headers);
 
     try {
         const response = await axios.post(`${url}/teams/deleteMember?_id=${memberId}`,{}, {

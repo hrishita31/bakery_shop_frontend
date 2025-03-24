@@ -100,7 +100,6 @@ export const WishlistPage = () => {
                             
                               <button
                                 onClick={() => {
-                                  console.log(item, "item");
                                   addItemToCart(item.productId);
                                   addCart(
                                     item.productId,

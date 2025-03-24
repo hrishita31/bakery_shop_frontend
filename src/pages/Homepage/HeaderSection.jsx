@@ -252,7 +252,6 @@ export const HeaderSection = () => {
                         <a
                           href="#"
                           onClick={(e) => {
-                            console.log(cart, "is cart quantity updated or not")
                             dispatch(saveCartOnLogout(cart));
                             Cookies.remove("token");
                             Cookies.remove("details");

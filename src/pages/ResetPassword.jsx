@@ -4,11 +4,11 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import patchData from "../requests/patchRequest";
 
 function ResetPasswordPage() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
   const location = useLocation();
 
   const ResetPasswordSchema = Yup.object().shape({
@@ -64,7 +64,7 @@ function ResetPasswordPage() {
       if (data.success) {
         toast.success("Successfully updated the password");
 
-        // navigate("/login");
+        navigate("/login");
       } else {
         toast.error(data.message);
       }
@@ -88,14 +88,14 @@ function ResetPasswordPage() {
             <input
               id="newPassword"
               name="newPassword"
-              type="text"
+              type="password"
               placeholder="Enter new password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.newPassword}
             />
             {formik.touched.newPassword && formik.errors.newPassword ? (
-              <div>{formik.errors.newPassword}</div>
+              <div className="error-login">{formik.errors.newPassword}</div>
             ) : null}
 
             <div className="reset__password__label">
@@ -105,14 +105,14 @@ function ResetPasswordPage() {
             <input
               id="confirmPassword"
               name="confirmPassword"
-              type="confirmPassword"
+              type="password"
               placeholder="Confirm new password"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.confirmPassword}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <div>{formik.errors.confirmPassword}</div>
+              <div className="error-login">{formik.errors.confirmPassword}</div>
             ) : null}
 
             {/* <input type="submit" /> */}

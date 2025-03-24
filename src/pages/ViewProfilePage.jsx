@@ -16,6 +16,8 @@ function ViewProfilePage() {
   const [profilePic, setProfilePic] = useState("");
   const image_url = import.meta.env.VITE_IMAGE_URL;
 
+  const getChar = (s, n) => s.slice(-n);
+
   useEffect(() => {
     axios
       .get(`${url}/users/displayProfilePicture?username=${username}`, {
@@ -24,7 +26,6 @@ function ViewProfilePage() {
       .then((res) => {
         setProfilePic(res.data.result);
       });
-    // .catch(() => toast.info("Add your profile ph"));
   }, []);
 
   useEffect(() => {}, [profilePic]);
@@ -44,12 +45,17 @@ function ViewProfilePage() {
           headers,
         }
       );
-      if (response.status === 200) {
+      if (
+        (getChar(response.data.result.image.filename, 4) === ".png" ||
+          getChar(response.data.result.image.filename, 4) === ".jpg" ||
+          getChar(response.data.result.image.filename, 5) === ".jpeg") &&
+        response.status === 200
+      ) {
         window.location.reload();
 
         toast.success("Profile picture updated successfully!");
       } else {
-        toast.error(response.data.message || "Something went wrong!");
+        toast.error(response.data.message || "Profile picture should be of the form .png, .jpg or .jpeg");
       }
     } catch (error) {
       toast.error(error.message);
@@ -58,7 +64,6 @@ function ViewProfilePage() {
 
   return (
     <>
-
       {/* Breadcrumb section */}
       <Breadcrumb title="Details" />
 
