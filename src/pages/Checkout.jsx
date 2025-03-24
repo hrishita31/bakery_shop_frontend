@@ -1,23 +1,74 @@
 import Breadcrumb from "./Breadcrumbs";
+// import { useSelector } from "react-redux";
+// import { loadStripe } from "@stripe/stripe-js";
+// import Cookies from "js-cookie";
+// import axios from "axios";
+// import { toast } from "react-toastify";
 
 function CheckoutPage() {
+  // const cart = useSelector((state) => state.cart);
+  // const url = import.meta.env.VITE_API_URL;
+  // const token = Cookies.get("token");
+  // const headers = { Authorization: `Bearer ${token}` };
+
+  // const makePayment = async () => {
+  //   const stripe = await loadStripe(
+  //     import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+  //   );
+
+  //   const body = {
+  //     products: cart,
+  //   };
+
+  //   const data = axios.post(
+  //     `${url}/products/makePayment`,
+  //     JSON.stringify(body),
+  //     {
+  //       headers,
+  //     }
+  //   );
+
+  //   // if (data.statusText === "OK") {
+  //   //   toast.success("Product added to cart");
+  //   // } else {
+  //   //   toast.error(data.message);
+  //   // }
+  //   const session = await data.json();
+
+  //   const result = stripe.redirectToCheckout({
+  //     sessionId : session.id
+  //   })
+
+  // };
+
+  // async function handleCheckout() {
+  //   const stripe = await getStripe();
+  //   const { error } = await stripe.redirectToCheckout({
+  //     lineItems: [
+  //       {
+  //         price: import.meta.env.VITE_STRIPE_PRODUCT_ID,
+  //         quantity: 1,
+  //       },
+  //     ],
+  //     mode: 'subscription',
+  //     successUrl: `http://localhost:5000/success`,
+  //     cancelUrl: `http://localhost:5000/cancel`,
+  //     customerEmail: 'customer@email.com',
+  //   });
+  //   console.log(error.message);
+  // }
   return (
     <>
-
       {/* Breadcrumb section */}
       <Breadcrumb title="Checkout"></Breadcrumb>
-
-      {/* Checkout section */}
-      <section className="checkout spad">
+      {/* <button onClick={makePayment}>Checkout</button> */}
+      {/* <section className="checkout spad">
         <div className="container">
           <div className="checkout__form">
             <form action="#">
               <div className="row">
                 <div className="col-lg-8 col-md-6">
-                  <h6 className="coupon__code">
-                    <span className="icon_tag_alt"></span> Have a coupon?{" "}
-                    <a href="#">Click here</a> to enter your code
-                  </h6>
+                  
                   <h6 className="checkout__title">Billing Details</h6>
                   <div className="row">
                     <div className="col-lg-6">
@@ -193,7 +244,7 @@ function CheckoutPage() {
             </form>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

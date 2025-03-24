@@ -153,7 +153,6 @@ function SignUpPage() {
       formData.append("confirmPassword", values.confirmPassword);
 
       const data = await postData(values, "/users/newUser");
-      console.log(data, 235);
       if (data.success) {
         toast.success("Sign up successful");
 

@@ -13,7 +13,6 @@ export const checkoutCart = createAsyncThunk(
   async (cartItems, { rejectWithValue }) => {
     const username = JSON.parse(Cookies.get("details")).usrname;
     const updatedCart = [{ username: username }, ...cartItems];
-    console.log(updatedCart, "cart items");
 
     try {
       const response = await axios.post(`${url}/products/checkout`, {
@@ -43,7 +42,6 @@ export const fetchCartData = createAsyncThunk(
           headers,
         }
       );
-      console.log(response.data.result);
       return response.data.result;
     } catch (error) {
       return toast.error(rejectWithValue(error.response.data));
@@ -56,7 +54,6 @@ export const saveCartOnLogout = createAsyncThunk(
   async (cartItems, { rejectWithValue }) => {
     const username = JSON.parse(Cookies.get("details")).usrname;
     const updatedCart = [{ username: username }, ...cartItems];
-    console.log(updatedCart, "cart items");
 
     try {
       const response = await axios.post(`${url}/products/saveOnLogout`, {

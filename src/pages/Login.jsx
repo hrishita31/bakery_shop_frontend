@@ -27,7 +27,6 @@ function LoginPage() {
     validationSchema: LoginSchema,
     onSubmit: async (values) => {
       const data = await postData(values, "/users/userLogin");
-      console.log(data, 235);
       if (data.success) {
         toast.success("Login successful");
         const token = data.data.result.token;
