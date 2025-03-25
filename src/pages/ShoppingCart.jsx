@@ -24,6 +24,7 @@ function ShoppingCartPage() {
   const handleCheckout = async () => {
     dispatch(checkoutCart(cart));
     // dispatch(fetchCartData(username));
+    navigate("/checkout")
   };
 
   const totalPrice = cart.reduce(
@@ -55,8 +56,7 @@ function ShoppingCartPage() {
     );
   };
 
-  useEffect(() => {
-  }, [cart]);
+  useEffect(() => {}, [cart]);
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -211,7 +211,7 @@ function ShoppingCartPage() {
           </div>
         </div>
       </section>
-    </>                     
+    </>
   );
 }
 

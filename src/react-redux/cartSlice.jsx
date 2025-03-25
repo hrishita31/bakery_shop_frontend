@@ -118,6 +118,8 @@ const cartSlice = createSlice({
         (item) => item.productId === action.payload.productId
       );
       item.quantity++;
+      const unitPrice = item.price;
+      item.totalPrice+=unitPrice;
     },
     decrementQuantity: (state, action) => {
       const item = state.cart.find(
@@ -130,6 +132,8 @@ const cartSlice = createSlice({
         state.cart = removeItem;
       } else {
         item.quantity--;
+        const unitPrice = item.price;
+      item.totalPrice-=unitPrice;
       }
     },
     removeItem: (state, action) => {
@@ -160,6 +164,7 @@ const cartSlice = createSlice({
           image: action.payload.image,
           price: action.payload.price,
           quantity: 1,
+          totalPrice : action.payload.price,
           // productDetails: action.payload.productDetails || [],
         });
         console.log("Updated Cart:", state.cart);
