@@ -19,6 +19,8 @@ import AddAddressPage from "../../../src/pages/AddAddressPage";
 import ViewAllAddressPage from "../../../src/pages/ViewAllAddressPage";
 import PageNotFound from "../../../src/pages/PageNotFound";
 import AddTeamMemberPage from "../../../src/pages/AddTeamMember";
+import SuccessPayment from "../../../src/pages/Successpayment";
+import FailedPayment from "../../../src/pages/Failedpayment";
 
 import {LoginRoute, PrivateRoute} from "../../../src/pages/Auth/PrivateRoutes"
 import {UserNotAuthorized} from "../../../src/pages/Auth/UserNotAuthorizedPage"
@@ -50,7 +52,8 @@ function AppRoutes() {
           <Route path="/viewDetails" element={<LoginRoute Component={ViewProfilePage } />} />
           <Route path="/addEditAddress" element={<LoginRoute Component={AddAddressPage } />} />
           <Route path="/viewAllAddress" element={<LoginRoute Component={ViewAllAddressPage } />} />
-          
+          <Route path="/successPayment" element={<LoginRoute Component={SuccessPayment } />} />
+          <Route path="/failedPayment" element={<LoginRoute Component={FailedPayment } />} />
 
           {/* only the admin can access these pages */}
           <Route path="/addProduct" element={<PrivateRoute Component={AddProductPage } />} />
