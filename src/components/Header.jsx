@@ -1,5 +1,5 @@
-import HeaderSection from "../../../src/pages/Homepage/HeaderSection";
-import Menu from "../../../src/pages/Homepage/Menu";
+import HeaderSection from "../pages/Homepage/HeaderSection";
+import Menu from "../pages/Homepage/Menu";
 
 export function Header() {
   return (

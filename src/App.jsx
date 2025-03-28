@@ -1,4 +1,4 @@
-import AppRoutes from "../public/js/components/Routes";
+import AppRoutes from "./components/Routes";
 import "./App.css";
 // import { Counter } from "./react-redux/features/countProducts";
 
