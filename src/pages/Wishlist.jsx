@@ -85,7 +85,10 @@ export const WishlistPage = () => {
                           <td className="product__cart__item">
                             <div className="product__cart__item__pic">
                               <img className="product__cart__item__img"
-                                src={`${image_url}/images/product/${item.productDetails[0].image.filename}`}
+                            
+                            
+                              
+                                src={`${image_url}/images/product/${item.image}`}
                                 // src = {`${image_url}/images/product/${item.image}`}
                                 alt={item.dessertName}
                               />
