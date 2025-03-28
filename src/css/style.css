@@ -332,19 +332,20 @@ body {
 
 .create__new__account{
   color:blue;
-text-align: right;
+text-align: left;
 padding-top:-5px;
 font-size: 13px;
-margin-top:-px;
+margin-top:-25px;
 }
 
 /* forgot password */
 .forgot-pwd{
 color:blue;
 text-align: right;
-padding-top:-5px;
+padding-top:15px;
 font-size: 13px;
 margin-top:-20px;
+margin-bottom: 5px;
 }
 
 .forgotPwd-container {
@@ -769,6 +770,18 @@ margin-top:-20px;
 
 .canvas__open {
   display: none;
+}
+
+.header__paths{
+  margin-left: 235px;
+}
+
+.token__details{
+  margin-left: 183px;
+}
+
+.header__section{
+  display: flex;
 }
 
 /*---------------------
@@ -1576,6 +1589,7 @@ margin-bottom: 50px;
 .modal__status{
   display: flex;
   padding-top: 10px;
+  float: right;
 }
 
 .modal__yes{
@@ -1586,11 +1600,13 @@ margin-bottom: 50px;
   background-color: #f96e00;
   color:white;
   border-color: white;
+  margin-right: 15px;
 }
 
 .modal__no__button{
   background-color:  #f96e00;
   color: white;
+  margin-right: 5px;
 }
 /*---------------------
   Testimonial
@@ -2145,8 +2161,13 @@ margin-bottom: 50px;
   margin: 10px 0;
 }
 
-.product__item__details{
+.product__item__details__fav{
   display: flex;
+  flex-direction: row;
+}
+
+.product__items__details{
+  display: block;
   flex-direction: row;
 }
 
@@ -2504,6 +2525,7 @@ margin-bottom: 50px;
 .details-info span {
   display: inline-block;
   flex-grow: 1;
+  width: 330px;
 }
 
 .profile-container{
@@ -2622,6 +2644,39 @@ margin-bottom: 50px;
   top:20px;
   left:390px;
 }
+
+/* Ensuring delete button is above other elements */
+.delete-btn {
+  position: relative;
+  z-index: 10; /* Higher than other elements */
+  cursor: pointer;
+}
+
+
+/* Fixing hover and modal visibility */
+.address__delete {
+  position: relative;
+  display: inline-block;
+  z-index: 10; /* Ensuring it's above other elements */
+}
+
+/* Popup modal fix */
+.modal__member {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  z-index: 20; /* Ensuring modal is visible */
+}
+
+.address__modal{
+  width: 400px;;
+}
+
+#popup-4.popup-content.popup__modal-content{
+  width: 420px;
+  border-radius: 12px;
+}
+
 
 .address__delete{
   width: 40px;
@@ -3223,7 +3278,7 @@ p {
 }
 
 .product__table{
-  width:350px;
+  width:210px;
 }
 
 .quantity__table{
@@ -3256,8 +3311,8 @@ p {
   border-bottom: 1px solid #f2f2f2;
 }
 .shopping__cart__table table tbody tr td {
-  padding-bottom: 30px;
-  padding-top: 30px;
+  padding-bottom: 2px;
+  padding-top: 2px;
   /* position: relative;  */
   /* bottom: 60px; */
 }
@@ -3272,20 +3327,22 @@ transition: transform 0.3s ease-in-out;
 margin-bottom: 30px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item {
-  width: 400px;
+  width: 250px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic {
   float: left;
   margin-right: 0px;
   display: flex;
   border-radius: 12px;
+  width: 200px;
+  height: 150px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic .product__cart__item__img{
   border-radius: 12px;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__text {
   overflow: hidden;
-  padding-top: 40px;
+  padding-top: 10px;
   display: flex;
   width: 195px;
 }
@@ -3295,26 +3352,38 @@ margin-bottom: 30px;
   font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__text h5 {
   color: #111111;
   font-weight: 600;
   font-size: 16px;
 }
+
+.cart__unit__price{
+  font-weight: 600;
+  width: 100px;
+  position: relative;
+  bottom: 100px;
+  right: 15px;
+}
+
 .shopping__cart__table table tbody tr td.quantity__item {
   width: 175px;
   position: relative;
-  bottom: 60px;
+  bottom: 100px;
+  left: 20px;
 }
 .shopping__cart__table table tbody tr td.quantity__item .quantity{
   
   display: flex;
 }
 
-.product__item__details{
-  display: flex;
-  flex-direction: row;
-  width: 309px;
+
+.cart__product__item__details{
+  display: block;
+  /* flex-direction: row; */
+  width: 265px;
 }
 
 .shopping__cart__table table tbody tr td.quantity__item .quantity .decrease__quantity {
@@ -3354,18 +3423,20 @@ margin-bottom: 30px;
   cursor: pointer;
   font-weight: 500;
 }
+
 .shopping__cart__table table tbody tr td.cart__price {
   color: #111111;
   font-size: 16px;
   font-weight: 600;
   width: 140px;
   position: relative;
-  bottom: 60px;
+  bottom: 100px;
+  left: 15px;
 }
 
 .shopping__cart__table table tbody tr td.cart__close {
   position: relative;
-  bottom: 60px;
+  bottom: 100px;
 }
 
 .shopping__cart__table table tbody tr td.cart__close span {
@@ -3480,6 +3551,17 @@ margin-bottom: 30px;
   line-height: 40px;
   overflow: hidden;
 }
+
+.total__amount{
+  display: flex;
+}
+
+.total__tag{
+  position: relative;
+  right: 50px;
+  width: 70%;
+}
+
 .cart__total ul li span {
   font-weight: 600;
   color: #e26b0c;
@@ -3550,7 +3632,28 @@ margin-bottom: 30px;
 
 .payment__address__label{
   margin-top: 5px;
+  display: flex;
 }
+
+.address__options{
+  float: left;
+}
+
+.address__options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensures left alignment */
+  gap: 4px; /* Adds spacing between lines */
+  padding: 8px 12px; /* Adds some padding for better readability */
+}
+
+.address__options div {
+  text-align: left; /* Ensures text inside each div is left-aligned */
+  font-size: 15px; /* Adjust size if needed */
+  line-height: 1.2;
+}
+
+
 
 .address__selection{
   margin-right: 5px;
@@ -3747,6 +3850,82 @@ margin-bottom: 30px;
 .checkout__total__all li span {
   color: #f08632;
   float: right;
+}
+
+/*--------------------
+order history 
+----------------------*/
+
+.order-container {
+  display: flex;
+  justify-content: center;
+  align-items: right;
+  padding: 20px;
+}
+
+.order-box {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 550px;
+  text-align:left;
+}
+
+.orderItem-container {
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom:20px;
+  margin-left: 5px;
+}
+
+.orderItem__label{
+  display: flex;
+  width: 430px;
+  margin-top: 20px;
+}
+
+.order__date__label{
+  float:right;
+  margin-top: -20px;
+  margin-right: -10px;
+}
+
+.order__product__table{
+  width: 150px;
+  /* margin-left: 70px; */
+}
+
+.order__unit__price__table{
+  width: 130px;
+}
+
+.order__quantity__table{
+  width: 120px;
+}
+
+.item__dessertName{
+  margin-left: -15px;
+  width: 170px;
+  font-weight: 500;
+}
+
+.item__price{
+  width: 120px;
+}
+
+.item__quantity{
+  width: 120px;
+}
+
+.item__totalPrice{
+  width: 0px;
 }
 
 /*---------------------
@@ -4984,6 +5163,42 @@ margin-bottom: 30px;
   .header__top__left ul li:after {
     right: -13px;
   }
+  
+  .wishlist__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* Set a fixed width */
+  }
+  
+  .wishlist__icon {
+    width: 24px; /* Adjust icon size */
+    height: 24px;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .header__top__inner .header__top__right .header__top__right__links a.wishlist__container .hover-text {
+    position: absolute;
+    bottom: 0px; /* Position below the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+    white-space: nowrap; /* Prevents line breaks */
+  }
+  
+  .hover-text.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
 
   .header__top__right__links {
     margin-right: 15px;
@@ -4996,6 +5211,38 @@ margin-bottom: 30px;
   .header__top__right__links a:after {
     right: -15px;
   }
+
+  .wishlist__icon__container {
+    position: relative;
+    width: 30%;
+}
+
+#wishlist__icon__image {
+    width: 100%;
+    display: block;
+}
+
+.header__top__inner .header__top__right .wishlist__icon__container .wishlist__title {
+    background-color: rgb(0, 0, 0, 0.5);
+/*positioned relative to parent div (container) */
+    position: absolute;    
+/* bottom margin is 0 so that it
+coincides with container's bottom margin*/
+    bottom: 0;            
+    color: white;
+    width: 100%;
+    font-size: 25px;
+    padding: 15px 0;
+    text-align: center;
+    /*invisible because opacity is 0*/
+    opacity: 0;            
+    transition: 0.6s;
+}
+
+.wishlist__icon__container:hover .wishlist__title {
+/*becomes visible on hover*/
+    opacity: 1;        
+}
 
   .hero__slider.owl-carousel .owl-nav button {
     left: 0;
@@ -5814,5 +6061,30 @@ margin-bottom: 30px;
 
 .react-multi-carousel-list.w-full.react-multi-carousel-track ul.react-multi-carousel-track{
   margin-left: 155px;
+}
+
+/* chatbot */
+
+.send__message{
+  padding: 10px;
+  background: #f96e00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  margin-top: 15px;
+  height: 40px;
+}
+.user__message{
+  width: 95%;
+  margin-top: 20px;
+  height: 35px;
+  margin-bottom: 20px;
+}
+
+.user__chat__space{
+  display: flex;
 }
 

@@ -30,7 +30,42 @@ export const checkoutCart = createAsyncThunk(
       );
     }
   }
-);
+)
+
+const deleteCartOnPayment = async (username) => {
+  try {
+    await axios.delete(
+      `${url}/products/deleteItemsOnPayment?username=${username}`,
+      {
+        headers,
+      }
+    );
+    console.log("deleted from backend")
+  } catch (error) {
+    toast.error("Some error occured" + error.message);
+    throw error;
+  }
+};
+
+export const saveOrderHistory = async (cartItems) => {
+  try {
+    
+    const username = JSON.parse(Cookies.get("details")).usrname;
+    const updatedCart = [{ username: username }, ...cartItems];
+      const response = await axios.post(
+          `${url}/users/saveOrderHistory`,
+          { cart: updatedCart}, // Send order items in a single request
+          { headers }
+      );
+      console.log(response);
+      toast.success("Order placed successfully!");
+      deleteCartOnPayment(username);
+      
+  } catch (error) {
+      toast.error("Failed to place order ", error.message);
+  }
+};
+
 
 export const fetchCartData = createAsyncThunk(
   "products/showCart",

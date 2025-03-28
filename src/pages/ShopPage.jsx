@@ -164,72 +164,76 @@ function ShopPage() {
       <section className="shop spad">
         <div className="container">
           <div className="row">
-            {products.map((product) => (
-              <div key={product._id} className="col-lg-3 col-md-6 col-sm-6">
-                <div className="product__item">
-                  <div className="product__item__pic set-bg">
-                    <img
-                      src={`${image_url}/images/product/${product.image.filename}`}
-                      alt={product.dessertName}
-                    />
-                    <div className="product__label">
-                      <span>{product.category.toUpperCase()}</span>
-                    </div>
-                  </div>
-                  <div className="product__item__text">
-                    <h6>
-                      <a href="#">{product.dessertName.toUpperCase()}</a>
-                    </h6>
-                    <div className="product__item__details">
-                      <div className="product__item__price">
-                        Rs. {product.price}
-                      </div>
-                      <div className="product__add__favs">
-                        {favProductId.includes(product._id) ? (
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              deleteFromFavs(product._id, setFavProductId);
-                            }}
-                          >
-                            <img src="img/icon/red-heart.png" alt="" />
-                          </a>
-                        ) : (
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              addItemToFavs(product._id, setFavProductId);
-                            }}
-                          >
-                            <img src="img/icon/heart.png" alt="" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                    <div className="cart_add">
-                      <button
-                        onClick={() => {
-                          addItemToCart(product._id);
-                          dispatch(
-                            addToCart({
-                              productId: product._id,
-                              dessertName: product.dessertName,
-                              price: product.price,
-                              image: product.image.filename,
-                              quantity: 1,
-                            })
-                          );
-                        }}
-                      >
-                        Add To Cart
-                      </button>
-                    </div>
-                  </div>
+          {products.length > 0 ? (
+        products.map((product) => (
+          <div key={product._id} className="col-lg-3 col-md-6 col-sm-6">
+            <div className="product__item">
+              <div className="product__item__pic set-bg">
+                <img
+                  src={`${image_url}/images/product/${product.image.filename}`}
+                  alt={product.dessertName}
+                />
+                <div className="product__label">
+                  <span>{product.category.toUpperCase()}</span>
                 </div>
               </div>
-            ))}
+              <div className="product__item__text">
+                <h6>
+                  <a href="#">{product.dessertName.toUpperCase()}</a>
+                </h6>
+                <div className="product__item__details__fav">
+                  <div className="product__item__price">Rs. {product.price}</div>
+                  <div className="product__add__favs">
+                    {favProductId.includes(product._id) ? (
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          deleteFromFavs(product._id, setFavProductId);
+                        }}
+                      >
+                        <img src="img/icon/red-heart.png" alt="" />
+                      </a>
+                    ) : (
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addItemToFavs(product._id, setFavProductId);
+                        }}
+                      >
+                        <img src="img/icon/heart.png" alt="" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <div className="cart_add">
+                  <button
+                    onClick={() => {
+                      addItemToCart(product._id);
+                      dispatch(
+                        addToCart({
+                          productId: product._id,
+                          dessertName: product.dessertName,
+                          price: product.price,
+                          image: product.image.filename,
+                          quantity: 1,
+                        })
+                      );
+                    }}
+                  >
+                    Add To Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="col-12 text-center">
+          <h4>No products found.</h4>
+        </div>
+      )}
           </div>
         </div>
       </section>

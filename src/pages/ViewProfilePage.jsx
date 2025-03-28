@@ -16,8 +16,6 @@ function ViewProfilePage() {
   const [profilePic, setProfilePic] = useState("");
   const image_url = import.meta.env.VITE_IMAGE_URL;
 
-  const getChar = (s, n) => s.slice(-n);
-
   useEffect(() => {
     axios
       .get(`${url}/users/displayProfilePicture?username=${username}`, {
@@ -31,7 +29,12 @@ function ViewProfilePage() {
   useEffect(() => {}, [profilePic]);
 
   const handleUpload = async (event) => {
-    if (!event.target.files[0]) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+    if (!validExtensions.includes(file.type)) {
+      toast.error("Only .jpg, .jpeg, and .png files are allowed.");
       return;
     }
 
@@ -45,17 +48,15 @@ function ViewProfilePage() {
           headers,
         }
       );
-      if (
-        (getChar(response.data.result.image.filename, 4) === ".png" ||
-          getChar(response.data.result.image.filename, 4) === ".jpg" ||
-          getChar(response.data.result.image.filename, 5) === ".jpeg") &&
-        response.status === 200
-      ) {
+      if (response.status === 200) {
         window.location.reload();
 
         toast.success("Profile picture updated successfully!");
       } else {
-        toast.error(response.data.message || "Profile picture should be of the form .png, .jpg or .jpeg");
+        toast.error(
+          response.data.message ||
+            "Profile picture should be of the form .png, .jpg or .jpeg"
+        );
       }
     } catch (error) {
       toast.error(error.message);

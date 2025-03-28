@@ -8,6 +8,9 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { Country, State } from "country-state-city";
 import { useNavigate } from "react-router-dom";
+const stripePromise = await loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
+);
 
 function CheckoutPage() {
   const cart = useSelector((state) => state.cart);
@@ -49,42 +52,53 @@ function CheckoutPage() {
     0
   );
 
-  console.log(cart, 890);
-
   const makePayment = async () => {
-    const stripe = await loadStripe(
-      import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
-    );
+    try {
 
-    const data = axios.post(
-      `${url}/products/makePayment`,
-      { products: cart, addressId: selectedAddress },
-      {
-        headers,
+  
+
+      const stripe = await stripePromise;
+      if (!stripe) {
+        console.error("Stripe failed to load");
+        return;
       }
-    );
+      
+      const data = await axios.post(
+        `${url}/products/makePayment`,
+        { products: cart, addressId: selectedAddress },
+        {
+          headers,
+        }
+      );
 
-    console.log(data, 790);
+      
 
-    if (data.statusText === "OK") {
-      toast.success("Product added to cart");
-    } else {
-      toast.error(data.message);
+      console.log(data, 790);
+
+      if (data.statusText === "OK") {
+        toast.success("Redirecting to payment");
+        const sessionId = data.data.result.id;
+        console.log(sessionId, 798);
+
+        if (!sessionId) {
+          toast.error("Failed to load stripe session");
+        }
+        setTimeout(() => {
+          stripe.redirectToCheckout({ sessionId });
+        }, 500)
+        
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Error occurred", error);
     }
-    const session = await data;
-
-    console.log(session, 7877);
-
-    const result = stripe.redirectToCheckout({
-      sessionId: session.data.result.id,
-    });
   };
 
   return (
     <>
       {/* Breadcrumb section */}
       <Breadcrumb title="Checkout"></Breadcrumb>
-      {/* <button onClick={makePayment}>Checkout</button> */}
 
       <section className="checkout spad">
         <div className="container">
@@ -93,7 +107,6 @@ function CheckoutPage() {
               <div className="row">
                 <div className="col-lg-8 col-md-6">
                   <h6 className="checkout__title">Select Address</h6>
-                  {/* <ViewAllAddressPage /> */}
                   {addresses.length > 0 ? (
                     <div className="address-selection">
                       {addresses.map((address) => (
@@ -101,7 +114,7 @@ function CheckoutPage() {
                           <div className="payment-address-container">
                             <div className="payment__address__label">
                               <input
-                              className="address__selection"
+                                className="address__selection"
                                 type="radio"
                                 name="selectedAddress"
                                 value={address._id}
@@ -110,53 +123,38 @@ function CheckoutPage() {
                                   handleAddressSelect(address._id)
                                 }
                               />
-                              <span>
-                                <label>
-                                  {address.addressLine1}, {address.addressLine2},
-                                </label>
-                                {address.landmark ? (
-                                  <>
-                                   <label>
-                                    <span>{address.landmark},</span>
-                                    </label>
-                                    <span>
-                                      {" "},{address.city},{" "}
-                                      {
-                                        State.getStateByCodeAndCountry(
-                                          address.state,
-                                          address.country
-                                        ).name
-                                      }
-                                      ,{" "}
-                                      {
-                                        Country.getCountryByCode(
-                                          address.country
-                                        ).name
-                                      }{" "}
-                                      - {address.pincode}
-                                    </span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span>
-                                      {address.city},{" "}
-                                      {
-                                        State.getStateByCodeAndCountry(
-                                          address.state,
-                                          address.country
-                                        ).name
-                                      }
-                                      ,{" "}
-                                      {
-                                        Country.getCountryByCode(
-                                          address.country
-                                        ).name
-                                      }{" "}
-                                      - {address.pincode}
-                                    </span>
-                                  </>
+                              <div className="address__options">
+                                <div className="address__line1">
+                                  {address.addressLine1},
+                                </div>
+                                <div className="address__line2">
+                                  {address.addressLine2},
+                                </div>
+                                {address.landmark && (
+                                  <div className="address__line3">
+                                    {address.landmark},
+                                  </div>
                                 )}
-                              </span>
+                                <div className="address__line4">
+                                  {address.city},
+                                </div>
+                                <div className="address__line5">
+                                  {
+                                    State.getStateByCodeAndCountry(
+                                      address.state,
+                                      address.country
+                                    )?.name
+                                  }
+                                  ,
+                                </div>
+                                <div className="address__line6">
+                                  {
+                                    Country.getCountryByCode(address.country)
+                                      ?.name
+                                  }{" "}
+                                  - {address.pincode}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -166,15 +164,15 @@ function CheckoutPage() {
                     <p>No addresses found. Please add one.</p>
                   )}
                   <button
-                  type="submit"
-                  className="address-submit-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/addEditAddress");
-                  }}
-                >
-                  Add new address
-                </button>
+                    type="submit"
+                    className="address-submit-btn"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/addEditAddress");
+                    }}
+                  >
+                    Add new address
+                  </button>
                 </div>
                 <div className="col-lg-4 col-md-6">
                   <div className="checkout__order">
@@ -189,7 +187,10 @@ function CheckoutPage() {
                       >
                         <ul className="checkout__total__products">
                           <li>
-                            <samp>{item.productDetails[0].dessertName}</samp>
+                            <samp>
+                            {item.quantity} * {item.productDetails[0].dessertName}
+                              
+                            </samp>
                             <span>{item.price * item.quantity}</span>
                           </li>
                         </ul>
@@ -204,10 +205,9 @@ function CheckoutPage() {
                     <button
                       type="submit"
                       className="site-btn"
-                      onClick={
-                        // e.preventDefault();
-                        makePayment
-                      }
+                      onClick={(e) => 
+                        { e.preventDefault();
+                           makePayment(); }}
                     >
                       PLACE ORDER
                     </button>

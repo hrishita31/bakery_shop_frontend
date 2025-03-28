@@ -15,7 +15,8 @@ function SignUpPage() {
   const SignUpSchema = Yup.object().shape({
     firstname: Yup.string()
       .required("firstname is required")
-      .test("isValidFirstname", "Should have atleast one alphabet", (value) => {
+      .matches(/^[a-z]+$/, 'Only alphabetic characters allowed')
+      .test("isValidFirstname", "Should only contain alphabets", (value) => {
         const hasUpperCase = /[A-Z]/.test(value);
         const hasLowerCase = /[a-z]/.test(value);
 
@@ -34,7 +35,8 @@ function SignUpPage() {
 
     lastname: Yup.string()
       .required("lastname is required")
-      .test("isValidLastname", "Should have atleast one alphabet", (value) => {
+      .matches(/^[a-z]+$/, 'Only alphabetic characters allowed')
+      .test("isValidLastname", "Should only contain alphabets", (value) => {
         const hasUpperCase = /[A-Z]/.test(value);
         const hasLowerCase = /[a-z]/.test(value);
 

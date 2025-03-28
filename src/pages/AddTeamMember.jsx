@@ -32,7 +32,6 @@ function AddTeamMemberPage() {
 
   return (
     <>
-
       {/* Breadcrumb section */}
       <Breadcrumb title="Add to Team" />
 
@@ -112,6 +111,7 @@ function AddTeamMemberPage() {
                             </div>
                             <div className="member__status__reject">
                               <Popup
+                                className="popup__modal"
                                 trigger={
                                   <button className="member__status__button">
                                     <IconX color="black" />

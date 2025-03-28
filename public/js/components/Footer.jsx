@@ -32,20 +32,6 @@ export const Footer = () => {
                 Lorem ipsum dolor amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore dolore magna aliqua.
               </p>
-              <div className="footer__social">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                  <i className="fa fa-facebook"></i>
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                  <i className="fa fa-twitter"></i>
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                  <i className="fa fa-instagram"></i>
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                  <i className="fa fa-youtube-play"></i>
-                </a>
-              </div>
             </div>
           </div>
 
