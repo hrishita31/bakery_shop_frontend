@@ -24,7 +24,7 @@ function ShoppingCartPage() {
   const handleCheckout = async () => {
     dispatch(checkoutCart(cart));
     // dispatch(fetchCartData(username));
-    navigate("/checkout")
+    navigate("/checkout");
   };
 
   const totalPrice = cart.reduce(
@@ -84,6 +84,9 @@ function ShoppingCartPage() {
                             <div className="product__table">
                               <th>Product</th>
                             </div>
+                            <div className="unit__price__table">
+                              <th>Unit Price</th>
+                            </div>
                             <div className="quantity__table">
                               <th>Quantity</th>
                             </div>
@@ -103,7 +106,7 @@ function ShoppingCartPage() {
                               className="shopping__cart__table__body"
                             >
                               <td className="product__cart__item">
-                                <div className="product__item__details">
+                                <div className="cart__product__item__details">
                                   <div className="product__cart__item__pic">
                                     <img
                                       className="product__cart__item__img"
@@ -120,6 +123,9 @@ function ShoppingCartPage() {
                                     </h6>
                                   </div>
                                 </div>
+                              </td>
+                              <td className="cart__unit__price">
+                                Rs. {item.price}
                               </td>
                               <td className="quantity__item">
                                 <div className="quantity">
@@ -200,7 +206,10 @@ function ShoppingCartPage() {
                 <h6>Cart total</h6>
                 <ul>
                   <li>
-                    Total <span>Rs {totalPrice}</span>
+                    <div className="total__amount">
+                    <div className="total__tag">Total</div>{" "}
+                    <span>Rs {totalPrice}</span>
+                    </div>
                   </li>
                 </ul>
                 <a href="#" className="primary-btn" onClick={handleCheckout}>

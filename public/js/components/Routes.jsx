@@ -21,18 +21,21 @@ import PageNotFound from "../../../src/pages/PageNotFound";
 import AddTeamMemberPage from "../../../src/pages/AddTeamMember";
 import SuccessPayment from "../../../src/pages/Successpayment";
 import FailedPayment from "../../../src/pages/Failedpayment";
+import ChatWithUsPage from "../../../src/pages/ChatWithUs";
+import ViewOrderHistory from "../../../src/pages/ViewOrderHistory";
 
 import {LoginRoute, PrivateRoute} from "../../../src/pages/Auth/PrivateRoutes"
 import {UserNotAuthorized} from "../../../src/pages/Auth/UserNotAuthorizedPage"
 import {UserNotAuthenticated} from "../../../src/pages/Auth/UserNotAuthenticatedPage"
+import ScrollToTop from "./ScrollToTop";
 
 function AppRoutes() {
   return (
     <>
       <BrowserRouter>
-
+      <ScrollToTop />
         <Routes>
-        
+      
           <Route  element={<Layout />} >
           <Route index element={<HomePage />} />
           <Route path="/signUp" element={<SignUpPage />} />
@@ -54,6 +57,8 @@ function AppRoutes() {
           <Route path="/viewAllAddress" element={<LoginRoute Component={ViewAllAddressPage } />} />
           <Route path="/successPayment" element={<LoginRoute Component={SuccessPayment } />} />
           <Route path="/failedPayment" element={<LoginRoute Component={FailedPayment } />} />
+          <Route path="/chatWithUs" element={<LoginRoute Component={ChatWithUsPage } />} />
+          <Route path="/viewOrderHistory" element={<LoginRoute Component={ViewOrderHistory} />} />
 
           {/* only the admin can access these pages */}
           <Route path="/addProduct" element={<PrivateRoute Component={AddProductPage } />} />

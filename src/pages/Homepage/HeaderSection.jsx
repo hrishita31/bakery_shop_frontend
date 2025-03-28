@@ -83,10 +83,12 @@ export const HeaderSection = () => {
                           e.preventDefault();
                           navigate("/wishlist");
                         }}
+                        className="wishlist__container"
                       >
-                        <img src="img/icon/heart.png" alt="" />
+                        <img src="img/icon/heart.png" alt="Wishlist" />
                       </a>
                     </div>
+
                     <div className="header__top__right__cart">
                       <a
                         href="#"
@@ -114,160 +116,168 @@ export const HeaderSection = () => {
             <div className="col-lg-12">
               <nav className="header__menu mobile-menu">
                 <ul>
-                  <li className={isActive("/") ? "active" : ""}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/");
-                      }}
-                    >
-                      Home
-                    </a>
-                  </li>
-                  <li className={isActive("/about") ? "active" : ""}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/about");
-                      }}
-                    >
-                      About
-                    </a>
-                  </li>
-                  <li className={isActive("/shop") ? "active" : ""}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/shop");
-                      }}
-                    >
-                      Shop
-                    </a>
-                  </li>
-                  <li
-                    className={
-                      isActive(
-                        "/shoppingcart" | "/checkout" | "/wishlist" | "class"
-                      )
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    <a href="#">Pages</a>
-                    <ul className="dropdown">
-                      <li>
+                  <div className="header__section">
+                    <div className="header__paths">
+                      <li className={isActive("/") ? "active" : ""}>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/shoppingCart");
+                            navigate("/");
                           }}
                         >
-                          Shopping Cart
+                          Home
                         </a>
                       </li>
-                      <li>
+                      <li className={isActive("/about") ? "active" : ""}>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/checkout");
+                            navigate("/about");
                           }}
                         >
-                          Checkout
+                          About
                         </a>
                       </li>
-                      <li>
+                      <li className={isActive("/shop") ? "active" : ""}>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/wishlist");
+                            navigate("/shop");
                           }}
                         >
-                          Wishlist
+                          Shop
                         </a>
                       </li>
-                      <li>
+                      <li
+                        className={
+                          isActive(
+                            "/shoppingcart" |
+                              "/wishlist" |
+                              "/viewOrderHistory" |
+                              "class"
+                          )
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        <a href="#">Pages</a>
+                        <ul className="dropdown">
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/shoppingCart");
+                              }}
+                            >
+                              Shopping Cart
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/wishlist");
+                              }}
+                            >
+                              Wishlist
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/viewOrderHistory");
+                              }}
+                            >
+                              Order History
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/class");
+                              }}
+                            >
+                              Class
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li className={isActive("/contact") ? "active" : ""}>
                         <a
                           href="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/class");
+                            navigate("/contact");
                           }}
                         >
-                          Class
+                          Contact
                         </a>
                       </li>
-                    </ul>
-                  </li>
-                  <li className={isActive("/contact") ? "active" : ""}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate("/contact");
-                      }}
-                    >
-                      Contact
-                    </a>
-                  </li>
+                    </div>
 
-                  <li
-                    className={
-                      isActive("/logout" | "/viewProfile" | "/editAddress")
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    {/* <a href="#">Details</a> */}
-                    <a href="#">{token ? initials : "Details"}</a>
-                    <ul className="dropdown">
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/viewDetails");
-                          }}
-                        >
-                          View profile
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/viewAllAddress");
-                          }}
-                        >
-                          View address details
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            dispatch(saveCartOnLogout(cart));
-                            Cookies.remove("token");
-                            Cookies.remove("details");
-                            e.preventDefault();
-                            // dispatch(checkoutCart(cart));
-                            
-                            dispatch(clearCart());
+                    <div className="token__details">
+                      <li
+                        className={
+                          isActive("/logout" | "/viewProfile" | "/editAddress")
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        <a href="#">{token ? initials : "Details"}</a>
+                        <ul className="dropdown">
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/viewDetails");
+                              }}
+                            >
+                              View profile
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/viewAllAddress");
+                              }}
+                            >
+                              View address details
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={(e) => {
+                                dispatch(saveCartOnLogout(cart));
+                                Cookies.remove("token");
+                                Cookies.remove("details");
+                                e.preventDefault();
+                                // dispatch(checkoutCart(cart));
 
-                            navigate("/login");
-                          }}
-                        >
-                          Logout
-                        </a>
+                                dispatch(clearCart());
+
+                                navigate("/login");
+                              }}
+                            >
+                              Logout
+                            </a>
+                          </li>
+                        </ul>
                       </li>
-                    </ul>
-                  </li>
+                    </div>
+                  </div>
                 </ul>
               </nav>
             </div>

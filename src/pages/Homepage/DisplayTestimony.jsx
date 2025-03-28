@@ -24,7 +24,7 @@ export const ShowTestimony = () => {
         setTestimony(res.data.result);
       })
       .catch(() => toast.error("Failed to fetch testimony"));
-  }, []);
+  }, [testimony]);
 
   useEffect(() => {}, [testimony]);
 

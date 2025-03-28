@@ -49,7 +49,11 @@ function AddProductPage() {
         }
         return false;
       }),
-    image: Yup.mixed().required("Product image is required"),
+    image: Yup.mixed()
+          .required("Image is required")
+          .test("fileFormat", "Only .jpg, .jpeg, and .png files are allowed", (file) => {
+            return file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type);
+          }),
     price: Yup.string()
       .required("Price is required")
       .matches(/[1-9]/, "Price must contain at least one digit (1-9)"),

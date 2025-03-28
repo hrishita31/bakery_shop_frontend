@@ -67,7 +67,17 @@ function TeamRegisterPage() {
         }
       ),
     jobRole: Yup.string().required("Job role is required"),
-    image: Yup.mixed().required("Photo is required"),
+    image: Yup.mixed()
+      .required("Image is required")
+      .test(
+        "fileFormat",
+        "Only .jpg, .jpeg, and .png files are allowed",
+        (file) => {
+          return (
+            file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)
+          );
+        }
+      ),
   });
 
   const formik = useFormik({
@@ -99,7 +109,6 @@ function TeamRegisterPage() {
   });
   return (
     <>
-
       {/* Breadcrumb section */}
       <Breadcrumb title="Team Registration" />
 

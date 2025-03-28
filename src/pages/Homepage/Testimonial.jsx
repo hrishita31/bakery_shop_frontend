@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-// import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -14,9 +13,8 @@ import { RatingFunc } from "./RatingComponent";
 import { IconRefresh } from "@tabler/icons-react";
 
 export const Testimonial = () => {
-  const [setTestimonials] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // const CarouselRef = useRef();
   const url = import.meta.env.VITE_API_URL;
   const token = Cookies.get("token");
   const headers = { Authorization: `Bearer ${token}` };
@@ -26,24 +24,24 @@ export const Testimonial = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (canvasRef.current) {
+      if (isPopupOpen && canvasRef.current) {
         const ctx = canvasRef.current.getContext("2d");
         initializeCaptcha(ctx);
       }
-    }, 500); // Give some time for the component to fully mount
-  }, []);
+    }, 100)
+    
+  }, [isPopupOpen]);
 
   const generateRandomChar = (min, max) =>
     String.fromCharCode(Math.floor(Math.random() * (max - min + 1) + min));
 
-  const generateCaptchaText = () => {    
+  const generateCaptchaText = () => {
     let captcha = "";
     for (let i = 0; i < 3; i++) {
-      captcha += generateRandomChar(65, 90);
-      captcha += generateRandomChar(97, 122);
-      captcha += generateRandomChar(48, 57);
+      captcha += generateRandomChar(65, 90); // A-Z
+      captcha += generateRandomChar(97, 122); // a-z
+      captcha += generateRandomChar(48, 57); // 0-9
     }
-    console.log(captcha, 789);
     return captcha
       .split("")
       .sort(() => Math.random() - 0.5)
@@ -55,12 +53,11 @@ export const Testimonial = () => {
     const textColors = ["rgb(0,0,0)", "rgb(130,130,130)"];
     const letterSpace = 150 / captcha.length;
     for (let i = 0; i < captcha.length; i++) {
-      const xInitialSpace = 25;
       ctx.font = "20px Roboto Mono";
       ctx.fillStyle = textColors[Math.floor(Math.random() * 2)];
       ctx.fillText(
         captcha[i],
-        xInitialSpace + i * letterSpace,
+        25 + i * letterSpace,
         Math.floor(Math.random() * 16 + 25),
         100
       );
@@ -70,7 +67,6 @@ export const Testimonial = () => {
   const initializeCaptcha = (ctx) => {
     setUserInput("");
     const newCaptcha = generateCaptchaText();
-    console.log(newCaptcha);
     setCaptchaText(newCaptcha);
     drawCaptchaOnCanvas(ctx, newCaptcha);
   };
@@ -82,72 +78,25 @@ export const Testimonial = () => {
   const testimonialSchema = Yup.object().shape({
     name: Yup.string()
       .required("Name is required")
-      .test(
-        "isValidName",
-        "Should have atleast one alphabet or a digit",
-        (value) => {
-          const hasUpperCase = /[A-Z]/.test(value);
-          const hasLowerCase = /[a-z]/.test(value);
-
-          let validConditions = 0;
-
-          const numberOfMustBeValidConditions = 1;
-          const conditions = [hasLowerCase, hasUpperCase];
-          conditions.forEach((condition) =>
-            condition ? validConditions++ : null
-          );
-          if (validConditions >= numberOfMustBeValidConditions) {
-            return true;
-          }
-          return false;
-        }
-      ),
+      .matches(/[A-Za-z0-9]/, "Should have at least one alphabet or digit"),
     location: Yup.string()
       .required("Location is required")
-      .test(
-        "isValidLocation",
-        "Should have atleast one alphabet or a digit",
-        (value) => {
-          const hasUpperCase = /[A-Z]/.test(value);
-          const hasLowerCase = /[a-z]/.test(value);
-
-          let validConditions = 0;
-
-          const numberOfMustBeValidConditions = 1;
-          const conditions = [hasLowerCase, hasUpperCase];
-          conditions.forEach((condition) =>
-            condition ? validConditions++ : null
-          );
-          if (validConditions >= numberOfMustBeValidConditions) {
-            return true;
-          }
-          return false;
-        }
-      ),
+      .matches(/[A-Za-z0-9]/, "Should have at least one alphabet or digit"),
     rating: Yup.string().required("Rating is required"),
     quote: Yup.string()
       .required("Quote is required")
+      .matches(/[A-Za-z0-9]/, "Should have at least one alphabet or digit"),
+    image: Yup.mixed()
+      .required("Image is required")
       .test(
-        "isValidQuote",
-        "Should have atleast one alphabet or a digit",
-        (value) => {
-          const hasUpperCase = /[A-Z]/.test(value);
-          const hasLowerCase = /[a-z]/.test(value);
-
-          let validConditions = 0;
-
-          const numberOfMustBeValidConditions = 1;
-          const conditions = [hasLowerCase, hasUpperCase];
-          conditions.forEach((condition) =>
-            condition ? validConditions++ : null
+        "fileFormat",
+        "Only .jpg, .jpeg, and .png files are allowed",
+        (file) => {
+          return (
+            file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)
           );
-          if (validConditions >= numberOfMustBeValidConditions) {
-            return true;
-          }
-          return false;
         }
       ),
-    image: Yup.mixed().required("Image is required"),
   });
 
   const formik = useFormik({
@@ -164,7 +113,6 @@ export const Testimonial = () => {
       try {
         if (userInput === captchaText) {
           let formData = new FormData();
-
           formData.append("name", values.name);
           formData.append("location", values.location);
           formData.append("rating", values.rating);
@@ -172,29 +120,30 @@ export const Testimonial = () => {
           formData.append("image", values.image);
           formData.append("username", values.username);
 
-          const data = await axios.post(
+          const response = await axios.post(
             `${url}/testimony/postTestimony`,
             formData,
-            {
-              headers,
-            }
+            { headers }
           );
 
-          if (data.statusText === "OK") {
+          console.log(response, 235);
+          if (response.status === 201) {
             toast.success("Testimonial submitted successfully!");
-            setTestimonials((prev) => [
-              ...prev,
+            
+            setTestimonials([
+              ...testimonials,
               { ...values, image: URL.createObjectURL(values.image) },
             ]);
             setIsPopupOpen(false);
             resetForm();
+            
           } else {
-            toast.error(data.message);
+            // toast.error("Failed to submit testimonial.");
           }
         } else {
-          const canvas = canvasRef.current;
-          const ctx = canvas.getContext("2d");
+          const ctx = canvasRef.current.getContext("2d");
           initializeCaptcha(ctx);
+          toast.error("Incorrect captcha. Try again.");
         }
       } catch (error) {
         toast.error(error.message);
@@ -202,14 +151,9 @@ export const Testimonial = () => {
     },
   });
 
-
-  // useEffect(() => {
-  //   if (canvasRef.current) {
-  //     const ctx = canvasRef.current.getContext("2d");
-  //     initializeCaptcha(ctx);
-  //   }
-  // }, [canvasRef]); // Ensures it runs when canvasRef updates
-  
+  useEffect(() => {
+    console.log(testimonials)
+  }, [testimonials])
 
   return (
     <section className="testimonial spad">
@@ -250,14 +194,14 @@ export const Testimonial = () => {
                 ) : null}
 
                 <div className="testimony__label">
-                  <label htmlFor="location">Location</label>
+                  <label htmlFor="location">location</label>
                   <label className="compulsory__fill_input">*</label>
                 </div>
                 <input
                   id="location"
                   name="location"
                   type="text"
-                  placeholder="Location"
+                  placeholder="location"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.location}
@@ -308,7 +252,7 @@ export const Testimonial = () => {
                 ) : null}
 
                 <div className="testimony__label">
-                  <label htmlFor="location">Enter captcha</label>
+                  <label htmlFor="captcha">Enter captcha</label>
                   <label className="compulsory__fill_input">*</label>
                 </div>
                 <div className="wrapper">
@@ -318,16 +262,17 @@ export const Testimonial = () => {
                   <div className="reload-btn">
                     <button
                       type="button"
-                      onClick={() =>{
-                        console.log(canvasRef.current,8888)
-                       // initializeCaptcha(canvasRef.current.getContext("2d"))
+                      onClick={() => {
+                        console.log(canvasRef.current, 8888);
+                        initializeCaptcha(canvasRef.current.getContext("2d"));
                         setTimeout(() => {
                           if (canvasRef.current) {
-                            initializeCaptcha(canvasRef.current.getContext("2d"));
+                            initializeCaptcha(
+                              canvasRef.current.getContext("2d")
+                            );
                           }
-                        }, 100);         
-                      }
-                      }
+                        }, 100);
+                      }}
                     >
                       <IconRefresh />
                     </button>
@@ -340,34 +285,17 @@ export const Testimonial = () => {
                   value={userInput}
                   onChange={handleUserInputChange}
                 />
+                {formik.touched.captcha && formik.errors.captcha ? (
+                  <div className="error-login">{formik.errors.captcha}</div>
+                ) : null}
 
-                <button
-                  type="submit"
-                  onClick={() => setIsPopupOpen(false)}
-                  className="submit-btn"
-                >
-                  Submit
-                </button>
+                <button type="submit">Submit</button>
+                
               </form>
             </div>
           </div>
         </Popup>
-        <button
-          onClick={() => {
-            setIsPopupOpen(true);
-            console.log(canvasRef.current,7777)
-          //    initializeCaptcha(canvasRef.current.getContext("2d"))
-              setTimeout(() => {
-                if (canvasRef.current) {
-                  initializeCaptcha(canvasRef.current.getContext("2d"));
-                }
-              }, 1000); 
-             // const ctx = canvas.getContext("2d");
-            //  initializeCaptcha(ctx);
-            
-          }}
-          className="add-testimony-button"
-        >
+        <button onClick={() => setIsPopupOpen(true)}>
           Click to add your thoughts!
         </button>
       </div>

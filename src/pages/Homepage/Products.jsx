@@ -98,7 +98,7 @@ export const Products = () => {
                       <h6>
                         <a href="#">{product.dessertName.toUpperCase()}</a>
                       </h6>
-                      <div className="product__item__details">
+                      <div className="product__item__details__fav">
                         <div className="product__item__price">
                           Rs.{product.price}
                         </div>

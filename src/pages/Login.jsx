@@ -92,10 +92,6 @@ function LoginPage() {
               <div className="error-login">{formik.errors.password}</div>
             ) : null}
 
-            {/* <input type="submit" /> */}
-            <button type="submit" className="submit-btn">
-            Submit
-          </button>
             <div className="forgot-pwd">
               <a
                 href="#"
@@ -107,12 +103,19 @@ function LoginPage() {
                 forgot password
               </a>
             </div>
+
+            {/* <input type="submit" /> */}
+            <button type="submit" className="submit-btn">
+              Submit
+            </button>
+
             <div className="create__new__account">
-              <a href="#"
-              onClick={(e)=>{
-                e.preventDefault();
-                navigate("/signUp")
-              }}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/signUp");
+                }}
               >
                 Create a new account?
               </a>
